@@ -521,20 +521,208 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
 }
 
 interface ProjectShowcasePageProps {
-  projects: ShowcaseProject[];
-  onProjectChange: (index: number, field: keyof ShowcaseProject, value: string) => void;
-  onAddProject: () => void;
-  onRemoveProject: (index: number) => void;
+    projects: ShowcaseProject[];
+    onProjectChange: (index: number, field: keyof ShowcaseProject, value: string) => void;
+    onAddProject: () => void;
+    onRemoveProject: (index: number) => void;
+    onImportRepo?: (repo: ShowcaseProject) => void; // import a repo into the local showcase
+    initialUsername?: string; // optional username or URL to auto-load
+    autoLoad?: boolean; // whether to fetch on mount
+    onNotify?: (msg: string) => void; // simple notification callback
 }
 
-const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onProjectChange, onAddProject, onRemoveProject }) => {
+const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onProjectChange, onAddProject, onRemoveProject, onImportRepo, initialUsername, autoLoad, onNotify }) => {
+    // local state for GitHub overview
+    const [username, setUsername] = useState('');
+    const [repos, setRepos] = useState<any[]>([]);
+    const [userStats, setUserStats] = useState<any | null>(null);
+    const [token, setToken] = useState<string>('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const extractUsername = (input: string) => {
+        // accept either a plain username or a GitHub profile/url like https://github.com/username or github.com/username
+        if (!input) return '';
+        try {
+            const u = input.trim();
+            // if looks like a URL
+            if (u.includes('github.com')) {
+                // remove protocol and query
+                const parts = u.replace(/https?:\/\//, '').replace(/www\./, '').split('/');
+                const idx = parts.indexOf('github.com');
+                if (idx >= 0 && parts.length > idx + 1) return parts[idx + 1];
+                // fallback: take second segment
+                if (parts.length >= 2) return parts[1];
+            }
+            // otherwise assume username
+            return u.split(/[\s\/]+/)[0];
+        } catch (e) { return input; }
+    }
+
+    const fetchRepos = async (userInput: string) => {
+        const user = extractUsername(userInput);
+        if (!user) return;
+        setLoading(true);
+        setError(null);
+        setRepos([]);
+        setUserStats(null);
+        try {
+            // fetch public repos (max 100) sorted by updated
+            const res = await fetch(`https://api.github.com/users/${encodeURIComponent(user)}/repos?per_page=100&sort=updated`);
+            if (!res.ok) {
+                if (res.status === 404) throw new Error('User not found');
+                if (res.status === 403) throw new Error('Rate limited by GitHub API (try again later)');
+                throw new Error(`GitHub API error: ${res.status}`);
+            }
+            const data = await res.json();
+            // map to useful fields
+            const mapped = data.map((r: any) => ({
+                id: r.id,
+                name: r.name,
+                full_name: r.full_name,
+                description: r.description,
+                html_url: r.html_url,
+                language: r.language,
+                stargazers_count: r.stargazers_count,
+                forks_count: r.forks_count,
+                updated_at: r.updated_at,
+                created_at: r.created_at,
+            }));
+            setRepos(mapped);
+            // also fetch account-level stats
+            try {
+                const headers: any = {};
+                if (token) headers['Authorization'] = `token ${token}`;
+                const userRes = await fetch(`https://api.github.com/users/${encodeURIComponent(user)}`, { headers });
+                if (userRes.ok) {
+                    const udata = await userRes.json();
+                    setUserStats({ login: udata.login, name: udata.name, followers: udata.followers, following: udata.following, public_repos: udata.public_repos, public_gists: udata.public_gists, avatar_url: udata.avatar_url });
+                }
+            } catch (e) {
+                // ignore non-critical failure
+            }
+        } catch (err: any) {
+            setError(err.message || 'Unknown error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // auto-load if requested
+    useEffect(() => {
+        if (autoLoad && initialUsername) {
+            // slight delay to allow mount/UI to settle
+            setTimeout(() => fetchRepos(initialUsername), 80);
+            setUsername(initialUsername);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [autoLoad, initialUsername]);
+
     return (
         <div className="p-8 md:p-12 bg-white dark:bg-gray-800 transition-colors duration-500 min-h-[80vh]">
             <div className="max-w-6xl mx-auto">
-                <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center justify-between mb-4">
                     <h1 className="font-handwriting text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200">Project Showcase</h1>
-                    <p className="text-sm text-gray-500">Highlight your top projects with a short description and link.</p>
+                    <p className="text-sm text-gray-500">Highlight your top projects and explore GitHub repositories for any account.</p>
                 </div>
+
+                {/* GitHub repo overview controls */}
+                <div className="mb-6 flex gap-3 items-center">
+                    <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="GitHub username (e.g. nicokuehn-dci or octocat) or profile URL" className="flex-1 bg-transparent border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 focus:outline-none" />
+                    <button onClick={() => fetchRepos(username.trim())} className="px-4 py-2 rounded-md bg-gradient-to-r from-gray-800 to-gray-700 text-white">Fetch repos</button>
+                </div>
+
+                <div className="mb-4 flex gap-3 items-center">
+                    <input value={token} onChange={(e) => setToken(e.target.value)} placeholder="Optional GitHub token (kept in memory)" type="password" className="flex-1 bg-transparent border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 focus:outline-none" />
+                    <div className="text-xs text-gray-500">Providing a token increases rate limits (kept only in browser memory).</div>
+                </div>
+
+                {loading && <div className="text-sm text-gray-600 mb-4">Loading repositories…</div>}
+                {error && <div className="text-sm text-red-600 mb-4">{error}</div>}
+
+                {repos.length > 0 ? (
+                    <section className="mb-8">
+                        <div className="flex items-center justify-between mb-4">
+                            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Repositories for <span className="font-bold">{username}</span></h2>
+                            <div className="flex items-center gap-3">
+                                {userStats && (
+                                    <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
+                                        <img src={userStats.avatar_url} alt={userStats.login} className="w-8 h-8 rounded-full" />
+                                        <div className="mr-2">
+                                            <div className="font-semibold">{userStats.name ?? userStats.login}</div>
+                                            <div className="text-xs text-gray-500">{userStats.followers} followers · {userStats.public_repos} repos</div>
+                                        </div>
+                                    </div>
+                                )}
+                                <div>
+                                    <button onClick={() => {
+                                        // import all visible
+                                        if (!onImportRepo) return;
+                                        let count = 0;
+                                        repos.forEach((r: any) => {
+                                            const already = projects.some(p => p.link === r.html_url || p.name === r.name);
+                                            if (!already) {
+                                                onImportRepo({ name: r.name, date: r.created_at ? new Date(r.created_at).getFullYear().toString() : '', description: r.description ?? '', link: r.html_url });
+                                                count++;
+                                            }
+                                        });
+                                        if (onNotify) {
+                                            if (count > 0) onNotify(`Imported ${count} repos`);
+                                            else onNotify('No new repos to import');
+                                        }
+                                    }}
+                                    disabled={!onImportRepo || repos.length === 0}
+                                    className="ml-2 px-3 py-1 rounded-md bg-indigo-600 text-white text-sm disabled:opacity-50"
+                                    >Import all visible</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {repos.map((r) => {
+                                const alreadyImported = projects.some(p => p.link === r.html_url || p.name === r.name);
+                                return (
+                                    <div key={r.id} className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/40">
+                                        <div className="flex items-start justify-between gap-3">
+                                            <div className="flex-1">
+                                                <a href={r.html_url} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-blue-700 dark:text-blue-300 hover:underline">{r.name}</a>
+                                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{r.description ?? <span className="italic text-gray-400">No description</span>}</p>
+                                                <div className="flex items-center gap-3 mt-3 text-xs text-gray-500">
+                                                    <span>⭐ {r.stargazers_count}</span>
+                                                    <span>🍴 {r.forks_count}</span>
+                                                    {r.language && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md">{r.language}</span>}
+                                                    <span className="ml-auto text-xs text-gray-400">Updated {new Date(r.updated_at).toLocaleDateString()}</span>
+                                                </div>
+                                            </div>
+                                            <div className="ml-4 flex-shrink-0 flex flex-col gap-2">
+                                                <button
+                                                    onClick={() => {
+                                                        if (!onImportRepo) return;
+                                                        const imported = ((): boolean => {
+                                                            const exists = projects.some(p => p.link === r.html_url || p.name === r.name);
+                                                            if (exists) return false;
+                                                            onImportRepo({ name: r.name, date: r.created_at ? new Date(r.created_at).getFullYear().toString() : '', description: r.description ?? '', link: r.html_url });
+                                                            return true;
+                                                        })();
+                                                        if (onNotify) {
+                                                            onNotify(imported ? `Imported ${r.name}` : `${r.name} already imported`);
+                                                        }
+                                                    }}
+                                                    disabled={alreadyImported || !onImportRepo}
+                                                    className={`px-3 py-1 rounded-md text-sm ${alreadyImported ? 'bg-gray-200 text-gray-600' : 'bg-green-600 text-white hover:brightness-105'}`}
+                                                >
+                                                    {alreadyImported ? 'Imported' : 'Import'}
+                                                </button>
+                                                <a href={r.html_url} target="_blank" rel="noopener noreferrer" className="px-3 py-1 rounded-md text-sm bg-white dark:bg-gray-900 border text-gray-700 dark:text-gray-200 hover:underline">View</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </section>
+                ) : (
+                    !loading && <div className="text-sm text-gray-500 mb-6">No repositories loaded. Enter a username and click &quot;Fetch repos&quot; to view public repositories.</div>
+                )}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {projects.map((project, index) => (
@@ -666,6 +854,21 @@ const App: React.FC = () => {
     const addShowcaseProject = () => {
         setShowcaseProjects([...showcaseProjects, { name: '', date: '', description: '', link: '' }]);
     };
+    const importShowcaseProject = (repo: ShowcaseProject) => {
+        // avoid duplicates by link or name
+        const exists = showcaseProjects.some(p => p.link === repo.link || (p.name && p.name === repo.name));
+        if (exists) return;
+        setShowcaseProjects(prev => [...prev, repo]);
+    };
+
+    // --- simple toast/snackbar ---
+    const [toastMsg, setToastMsg] = useState<string | null>(null);
+    const toastTimer = useRef<number | null>(null);
+    const showToast = (msg: string, ms = 3000) => {
+        setToastMsg(msg);
+        if (toastTimer.current) window.clearTimeout(toastTimer.current);
+        toastTimer.current = window.setTimeout(() => setToastMsg(null), ms);
+    };
     
     const removeShowcaseProject = (index: number) => {
         const newProjects = showcaseProjects.filter((_, i) => i !== index);
@@ -681,6 +884,10 @@ const App: React.FC = () => {
             onProjectChange={handleShowcaseProjectChange}
             onAddProject={addShowcaseProject}
             onRemoveProject={removeShowcaseProject}
+            onImportRepo={importShowcaseProject}
+            initialUsername={resumeData.contact.githubLink}
+            autoLoad={true}
+            onNotify={(m:string) => showToast(m)}
         />,
         <SkillsDeepDivePage key={2} data={skillsData} />,
         <PlaceholderPage key={3} title="My Creative Work">A space to highlight your music production and other creative endeavors. Embed audio players, videos, or link to your portfolio on other platforms.</PlaceholderPage>,
@@ -840,11 +1047,13 @@ const App: React.FC = () => {
             <div className="bg-gray-100 dark:bg-gray-900 min-h-screen p-4 sm:p-8 md:p-12 transition-colors duration-500 font-sans">
                 <ThemeToggle />
                 
-                <button onClick={goToPrevPage} disabled={currentPage === 0} className="fixed left-2 md:left-4 top-1/2 -translate-y-1/2 z-40 p-2 rounded-full bg-white/50 dark:bg-black/50 hover:bg-white/80 dark:hover:bg-black/80 disabled:opacity-0 disabled:cursor-not-allowed transition-all duration-300">
-                    <LeftArrowIcon className="w-6 h-6 text-gray-800 dark:text-gray-200" />
+                <button onClick={goToPrevPage} disabled={currentPage === 0} title="Previous page" aria-label="Previous page" className="fixed left-2 md:left-4 top-1/2 -translate-y-1/2 z-40 flex items-center gap-2 px-3 py-2 rounded-full bg-white/50 dark:bg-black/50 hover:bg-white/80 dark:hover:bg-black/80 disabled:opacity-0 disabled:cursor-not-allowed transition-all duration-300">
+                    <LeftArrowIcon className="w-5 h-5 text-gray-800 dark:text-gray-200" />
+                    <span className="hidden md:inline text-sm text-gray-800 dark:text-gray-200">Prev</span>
                 </button>
-                <button onClick={goToNextPage} disabled={currentPage === pages.length - 1} className="fixed right-2 md:right-4 top-1/2 -translate-y-1/2 z-40 p-2 rounded-full bg-white/50 dark:bg-black/50 hover:bg-white/80 dark:hover:bg-black/80 disabled:opacity-0 disabled:cursor-not-allowed transition-all duration-300">
-                    <RightArrowIcon className="w-6 h-6 text-gray-800 dark:text-gray-200" />
+                <button onClick={goToNextPage} disabled={currentPage === pages.length - 1} title="Next page" aria-label="Next page" className="fixed right-2 md:right-4 top-1/2 -translate-y-1/2 z-40 flex items-center gap-2 px-3 py-2 rounded-full bg-white/50 dark:bg-black/50 hover:bg-white/80 dark:hover:bg-black/80 disabled:opacity-0 disabled:cursor-not-allowed transition-all duration-300">
+                    <span className="hidden md:inline text-sm text-gray-800 dark:text-gray-200">Next</span>
+                    <RightArrowIcon className="w-5 h-5 text-gray-800 dark:text-gray-200" />
                 </button>
 
                 <div id="resume-container" className="max-w-6xl mx-auto bg-white dark:bg-gray-800 shadow-2xl dark:shadow-black/50 rounded-lg overflow-hidden">
