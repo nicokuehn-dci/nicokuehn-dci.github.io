@@ -129,7 +129,9 @@ const resumeData: ResumeData = {
     name: "Nico Kuehn",
     title: "Python Backend Programmer / Musician / Producer",
     summary: "20 years of experience in Musicproduction in the Box + Outgear Musicproduction",
-    profilePictureUrl: "https://i.ibb.co/mCb2N9W/profile-pic.png",
+    // Use the local profile image included in the repo so GitHub Pages can serve it reliably
+    // Place the image at the repo root as `unnamed.jpg` (already provided in workspace)
+    profilePictureUrl: "/unnamed.jpg",
     contact: { email: "nico.code.evo@gmail.com", phone: "+4915237250142", location: "Aue-Bad Schlema, DE", github: "github.com/nicokuehn-dci", githubLink: "https://github.com/nicokuehn-dci?tab=repositories" },
     education: [{ degree: "Python Backend Programmer", institution: "DCI - Digital Career Institute", date: "03/2025 - 03/2026", location: "Berlin", courses: ["Python Backend Programming"], description: "Accomplishing a one-year-full-time training including Python Basics, Databases, Django Framework, APIs & Cloud Services" }],
     workExperience: [
