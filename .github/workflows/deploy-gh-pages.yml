@@ -1,11 +1,11 @@
-name: Build and deploy to gh-pages
+name: Build and publish to docs/ on main
 
 on:
   push:
     branches: [ main ]
 
 jobs:
-  build-and-deploy:
+  build-and-publish-docs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -22,11 +22,39 @@ jobs:
       - name: Build
         run: npm run build --if-present
 
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          publish_branch: gh-pages
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+      - name: Copy build to docs/
+        run: |
+          rm -rf docs || true
+          mkdir -p docs
+          cp -r dist/. docs/
+
+      - name: Commit and push docs/
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs || true
+          if git diff --staged --quiet; then
+            echo "No changes in docs/ to commit"
+          else
+            git commit -m "chore(pages): update docs/ from build"
+            git push origin HEAD:main
+          fi
+
+      - name: Wait for Pages to become available (health-check)
+        run: |
+          # Adjust the URL below if your Pages site is different
+          URL="https://nicokuehn-dci.github.io/"
+          echo "Checking $URL"
+          for i in {1..12}; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL" || true)
+            echo "Attempt $i: HTTP $STATUS"
+            if [ "$STATUS" = "200" ]; then
+              echo "Site is live"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "Site did not become available in time"
+          exit 1
