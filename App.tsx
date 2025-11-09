@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 declare const html2pdf: any;
 
@@ -144,12 +144,65 @@ const TrashIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
+// --- LOGO ICONS (replace emoji with crisp SVG logos) ---
+const PythonIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg viewBox="0 0 24 24" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <path fill="#3776AB" d="M12 2.5c-1.5 0-2.9.5-3.9 1.4-.3.3-.4.7-.4 1.1v2.1h6.8v-.1c0-1.2-.9-2.2-2-2.2H9.7c-.6 0-1 .5-1 1v.5h4.6c1.4 0 2.6 1.1 2.6 2.4v1.8c0 1.4-1.2 2.6-2.6 2.6H8.3c-.6 0-1 .4-1 1v1.8c0 .4.2.8.5 1.1 1 1 2.4 1.6 3.9 1.6 4 0 6-2.1 6-5.9V8.4C18 4.6 16 2.5 12 2.5z"/>
+        <path fill="#FFD43B" d="M12 21.5c1.5 0 2.9-.5 3.9-1.4.3-.3.4-.7.4-1.1v-2.1H9.5v.1c0 1.2.9 2.2 2 2.2h1.4c.6 0 1-.5 1-1v-.5H9.5c-1.4 0-2.6-1.1-2.6-2.4V12c0-1.4 1.2-2.6 2.6-2.6h6.3c.6 0 1-.4 1-1V6.1c0-.4-.2-.8-.5-1.1-1-1-2.4-1.6-3.9-1.6-4 0-6 2.1-6 5.9v6.6c0 3.8 2 5.9 6 5.9z"/>
+    </svg>
+);
+
+const DjangoIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg viewBox="0 0 24 24" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <rect x="2" y="6" width="20" height="12" rx="2" fill="#092E20" />
+        <path d="M6 9h2v6H6zM9.5 9h2v6h-2zM13 9h6v1h-5v2h4v1h-4v2h5v1h-6z" fill="#7CC244" />
+    </svg>
+);
+
+const ReactLogoIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg viewBox="0 0 256 256" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <g fill="none" stroke="#61DAFB" strokeWidth="12">
+            <ellipse cx="128" cy="128" rx="88" ry="40" transform="rotate(0 128 128)" />
+            <ellipse cx="128" cy="128" rx="88" ry="40" transform="rotate(60 128 128)" />
+            <ellipse cx="128" cy="128" rx="88" ry="40" transform="rotate(120 128 128)" />
+        </g>
+        <circle cx="128" cy="128" r="18" fill="#61DAFB" />
+    </svg>
+);
+
+const DockerIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg viewBox="0 0 24 24" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <path d="M3 13h2v2H3zM6 13h2v2H6zM9 13h2v2H9zM12 13h2v2h-2z" fill="#0db7ed" />
+        <path d="M21 14.3c-.5-.2-1.1-.3-1.6-.3-.9 0-1.8.2-2.6.6-.4.2-.8.3-1.2.3H14c-.8 0-1.6-.3-2.3-.8-.6-.5-1.2-.8-2-.8H7c-.8 0-1.6.3-2.3.8C3 15 2.2 15.3 1.6 15.3V17c0 .6.4 1 1 1h17.4c.2 0 .6-.4.6-1.1v-1.7c0-.6-.1-1.1-.6-1.2z" fill="#0db7ed"/>
+    </svg>
+);
+
+const GitIconSmall: React.FC<{ className?: string }> = ({ className }) => (
+    <svg viewBox="0 0 24 24" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <path d="M12 2l3 3-2 2 4 4-3 3-4-4-2 2L2 12l10-10z" fill="#F05032" />
+    </svg>
+);
+
+const JsIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg viewBox="0 0 24 24" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <rect width="24" height="24" rx="3" fill="#F7DF1E" />
+        <path d="M9.3 17.5c.9 1.4 1.9 2.4 3.9 2.4 1.9 0 3.1-.9 3.1-2.5 0-1.7-1.3-2.2-2.9-3-1.2-.6-2-1-2-1.7 0-.6.5-1 1.2-1 .7 0 1.2.2 1.6.8l1.6-1c-.8-1.2-1.9-1.6-3.5-1.6-2 0-3.4 1.1-3.4 2.8 0 1.8 1 2.6 2.7 3.4 1.1.6 1.8 1 1.8 1.8 0 .6-.5 1-1.3 1-.9 0-1.5-.3-2.1-.9zM16.6 17.5c-.4.9-1 1.5-2.1 1.5-1.1 0-1.8-.5-1.8-1.5 0-1 .6-1.3 2.1-1.9 1.1-.4 1.8-.8 1.8-1.9 0-.9-.7-1.6-1.8-1.6-1 0-1.7.4-2.2 1.3l1.5.9c.2-.5.7-.8 1.1-.8.6 0 1 .4 1 1 0 .8-.6 1.2-2 1.8-1.1.4-1.8.8-1.8 1.9 0 1.1.9 1.8 2.7 1.8 1.5 0 2.4-.6 2.7-1.5l-1.1-.6z" fill="#000" />
+    </svg>
+);
+
+const ToolIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg viewBox="0 0 24 24" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <path d="M2 21l21-9L11 2 2 21z" fill="#9CA3AF" />
+    </svg>
+);
+
 // --- RESUME DATA ---
 const resumeData: ResumeData = {
     name: "Nico Kuehn",
     title: "Python Backend Programmer / Musician / Producer",
     summary: "20 years of experience in Musicproduction in the Box + Outgear Musicproduction",
-    profilePictureUrl: "https://i.ibb.co/mCb2N9W/profile-pic.png",
+    // use local image shipped in the repo so GitHub Pages can load it reliably
+    profilePictureUrl: "/unnamed.jpg",
     contact: { email: "nico.code.evo@gmail.com", phone: "+4915237250142", location: "Aue-Bad Schlema, DE", github: "github.com/nicokuehn-dci", githubLink: "https://github.com/nicokuehn-dci?tab=repositories" },
     education: [{ degree: "Python Backend Programmer", institution: "DCI - Digital Career Institute", date: "03/2025 - 03/2026", location: "Berlin", courses: ["Python Backend Programming"], description: "Accomplishing a one-year-full-time training including Python Basics, Databases, Django Framework, APIs & Cloud Services" }],
     workExperience: [
@@ -163,27 +216,38 @@ const resumeData: ResumeData = {
 };
 
 const skillsData: SkillsData = {
-  technical: [
-    { name: 'Python', proficiency: 'Advanced', experience: 1 },
-    { name: 'Django', proficiency: 'Intermediate', experience: 0.5 },
-    { name: 'Databases (Postgres, DBeaver)', proficiency: 'Intermediate', experience: 1 },
-    { name: 'REST APIs', proficiency: 'Advanced', experience: 1 },
-    { name: 'JavaScript', proficiency: 'Intermediate', experience: 1 },
-    { name: 'React', proficiency: 'Beginner', experience: 0.5 },
-    { name: 'CI/CD', proficiency: 'Intermediate', experience: 1 },
-  ],
-  soft: [
-    { name: 'Problem Solving', proficiency: 'Advanced', experience: 10 },
-    { name: 'Communication', proficiency: 'Expert', experience: 10 },
-    { name: 'Teamwork', proficiency: 'Expert', experience: 10 },
-    { name: 'Adaptability', proficiency: 'Advanced', experience: 10 },
-  ],
-  tools: [
-    { name: 'Git & GitHub', proficiency: 'Advanced', experience: 1 },
-    { name: 'Docker', proficiency: 'Beginner', experience: 0.5 },
-    { name: 'Pytest', proficiency: 'Intermediate', experience: 1 },
-    { name: 'AI Poweruser (AI Agents)', proficiency: 'Expert', experience: 2 },
-  ]
+    technical: [
+        { name: 'Python', proficiency: 'Advanced', experience: 1 },
+        { name: 'Django', proficiency: 'Intermediate', experience: 0.5 },
+        { name: 'Databases (Postgres, DBeaver)', proficiency: 'Intermediate', experience: 1 },
+        { name: 'REST APIs', proficiency: 'Advanced', experience: 1 },
+        { name: 'JavaScript', proficiency: 'Intermediate', experience: 1 },
+        { name: 'React', proficiency: 'Beginner', experience: 0.5 },
+    ],
+        soft: [
+            { name: 'Problem Solving', proficiency: 'Advanced', experience: 10 },
+            { name: 'Communication', proficiency: 'Expert', experience: 10 },
+            { name: 'Teamwork', proficiency: 'Expert', experience: 10 },
+            { name: 'Adaptability', proficiency: 'Advanced', experience: 10 },
+        ],
+        tools: [
+            { name: 'Git & GitHub', proficiency: 'Advanced', experience: 1 },
+            { name: 'Docker', proficiency: 'Beginner', experience: 0.5 },
+            { name: 'Pytest', proficiency: 'Intermediate', experience: 1 },
+            { name: 'AI Poweruser (AI Agents)', proficiency: 'Expert', experience: 2 },
+    ]
+};
+
+// Taglines per skill (used in compact cards)
+const skillTaglines: Record<string, string> = {
+    'Problem Solving': 'Resolve complex issues, debugging, root-cause analysis and system design.',
+    'Communication': 'Clear technical writing and stakeholder communication across teams.',
+    'Teamwork': 'Collaborative development, code reviews, and mentoring teammates.',
+    'Adaptability': 'Quickly learn new tools, frameworks and adjust to shifting priorities.',
+    'Git & GitHub': 'Branching strategies, PR reviews, and CI integration.',
+    'Docker': 'Containerizing apps for consistent dev and deployment environments.',
+    'Pytest': 'Unit and integration testing with fixtures and parametric tests.',
+    'AI Poweruser (AI Agents)': 'Building and orchestrating AI agents to automate workflows.',
 };
 
 // --- UI HELPER COMPONENTS ---
@@ -289,53 +353,151 @@ const proficiencyStyles: { [key in SkillDetail['proficiency']]: { width: string;
     Expert: { width: '100%', color: 'bg-green-500' },
 };
 
-const SkillDetailItem: React.FC<{ skill: SkillDetail }> = ({ skill }) => {
-    const { width, color } = proficiencyStyles[skill.proficiency];
+const getSkillEmoji = (name: string) => {
+    const key = name.toLowerCase();
+    const cls = 'w-6 h-6';
+    if (key.includes('python')) return <PythonIcon className={cls} />;
+    if (key.includes('django')) return <DjangoIcon className={cls} />;
+    if (key.includes('react')) return <ReactLogoIcon className={cls} />;
+    if (key.includes('docker')) return <DockerIcon className={cls} />;
+    if (key.includes('git')) return <GitIconSmall className={cls} />;
+    if (key.includes('javascript')) return <JsIcon className={cls} />;
+    return <ToolIcon className={cls} />;
+}
+
+const SkillDetailItem: React.FC<{ skill: SkillDetail; selected?: boolean }> = ({ skill, selected }) => {
+    const { width } = proficiencyStyles[skill.proficiency];
+    const fillClass = skill.proficiency === 'Expert' ? 'gradient-green' : skill.proficiency === 'Advanced' ? 'gradient-blue' : skill.proficiency === 'Intermediate' ? 'gradient-yellow' : 'gradient-red';
+    const ref = useRef<HTMLDivElement | null>(null);
+    const innerRef = useRef<HTMLDivElement | null>(null);
+
+    // handle simple mouse tilt effect
+    useEffect(() => {
+        const el = ref.current;
+        const inner = innerRef.current;
+        if (!el || !inner) return;
+        let frame: number | null = null;
+        const onMove = (e: MouseEvent) => {
+            const rect = el.getBoundingClientRect();
+            const x = e.clientX - rect.left; // x position within element
+            const y = e.clientY - rect.top;
+            const px = (x / rect.width) - 0.5;
+            const py = (y / rect.height) - 0.5;
+            const rotY = px * 6; // degrees
+            const rotX = -py * 6;
+            if (frame) cancelAnimationFrame(frame);
+            frame = requestAnimationFrame(() => {
+                if (inner) inner.style.transform = `translateZ(20px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+            });
+        };
+        const onLeave = () => {
+            if (frame) cancelAnimationFrame(frame);
+            if (inner) inner.style.transform = `translateZ(0) rotateX(0) rotateY(0)`;
+        };
+        el.addEventListener('mousemove', onMove);
+        el.addEventListener('mouseleave', onLeave);
+        return () => {
+            el.removeEventListener('mousemove', onMove);
+            el.removeEventListener('mouseleave', onLeave);
+            if (frame) cancelAnimationFrame(frame);
+        };
+    }, []);
+
     return (
-        <div className="bg-gray-50 dark:bg-gray-800/40 p-4 rounded-lg border border-gray-200 dark:border-gray-700/50 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300">
-            <div className="flex justify-between items-center mb-2">
-                <h4 className="font-bold text-lg text-gray-800 dark:text-gray-100">{skill.name}</h4>
-                <span className="text-sm font-medium text-gray-500 dark:text-gray-400">{skill.experience} {skill.experience === 1 ? 'year' : 'years'}</span>
-            </div>
-            <div>
-                 <div className="flex items-center mb-1">
-                    <span className="text-xs font-semibold text-gray-600 dark:text-gray-300">{skill.proficiency}</span>
+        <div ref={ref} className={`skill-card skill-card--interactive ${selected ? 'selected' : ''} ${typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : ''}`}>
+            <div ref={innerRef} className="skill-inner">
+                <div className="flex justify-between items-center mb-3">
+                    <div className="flex items-center gap-3">
+                        <div className="skill-icon" aria-hidden>{getSkillEmoji(skill.name)}</div>
+                        <h4 className="skill-title">{skill.name}</h4>
+                    </div>
+                    <div className="text-right">
+                        <div className={`skill-badge ${skill.proficiency === 'Expert' ? 'bg-green-100 text-green-800' : skill.proficiency === 'Advanced' ? 'bg-blue-100 text-blue-800' : skill.proficiency === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>{skill.proficiency}</div>
+                        <div className="skill-meta">{skill.experience} {skill.experience === 1 ? 'year' : 'years'}</div>
+                    </div>
                 </div>
-                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                    <div className={`${color} h-2.5 rounded-full transition-all duration-500`} style={{ width }}></div>
+                <p className="skill-tagline mb-2">{skillTaglines[skill.name] ?? 'A concise one-line highlight about this skill — key frameworks, usage or context.'}</p>
+                <div className="skill-progress">
+                    <div className={`fill ${fillClass}`} style={{ width }}></div>
                 </div>
             </div>
         </div>
     );
 };
 
+// Interactive circular disc component that displays a ring for proficiency
+const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: string) => void; selected?: boolean }> = ({ skill, size = 145, onSelect, selected }) => {
+    const stroke = 16; // increased stroke for stronger 3D ring
+    const radius = (size / 2) - stroke; // account for stroke width
+    const circumference = 2 * Math.PI * radius;
+    const pct = proficiencyStyles[skill.proficiency] ? parseInt(proficiencyStyles[skill.proficiency].width) : 50;
+    const offset = circumference * (1 - pct / 100);
+    const color = skill.proficiency === 'Expert' ? '#34d399' : skill.proficiency === 'Advanced' ? '#60a5fa' : skill.proficiency === 'Intermediate' ? '#fbbf24' : '#fb7185';
+    const [showTip, setShowTip] = useState(false);
+    return (
+        <div className={`skill-disc ${selected ? 'highlight' : ''}`} onMouseEnter={() => setShowTip(true)} onMouseLeave={() => setShowTip(false)} onClick={() => onSelect(skill.name)} title={skill.name}>
+            <svg viewBox={`0 0 ${size} ${size}`}>
+                <defs>
+                    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor={color} stopOpacity="1" />
+                        <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.92" />
+                    </linearGradient>
+                    <radialGradient id="diskGloss" cx="30%" cy="25%" r="60%">
+                        <stop offset="0%" stopColor="#fff" stopOpacity="0.9" />
+                        <stop offset="60%" stopColor="#fff" stopOpacity="0.18" />
+                        <stop offset="100%" stopColor="#fff" stopOpacity="0" />
+                    </radialGradient>
+                </defs>
+                <circle className="ring-bg" cx={size/2} cy={size/2} r={radius} />
+                <circle className="ring" cx={size/2} cy={size/2} r={radius} stroke={`url(#ringGrad)`} strokeDasharray={`${circumference} ${circumference}`} strokeDashoffset={offset} style={{ transition: 'stroke-dashoffset .9s cubic-bezier(.2,.9,.2,1)' }} />
+                <circle className="gloss" cx={size/2.5} cy={size/3.2} r={radius * 0.55} />
+            </svg>
+            <div className="label"><span>{skill.name}</span><span className="sub">{skill.proficiency}</span></div>
+            <div className="tooltip" style={{ opacity: showTip ? 1 : 0 }}>{skill.name} — {skill.experience} {skill.experience === 1 ? 'year' : 'years'}</div>
+        </div>
+    )
+}
 
-const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => (
-    <div className="p-8 md:p-12 bg-white dark:bg-gray-800 transition-colors duration-500">
-        <h1 className="font-handwriting text-5xl md:text-6xl font-bold text-gray-800 dark:text-gray-200 mb-12 text-center">Skills Deep Dive</h1>
 
-        <section className="mb-12">
-            <h2 className="inline-block text-3xl font-handwriting font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Technical Skills</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {data.technical.map((skill, index) => <SkillDetailItem key={index} skill={skill} />)}
+const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
+    const [selected, setSelected] = useState<string | null>(null);
+    return (
+        <div className="skills-deep-container p-8 md:p-12 bg-white dark:bg-gray-800 transition-colors duration-500">
+            <div className="flex items-center justify-between mb-6">
+                <h1 className="font-handwriting text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200 text-left">Skills Deep Dive</h1>
+                <div className="text-sm text-gray-500">Click a disc to highlight</div>
             </div>
-        </section>
 
-        <section className="mb-12">
-            <h2 className="inline-block text-3xl font-handwriting font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Soft Skills</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {data.soft.map((skill, index) => <SkillDetailItem key={index} skill={skill} />)}
+            {/* Interactive discs row (technical only) */}
+            <div className="skill-disc-row" role="list">
+                {data.technical.slice(0,6).map((skill, i) => (
+                    <SkillDisc key={'t-'+i} skill={skill} onSelect={(n) => setSelected(n)} selected={selected === skill.name} />
+                ))}
             </div>
-        </section>
 
-        <section>
-            <h2 className="inline-block text-3xl font-handwriting font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Tools</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {data.tools.map((skill, index) => <SkillDetailItem key={index} skill={skill} />)}
-            </div>
-        </section>
-    </div>
-);
+            <section className="mb-12">
+                <h2 className="inline-block text-3xl font-handwriting font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Technical Skills</h2>
+                <div className="skill-grid grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    {data.technical.map((skill, index) => <SkillDetailItem key={index} skill={skill} selected={selected === skill.name} />)}
+                </div>
+            </section>
+
+            <section className="mb-12">
+                <h2 className="inline-block text-3xl font-handwriting font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Soft Skills</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {data.soft.map((skill, index) => <SkillDetailItem key={index} skill={skill} selected={selected === skill.name} />)}
+                </div>
+            </section>
+
+            <section>
+                <h2 className="inline-block text-3xl font-handwriting font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Tools</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {data.tools.map((skill, index) => <SkillDetailItem key={index} skill={skill} selected={selected === skill.name} />)}
+                </div>
+            </section>
+        </div>
+    )
+}
 
 interface ProjectShowcasePageProps {
   projects: ShowcaseProject[];
@@ -347,78 +509,89 @@ interface ProjectShowcasePageProps {
 const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onProjectChange, onAddProject, onRemoveProject }) => {
     return (
         <div className="p-8 md:p-12 bg-white dark:bg-gray-800 transition-colors duration-500 min-h-[80vh]">
-            <h1 className="font-handwriting text-5xl md:text-6xl font-bold text-gray-800 dark:text-gray-200 mb-12 text-center">Project Showcase</h1>
-            <div className="space-y-8 max-w-4xl mx-auto">
-                {projects.map((project, index) => (
-                    <div key={index} className="bg-gray-50 dark:bg-gray-800/40 p-6 rounded-lg border border-gray-200 dark:border-gray-700/50 shadow-sm relative group">
-                        <button 
-                            onClick={() => onRemoveProject(index)} 
-                            className="absolute top-3 right-3 p-1.5 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-red-100 dark:hover:bg-red-900/50 hover:text-red-600 dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all duration-300"
-                            aria-label="Remove project"
-                        >
-                            <TrashIcon className="w-5 h-5" />
-                        </button>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                            <div className="md:col-span-2">
-                                <label htmlFor={`project-name-${index}`} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project Name</label>
-                                <input
-                                    type="text"
-                                    id={`project-name-${index}`}
-                                    placeholder="e.g., My Awesome App"
-                                    value={project.name}
-                                    onChange={(e) => onProjectChange(index, 'name', e.target.value)}
-                                    className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition"
-                                />
-                            </div>
-                            <div className="md:col-span-2">
-                                <label htmlFor={`project-desc-${index}`} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
-                                <textarea
-                                    id={`project-desc-${index}`}
-                                    rows={4}
-                                    placeholder="A brief description of this cool project, what technologies it uses, and what problems it solves."
-                                    value={project.description}
-                                    onChange={(e) => onProjectChange(index, 'description', e.target.value)}
-                                    className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor={`project-date-${index}`} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date</label>
-                                <input
-                                    type="text"
-                                    id={`project-date-${index}`}
-                                    placeholder="e.g., 2024"
-                                    value={project.date}
-                                    onChange={(e) => onProjectChange(index, 'date', e.target.value)}
-                                    className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition"
-                                />
-                            </div>
-                            <div>
-                                <label htmlFor={`project-link-${index}`} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Link</label>
-                                <div className="relative">
-                                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                        <LinkIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+            <div className="max-w-6xl mx-auto">
+                <div className="flex items-center justify-between mb-8">
+                    <h1 className="font-handwriting text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200">Project Showcase</h1>
+                    <p className="text-sm text-gray-500">Highlight your top projects with a short description and link.</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {projects.map((project, index) => (
+                        <article key={index} className="group relative bg-gray-50 dark:bg-gray-800/40 p-4 md:p-6 rounded-xl border border-gray-200 dark:border-gray-700/50 shadow-sm hover:shadow-lg transition-shadow duration-300">
+                            <div className="flex items-start gap-4">
+                                <div className="flex-shrink-0 w-16 h-16 rounded-lg bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-700 flex items-center justify-center overflow-hidden">
+                                    {/* small link preview or icon */}
+                                    {project.link ? (
+                                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="w-full h-full flex items-center justify-center text-gray-600 hover:text-gray-900 dark:text-gray-300">
+                                            <LinkIcon className="w-6 h-6" />
+                                        </a>
+                                    ) : (
+                                        <div className="text-gray-400"><GitIconSmall className="w-6 h-6" /></div>
+                                    )}
+                                </div>
+
+                                <div className="flex-1">
+                                    <div className="flex items-start justify-between">
+                                        <div>
+                                            <input
+                                                type="text"
+                                                value={project.name}
+                                                onChange={(e) => onProjectChange(index, 'name', e.target.value)}
+                                                placeholder="Project name"
+                                                className="text-lg font-semibold bg-transparent border-0 p-0 text-gray-800 dark:text-gray-100 w-full focus:outline-none"
+                                            />
+                                            <div className="flex items-center gap-3 mt-1">
+                                                <span className="text-sm text-gray-500 dark:text-gray-400">{project.date || '—'}</span>
+                                                {project.link && (
+                                                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
+                                                        <LinkIcon className="w-4 h-4" />
+                                                        <span className="truncate max-w-[160px]">{project.link.replace(/https?:\/\//, '')}</span>
+                                                    </a>
+                                                )}
+                                            </div>
+                                        </div>
+
+                                        <div className="ml-4 flex-shrink-0">
+                                            <button onClick={() => onRemoveProject(index)} title="Remove project" className="p-2 rounded-md text-gray-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-opacity opacity-0 group-hover:opacity-100">
+                                                <TrashIcon className="w-5 h-5" />
+                                            </button>
+                                        </div>
                                     </div>
-                                    <input
-                                        type="url"
-                                        id={`project-link-${index}`}
-                                        placeholder="https://github.com/user/repo"
-                                        value={project.link}
-                                        onChange={(e) => onProjectChange(index, 'link', e.target.value)}
-                                        className="w-full pl-10 px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition"
+
+                                    <textarea
+                                        rows={3}
+                                        value={project.description}
+                                        onChange={(e) => onProjectChange(index, 'description', e.target.value)}
+                                        placeholder="Short description (technologies, what it solves)"
+                                        className="mt-3 w-full bg-transparent border border-gray-100 dark:border-gray-700 rounded-md px-3 py-2 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 resize-none"
                                     />
+                                    <div className="mt-3 flex items-center gap-3">
+                                        <input
+                                            type="text"
+                                            value={project.date}
+                                            onChange={(e) => onProjectChange(index, 'date', e.target.value)}
+                                            placeholder="Date"
+                                            className="text-sm bg-transparent border border-gray-100 dark:border-gray-700 rounded-md px-2 py-1 w-28 focus:outline-none"
+                                        />
+                                        <input
+                                            type="url"
+                                            value={project.link}
+                                            onChange={(e) => onProjectChange(index, 'link', e.target.value)}
+                                            placeholder="https://..."
+                                            className="text-sm bg-transparent border border-gray-100 dark:border-gray-700 rounded-md px-2 py-1 flex-1 focus:outline-none"
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                ))}
-            </div>
-            <div className="text-center mt-8">
-                <button
-                    onClick={onAddProject}
-                    className="px-6 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-transform transform hover:scale-105"
-                >
-                    Add Another Project
-                </button>
+                        </article>
+                    ))}
+                </div>
+
+                <div className="mt-8 text-center">
+                    <button onClick={onAddProject} className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-gradient-to-r from-gray-800 to-gray-700 text-white hover:brightness-105 transition">
+                        Add another project
+                    </button>
+                </div>
             </div>
         </div>
     );
@@ -504,10 +677,141 @@ const App: React.FC = () => {
     
     return (
         <>
-            <style>{`
-              @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-              .animate-fadeIn { animation: fadeIn 0.6s ease-in-out forwards; }
-            `}</style>
+                                    <style>{`
+                                        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+                                        .animate-fadeIn { animation: fadeIn 0.6s ease-in-out forwards; }
+
+                                        /* Skills deep-dive modern card styles with enhanced white glow */
+                                        .skills-deep-container {
+                                            position: relative;
+                                            padding: 3rem 2rem;
+                                            border-radius: 18px;
+                                            overflow: visible;
+                                            background: radial-gradient(800px 300px at 10% 20%, rgba(99,102,241,0.06), transparent 10%), radial-gradient(600px 200px at 90% 80%, rgba(236,72,153,0.04), transparent 12%);
+                                        }
+
+                                        /* large soft white halo behind the grid */
+                                        .skills-deep-container::before {
+                                            content: '';
+                                            position: absolute;
+                                            left: 50%;
+                                            top: 20%;
+                                            transform: translateX(-50%);
+                                            width: 1000px;
+                                            height: 420px;
+                                            border-radius: 50%;
+                                            background: radial-gradient(closest-side, rgba(255,255,255,0.85), rgba(255,255,255,0.12) 45%, transparent 60%);
+                                            filter: blur(36px);
+                                            z-index: 0;
+                                            pointer-events: none;
+                                        }
+
+                                        @media (prefers-color-scheme: dark) {
+                                            .skills-deep-container::before {
+                                                background: radial-gradient(closest-side, rgba(255,255,255,0.06), rgba(255,255,255,0.02) 45%, transparent 60%);
+                                            }
+                                        }
+
+                                        .skill-grid { position: relative; z-index: 1; }
+
+                                                        .skill-card {
+                                                            position: relative;
+                                                            border-radius: 10px;
+                                                            padding: 0.72rem; /* compact */
+                                                            overflow: visible;
+                                                            transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;
+                                                            transform-style: preserve-3d;
+                                                            background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.80));
+                                                            box-shadow: 0 10px 30px rgba(2,6,23,0.06), 0 4px 10px rgba(2,6,23,0.04);
+                                                            border: 1px solid rgba(255,255,255,0.5);
+                                                        }
+
+                                        .skill-card.dark {
+                                            background: linear-gradient(180deg, rgba(17,24,39,0.6), rgba(17,24,39,0.45));
+                                            border: 1px solid rgba(255,255,255,0.04);
+                                            box-shadow: 0 20px 60px rgba(2,6,23,0.55), 0 8px 18px rgba(2,6,23,0.25);
+                                        }
+
+                                        /* white halo + colored glow behind each card */
+                                                        .skill-card::before {
+                                                            content: '';
+                                                            position: absolute;
+                                                            inset: -8px;
+                                                            z-index: -2;
+                                                            border-radius: 14px;
+                                                            background: radial-gradient(closest-side, rgba(255,255,255,0.9), rgba(255,255,255,0.5) 24%, rgba(255,255,255,0.08) 48%, transparent 68%);
+                                                            filter: blur(22px);
+                                                            opacity: 0.9;
+                                                            transition: opacity .28s, transform .28s;
+                                                            transform: translateZ(-16px) scale(0.99);
+                                                            pointer-events: none;
+                                                        }
+
+                                        .skill-card::after {
+                                            content: '';
+                                            position: absolute;
+                                            inset: -6px;
+                                            z-index: -1;
+                                            border-radius: 16px;
+                                            background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(236,72,153,0.08));
+                                            filter: blur(14px);
+                                            opacity: 0.95;
+                                            transition: opacity .35s, transform .35s;
+                                        }
+
+                                        .skill-card:hover { transform: translateY(-8px) rotateX(3deg); }
+                                        .skill-card:hover::after { opacity: 1; filter: blur(18px); transform: translateY(-2px) scale(1.02); }
+                                        .skill-card:hover::before { transform: translateZ(-18px) scale(1.02); opacity: 1; }
+
+                                          .skill-title { font-weight: 700; font-size: 1rem; color: #0f172a; display:flex; align-items:center; gap:0.5rem }
+                                          .skill-meta { font-size: 0.78rem; color: #6b7280; }
+
+                                          /* icon and badge */
+                                          .skill-icon { width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; border-radius:10px; background:rgba(255,255,255,0.92); box-shadow: 0 8px 24px rgba(12,14,20,0.08); }
+                                          .skill-badge { padding: .18rem .5rem; border-radius:9999px; font-size:.7rem; font-weight:700; display:inline-block }
+
+                                          /* interactive tilt helpers */
+                                          .skill-card--interactive { will-change: transform; transform-style:preserve-3d; }
+                                          .skill-card--interactive .skill-inner { transform: translateZ(0); transition: transform .18s cubic-bezier(.2,.9,.2,1); }
+                                          /* tagline hidden to save space; revealed on hover */
+                                          .skill-tagline { color: #6b7280; font-size: .82rem; display:block; height:1.1rem; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; opacity:0.95 }
+                                          .skill-card:hover .skill-tagline { white-space:normal; height:auto; display:block }
+
+                                          /* mount animation */
+                                          .skill-card { opacity:0; transform: translateY(8px); animation: card-in .45s ease forwards; }
+                                          @keyframes card-in { to { opacity:1; transform: translateY(0); } }
+
+                                        .skill-progress { height: 10px; background: rgba(15,23,42,0.06); border-radius: 9999px; overflow: hidden; margin-top: .5rem; }
+                                        .skill-progress .fill { height: 100%; border-radius: 9999px; transition: width .6s cubic-bezier(.2,.9,.2,1); box-shadow: inset 0 -4px 8px rgba(0,0,0,0.12); }
+
+                                        .fill.gradient-blue { background: linear-gradient(90deg,#60a5fa,#7c3aed); }
+                                        .fill.gradient-green { background: linear-gradient(90deg,#34d399,#06b6d4); }
+                                        .fill.gradient-yellow { background: linear-gradient(90deg,#fbbf24,#f97316); }
+                                        .fill.gradient-red { background: linear-gradient(90deg,#fb7185,#ef4444); }
+
+                                        @media (prefers-color-scheme: dark) {
+                                            .skill-title { color: #e6eef8; }
+                                            .skill-meta { color: #9ca3af; }
+                                            .skill-card::after { background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(236,72,153,0.05)); }
+                                            .skill-card::before { background: radial-gradient(closest-side, rgba(255,255,255,0.06), rgba(255,255,255,0.02) 30%, transparent 55%); }
+                                        }
+
+                                                        /* skill disc chart */
+                                                        .skill-disc-row { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:1.25rem; }
+                                                                                                                    /* discs are ~15% larger and more 3D */
+                                                                                                                    .skill-disc { width:120px; height:120px; display:inline-block; position:relative; cursor:pointer; border-radius:999px; perspective:800px; }
+                                                          .skill-disc svg { width:100%; height:100%; transform:rotate(-90deg); display:block; }
+                                                          .skill-disc .label { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:0.78rem; font-weight:700; color:#0f172a; text-align:center }
+                                                          .skill-disc .sub { display:block; font-size:0.65rem; font-weight:600; color:#6b7280 }
+                                                        .skill-disc .tooltip { position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(15,23,42,0.95); color:#fff; padding:6px 8px; border-radius:6px; font-size:0.78rem; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s; z-index:30 }
+                                                        .skill-disc:hover .tooltip { opacity:1 }
+                                                                                                                    .skill-disc .ring-bg { stroke: rgba(15,23,42,0.06); stroke-width:16; fill:none }
+                                                                                                                    .skill-disc .ring { stroke-linecap:round; stroke-width:16; fill:none; filter: drop-shadow(0 10px 28px rgba(0,0,0,0.22)); transform-origin:50% 50%; }
+                                                                                                                    .skill-disc .gloss { fill: url(#diskGloss); opacity: 0.22; pointer-events: none; mix-blend-mode: overlay }
+                                                                                                                    .skill-disc.highlight .ring { filter: drop-shadow(0 14px 42px rgba(99,102,241,0.32)); transform:scale(1.03); }
+
+                                                        .skill-card.selected { box-shadow: 0 30px 80px rgba(99,102,241,0.18), 0 10px 24px rgba(2,6,23,0.15); transform: translateY(-10px) scale(1.02); }
+                                    `}</style>
             <div className="bg-gray-100 dark:bg-gray-900 min-h-screen p-4 sm:p-8 md:p-12 transition-colors duration-500 font-sans">
                 <ThemeToggle />
                 
