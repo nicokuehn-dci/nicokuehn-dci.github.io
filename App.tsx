@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
+import Dashboard3D from './dashboard3d/App';
 
 declare const html2pdf: any;
 
@@ -488,6 +489,9 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                 <h1 className="font-handwriting text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200 text-left">Skills Deep Dive</h1>
                 <div className="text-sm text-gray-500">Click a disc to highlight</div>
             </div>
+                <div className="mb-4">
+                    <button onClick={() => onOpenDashboard && onOpenDashboard()} className="px-3 py-1 rounded-md bg-violet-600 text-white text-sm">Open 3D Dashboard</button>
+                </div>
 
             {/* Interactive discs row (technical only) */}
             <div className="skill-disc-row" role="list">
@@ -529,9 +533,10 @@ interface ProjectShowcasePageProps {
     initialUsername?: string; // optional username or URL to auto-load
     autoLoad?: boolean; // whether to fetch on mount
     onNotify?: (msg: string) => void; // simple notification callback
+    onOpenDashboard?: () => void; // request to open the 3D dashboard page
 }
 
-const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onProjectChange, onAddProject, onRemoveProject, onImportRepo, initialUsername, autoLoad, onNotify }) => {
+const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onProjectChange, onAddProject, onRemoveProject, onImportRepo, initialUsername, autoLoad, onNotify, onOpenDashboard }) => {
     // local state for GitHub overview
     const [username, setUsername] = useState('');
     const [repos, setRepos] = useState<any[]>([]);
@@ -888,7 +893,9 @@ const App: React.FC = () => {
             initialUsername={resumeData.contact.githubLink}
             autoLoad={true}
             onNotify={(m:string) => showToast(m)}
+            onOpenDashboard={() => setCurrentPage(2)}
         />,
+        <Dashboard3D key={2} />,
         <SkillsDeepDivePage key={2} data={skillsData} />,
         <PlaceholderPage key={3} title="My Creative Work">A space to highlight your music production and other creative endeavors. Embed audio players, videos, or link to your portfolio on other platforms.</PlaceholderPage>,
         <PlaceholderPage key={4} title="About & Contact">Tell your story. What are you passionate about? What are your career goals? This is also a great place to add a contact form or links to your social media profiles.</PlaceholderPage>,
