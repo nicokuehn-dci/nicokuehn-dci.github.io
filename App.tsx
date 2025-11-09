@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 
 declare const html2pdf: any;
@@ -67,6 +68,13 @@ interface SkillsData {
   tools: SkillDetail[];
 }
 
+interface ShowcaseProject {
+  name: string;
+  date: string;
+  description: string;
+  link: string;
+}
+
 
 // --- SVG ICONS ---
 const MailIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -124,14 +132,24 @@ const RightArrowIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
+const LinkIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244" />
+    </svg>
+);
+
+const TrashIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.134-2.033-2.134H8.033c-1.12 0-2.033.954-2.033 2.134v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+  </svg>
+);
+
 // --- RESUME DATA ---
 const resumeData: ResumeData = {
     name: "Nico Kuehn",
     title: "Python Backend Programmer / Musician / Producer",
     summary: "20 years of experience in Musicproduction in the Box + Outgear Musicproduction",
-    // Use the local profile image included in the repo so GitHub Pages can serve it reliably
-    // Place the image at the repo root as `unnamed.jpg` (already provided in workspace)
-    profilePictureUrl: "/unnamed.jpg",
+    profilePictureUrl: "https://i.ibb.co/mCb2N9W/profile-pic.png",
     contact: { email: "nico.code.evo@gmail.com", phone: "+4915237250142", location: "Aue-Bad Schlema, DE", github: "github.com/nicokuehn-dci", githubLink: "https://github.com/nicokuehn-dci?tab=repositories" },
     education: [{ degree: "Python Backend Programmer", institution: "DCI - Digital Career Institute", date: "03/2025 - 03/2026", location: "Berlin", courses: ["Python Backend Programming"], description: "Accomplishing a one-year-full-time training including Python Basics, Databases, Django Framework, APIs & Cloud Services" }],
     workExperience: [
@@ -319,10 +337,101 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => (
     </div>
 );
 
+interface ProjectShowcasePageProps {
+  projects: ShowcaseProject[];
+  onProjectChange: (index: number, field: keyof ShowcaseProject, value: string) => void;
+  onAddProject: () => void;
+  onRemoveProject: (index: number) => void;
+}
+
+const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onProjectChange, onAddProject, onRemoveProject }) => {
+    return (
+        <div className="p-8 md:p-12 bg-white dark:bg-gray-800 transition-colors duration-500 min-h-[80vh]">
+            <h1 className="font-handwriting text-5xl md:text-6xl font-bold text-gray-800 dark:text-gray-200 mb-12 text-center">Project Showcase</h1>
+            <div className="space-y-8 max-w-4xl mx-auto">
+                {projects.map((project, index) => (
+                    <div key={index} className="bg-gray-50 dark:bg-gray-800/40 p-6 rounded-lg border border-gray-200 dark:border-gray-700/50 shadow-sm relative group">
+                        <button 
+                            onClick={() => onRemoveProject(index)} 
+                            className="absolute top-3 right-3 p-1.5 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400 hover:bg-red-100 dark:hover:bg-red-900/50 hover:text-red-600 dark:hover:text-red-400 opacity-0 group-hover:opacity-100 transition-all duration-300"
+                            aria-label="Remove project"
+                        >
+                            <TrashIcon className="w-5 h-5" />
+                        </button>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                            <div className="md:col-span-2">
+                                <label htmlFor={`project-name-${index}`} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Project Name</label>
+                                <input
+                                    type="text"
+                                    id={`project-name-${index}`}
+                                    placeholder="e.g., My Awesome App"
+                                    value={project.name}
+                                    onChange={(e) => onProjectChange(index, 'name', e.target.value)}
+                                    className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition"
+                                />
+                            </div>
+                            <div className="md:col-span-2">
+                                <label htmlFor={`project-desc-${index}`} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                                <textarea
+                                    id={`project-desc-${index}`}
+                                    rows={4}
+                                    placeholder="A brief description of this cool project, what technologies it uses, and what problems it solves."
+                                    value={project.description}
+                                    onChange={(e) => onProjectChange(index, 'description', e.target.value)}
+                                    className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor={`project-date-${index}`} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Date</label>
+                                <input
+                                    type="text"
+                                    id={`project-date-${index}`}
+                                    placeholder="e.g., 2024"
+                                    value={project.date}
+                                    onChange={(e) => onProjectChange(index, 'date', e.target.value)}
+                                    className="w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition"
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor={`project-link-${index}`} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Link</label>
+                                <div className="relative">
+                                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                                        <LinkIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                                    </div>
+                                    <input
+                                        type="url"
+                                        id={`project-link-${index}`}
+                                        placeholder="https://github.com/user/repo"
+                                        value={project.link}
+                                        onChange={(e) => onProjectChange(index, 'link', e.target.value)}
+                                        className="w-full pl-10 px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 transition"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+            <div className="text-center mt-8">
+                <button
+                    onClick={onAddProject}
+                    className="px-6 py-2 border border-transparent text-base font-medium rounded-md text-white bg-gray-700 hover:bg-gray-800 dark:bg-gray-600 dark:hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 transition-transform transform hover:scale-105"
+                >
+                    Add Another Project
+                </button>
+            </div>
+        </div>
+    );
+};
+
 // --- MAIN APP COMPONENT ---
 const App: React.FC = () => {
     const [theme, setTheme] = useState<'light' | 'dark'>('light');
     const [currentPage, setCurrentPage] = useState(0);
+    const [showcaseProjects, setShowcaseProjects] = useState<ShowcaseProject[]>([
+        { name: 'Digital Resume', date: '2024', description: 'A dynamic, multi-page digital resume application built with React and Tailwind CSS, featuring light/dark modes and PDF export functionality.', link: 'https://github.com/nicokuehn-dci/digital-resume' }
+    ]);
+
 
     useEffect(() => {
         const storedTheme = localStorage.getItem('theme');
@@ -353,14 +462,35 @@ const App: React.FC = () => {
             html2pdf().from(element).set(opt).save();
         }
     };
+    
+    const handleShowcaseProjectChange = (index: number, field: keyof ShowcaseProject, value: string) => {
+        const newProjects = [...showcaseProjects];
+        newProjects[index][field] = value;
+        setShowcaseProjects(newProjects);
+    };
+
+    const addShowcaseProject = () => {
+        setShowcaseProjects([...showcaseProjects, { name: '', date: '', description: '', link: '' }]);
+    };
+    
+    const removeShowcaseProject = (index: number) => {
+        const newProjects = showcaseProjects.filter((_, i) => i !== index);
+        setShowcaseProjects(newProjects);
+    };
+
 
     const pages = [
         <ResumePage key={0} data={resumeData} onDownloadPdf={handleDownloadPdf} />,
-        <PlaceholderPage key={1} title="Project Showcase">This is where you can showcase your best projects. Add images, descriptions, and links to live demos or source code.</PlaceholderPage>,
+        <ProjectShowcasePage 
+            key={1} 
+            projects={showcaseProjects}
+            onProjectChange={handleShowcaseProjectChange}
+            onAddProject={addShowcaseProject}
+            onRemoveProject={removeShowcaseProject}
+        />,
         <SkillsDeepDivePage key={2} data={skillsData} />,
         <PlaceholderPage key={3} title="My Creative Work">A space to highlight your music production and other creative endeavors. Embed audio players, videos, or link to your portfolio on other platforms.</PlaceholderPage>,
         <PlaceholderPage key={4} title="About & Contact">Tell your story. What are you passionate about? What are your career goals? This is also a great place to add a contact form or links to your social media profiles.</PlaceholderPage>,
-        <PlaceholderPage key={5} title="Project Showcase">This is where you can showcase your best projects. Add images, descriptions, and links to live demos or source code.</PlaceholderPage>
     ];
 
     const goToNextPage = () => setCurrentPage(prev => Math.min(prev + 1, pages.length - 1));
