@@ -22,6 +22,8 @@
       }
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <!-- Serving the prebuilt production bundle so this repository can be used as a static GitHub Pages site. -->
+  <!-- Note: removed the missing /index.css reference and replaced the dev module entry with the compiled bundle. -->
   <script type="importmap">
 {
   "imports": {
@@ -31,11 +33,10 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
 </head>
   <body class="antialiased">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <script type="module" src="/index.tsx"></script>
+  <script type="module" crossorigin src="/assets/index-zkASJUKt.js"></script>
   </body>
 </html>
