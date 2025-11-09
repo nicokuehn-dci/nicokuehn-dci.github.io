@@ -1,0 +1,5 @@
+{
+  "name": "Digital Resume",
+  "description": "A modern, visually appealing digital resume application built with React and Tailwind CSS, inspired by the Novoresume layout.",
+  "requestFramePermissions": []
+}
