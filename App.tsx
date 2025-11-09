@@ -426,34 +426,55 @@ const SkillDetailItem: React.FC<{ skill: SkillDetail; selected?: boolean }> = ({
 };
 
 // Interactive circular disc component that displays a ring for proficiency
-const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: string) => void; selected?: boolean }> = ({ skill, size = 145, onSelect, selected }) => {
-    const stroke = 16; // increased stroke for stronger 3D ring
+const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: string) => void; selected?: boolean }> = ({ skill, size = 160, onSelect, selected }) => {
+    const stroke = 18; // stronger ring
     const radius = (size / 2) - stroke; // account for stroke width
     const circumference = 2 * Math.PI * radius;
     const pct = proficiencyStyles[skill.proficiency] ? parseInt(proficiencyStyles[skill.proficiency].width) : 50;
     const offset = circumference * (1 - pct / 100);
     const color = skill.proficiency === 'Expert' ? '#34d399' : skill.proficiency === 'Advanced' ? '#60a5fa' : skill.proficiency === 'Intermediate' ? '#fbbf24' : '#fb7185';
     const [showTip, setShowTip] = useState(false);
+
+    const handleKey = (e: React.KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onSelect(skill.name);
+        }
+    };
+
     return (
-        <div className={`skill-disc ${selected ? 'highlight' : ''}`} onMouseEnter={() => setShowTip(true)} onMouseLeave={() => setShowTip(false)} onClick={() => onSelect(skill.name)} title={skill.name}>
+        <div
+            className={`skill-disc ${selected ? 'highlight' : ''}`}
+            onMouseEnter={() => setShowTip(true)}
+            onMouseLeave={() => setShowTip(false)}
+            onClick={() => onSelect(skill.name)}
+            title={skill.name}
+            role="button"
+            tabIndex={0}
+            aria-pressed={selected}
+            onKeyDown={handleKey}
+        >
             <svg viewBox={`0 0 ${size} ${size}`}>
                 <defs>
-                    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <linearGradient id={`ringGrad-${skill.name.replace(/\s+/g,'')}`} x1="0%" y1="0%" x2="100%" y2="0%">
                         <stop offset="0%" stopColor={color} stopOpacity="1" />
                         <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.92" />
                     </linearGradient>
-                    <radialGradient id="diskGloss" cx="30%" cy="25%" r="60%">
-                        <stop offset="0%" stopColor="#fff" stopOpacity="0.9" />
-                        <stop offset="60%" stopColor="#fff" stopOpacity="0.18" />
+                    <radialGradient id={`diskGloss-${skill.name.replace(/\s+/g,'')}`} cx="30%" cy="25%" r="60%">
+                        <stop offset="0%" stopColor="#fff" stopOpacity="0.95" />
+                        <stop offset="50%" stopColor="#fff" stopOpacity="0.14" />
                         <stop offset="100%" stopColor="#fff" stopOpacity="0" />
                     </radialGradient>
                 </defs>
-                <circle className="ring-bg" cx={size/2} cy={size/2} r={radius} />
-                <circle className="ring" cx={size/2} cy={size/2} r={radius} stroke={`url(#ringGrad)`} strokeDasharray={`${circumference} ${circumference}`} strokeDashoffset={offset} style={{ transition: 'stroke-dashoffset .9s cubic-bezier(.2,.9,.2,1)' }} />
-                <circle className="gloss" cx={size/2.5} cy={size/3.2} r={radius * 0.55} />
+                <g transform={`translate(0,0)`}> 
+                    <circle className="ring-bg" cx={size/2} cy={size/2} r={radius} />
+                    <circle className="ring" cx={size/2} cy={size/2} r={radius} stroke={`url(#ringGrad-${skill.name.replace(/\s+/g,'')})`} strokeDasharray={`${circumference} ${circumference}`} strokeDashoffset={offset} style={{ transition: 'stroke-dashoffset .9s cubic-bezier(.2,.9,.2,1), transform .35s' }} />
+                    <circle className="inner" cx={size/2} cy={size/2} r={radius * 0.6} />
+                    <circle className="gloss" cx={size/2.45} cy={size/3.35} r={radius * 0.45} />
+                </g>
             </svg>
             <div className="label"><span>{skill.name}</span><span className="sub">{skill.proficiency}</span></div>
-            <div className="tooltip" style={{ opacity: showTip ? 1 : 0 }}>{skill.name} — {skill.experience} {skill.experience === 1 ? 'year' : 'years'}</div>
+            <div className="tooltip" role="status" aria-hidden={!showTip} style={{ opacity: showTip ? 1 : 0 }}>{skill.name} — {skill.experience} {skill.experience === 1 ? 'year' : 'years'}</div>
         </div>
     )
 }
@@ -798,17 +819,21 @@ const App: React.FC = () => {
 
                                                         /* skill disc chart */
                                                         .skill-disc-row { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:1.25rem; }
-                                                                                                                    /* discs are ~15% larger and more 3D */
-                                                                                                                    .skill-disc { width:120px; height:120px; display:inline-block; position:relative; cursor:pointer; border-radius:999px; perspective:800px; }
-                                                          .skill-disc svg { width:100%; height:100%; transform:rotate(-90deg); display:block; }
-                                                          .skill-disc .label { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:0.78rem; font-weight:700; color:#0f172a; text-align:center }
-                                                          .skill-disc .sub { display:block; font-size:0.65rem; font-weight:600; color:#6b7280 }
-                                                        .skill-disc .tooltip { position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(15,23,42,0.95); color:#fff; padding:6px 8px; border-radius:6px; font-size:0.78rem; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s; z-index:30 }
-                                                        .skill-disc:hover .tooltip { opacity:1 }
-                                                                                                                    .skill-disc .ring-bg { stroke: rgba(15,23,42,0.06); stroke-width:16; fill:none }
-                                                                                                                    .skill-disc .ring { stroke-linecap:round; stroke-width:16; fill:none; filter: drop-shadow(0 10px 28px rgba(0,0,0,0.22)); transform-origin:50% 50%; }
-                                                                                                                    .skill-disc .gloss { fill: url(#diskGloss); opacity: 0.22; pointer-events: none; mix-blend-mode: overlay }
-                                                                                                                    .skill-disc.highlight .ring { filter: drop-shadow(0 14px 42px rgba(99,102,241,0.32)); transform:scale(1.03); }
+                                                                                                                                                                                /* discs are ~15% larger and more 3D */
+                                                                                                                                                                                .skill-disc { width:140px; height:140px; display:inline-block; position:relative; cursor:pointer; border-radius:999px; perspective:900px; margin:0.5rem; }
+                                                                                                                                                                                .skill-disc svg { width:100%; height:100%; transform:rotate(-90deg); display:block; transition: transform .35s cubic-bezier(.2,.9,.2,1); }
+                                                                                                                                                                                .skill-disc .label { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:0.86rem; font-weight:700; color:#0f172a; text-align:center; pointer-events:none }
+                                                                                                                                                                                .skill-disc .sub { display:block; font-size:0.68rem; font-weight:600; color:#6b7280 }
+                                                                                                                                                                            .skill-disc .tooltip { position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(15,23,42,0.95); color:#fff; padding:6px 8px; border-radius:6px; font-size:0.78rem; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s; z-index:30 }
+                                                                                                                                                                            .skill-disc:hover .tooltip, .skill-disc:focus .tooltip { opacity:1 }
+                                                                                                                                                                                .skill-disc .ring-bg { stroke: rgba(15,23,42,0.06); stroke-width:18; fill:none }
+                                                                                                                                                                                .skill-disc .ring { stroke-linecap:round; stroke-width:18; fill:none; filter: drop-shadow(0 12px 28px rgba(0,0,0,0.24)); transform-origin:50% 50%; transition: filter .28s, transform .28s }
+                                                                                                                                                                                .skill-disc .inner { fill: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92)); fill:#fff; opacity:0.96; filter: drop-shadow(0 6px 14px rgba(2,6,23,0.06)); }
+                                                                                                                                                                                .skill-disc .gloss { fill: url(#diskGloss); opacity: 0.22; pointer-events: none; mix-blend-mode: overlay }
+                                                                                                                                                                                .skill-disc.highlight { transform: translateZ(24px) scale(1.02); }
+                                                                                                                                                                                .skill-disc.highlight .ring { filter: drop-shadow(0 18px 54px rgba(99,102,241,0.36)); transform: scale(1.04); }
+                                                                                                                                                                                .skill-disc:focus { outline: none; box-shadow: 0 12px 36px rgba(99,102,241,0.12); transform: translateY(-6px) rotateX(4deg); }
+                                                                                                                                                                                .skill-disc:hover svg { transform: rotate(-90deg) translateZ(10px) rotateX(6deg); }
 
                                                         .skill-card.selected { box-shadow: 0 30px 80px rgba(99,102,241,0.18), 0 10px 24px rgba(2,6,23,0.15); transform: translateY(-10px) scale(1.02); }
                                     `}</style>
