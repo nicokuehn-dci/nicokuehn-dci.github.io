@@ -199,11 +199,11 @@ const ToolIcon: React.FC<{ className?: string }> = ({ className }) => (
 
 // --- RESUME DATA ---
 const resumeData: ResumeData = {
-    name: "Nico Kuehn",
+    name: "nico_kuehn",
     title: "Python Backend Programmer / Musician / Producer",
     summary: "20 years of experience in Musicproduction in the Box + Outgear Musicproduction",
-    // use local image shipped in the repo so GitHub Pages can load it reliably
-    profilePictureUrl: "/unnamed.jpg",
+    // use GitHub avatar URL so the image loads without requiring a local file
+    profilePictureUrl: "https://avatars.githubusercontent.com/nicokuehn-dci",
     contact: { email: "nico.code.evo@gmail.com", phone: "+4915237250142", location: "Aue-Bad Schlema, DE", github: "github.com/nicokuehn-dci", githubLink: "https://github.com/nicokuehn-dci?tab=repositories" },
     education: [{ degree: "Python Backend Programmer", institution: "DCI - Digital Career Institute", date: "03/2025 - 03/2026", location: "Berlin", courses: ["Python Backend Programming"], description: "Accomplishing a one-year-full-time training including Python Basics, Databases, Django Framework, APIs & Cloud Services" }],
     workExperience: [
@@ -262,7 +262,7 @@ const InterestTag: React.FC<{ interest: string }> = ({ interest }) => (
 
 const SidebarSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <div className="mb-8">
-        <h3 className="inline-block font-handwriting text-2xl font-bold text-white mb-4 py-2 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">{title}</h3>
+        <h3 className="inline-block font-serif text-2xl font-bold text-white mb-4 py-2 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">{title}</h3>
         {children}
     </div>
 );
@@ -276,8 +276,8 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void }> = ({
                 <div className="flex-shrink-0 mb-6 md:mb-0 md:mr-8">
                     <img src={data.profilePictureUrl} alt={data.name} className="w-40 h-40 rounded-full object-cover border-4 border-gray-300 dark:border-gray-600 shadow-md transform hover:scale-105 transition-transform duration-300" />
                 </div>
-                <div className="flex-grow text-center md:text-left">
-                    <h1 className="font-handwriting text-5xl md:text-6xl font-bold text-black [-webkit-text-stroke:1px_white] drop-shadow-md">{data.name}</h1>
+                                <div className="flex-grow text-center md:text-left">
+                                <h1 className="font-serif text-5xl md:text-6xl font-bold text-white drop-shadow-md" style={{ WebkitTextStroke: '1px white' }}>{data.name}</h1>
                     <h2 className="font-sans text-xl md:text-2xl font-light text-gray-500 dark:text-gray-400 mt-2">{data.title}</h2>
                     <p className="mt-4 text-gray-600 dark:text-gray-300">{data.summary}</p>
                 </div>
@@ -287,7 +287,7 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void }> = ({
         <main className="grid grid-cols-1 md:grid-cols-3">
             <div className="md:col-span-2 p-8">
                 <section className="mb-10">
-                    <h2 className="inline-block text-3xl font-handwriting font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Education</h2>
+                    <h2 className="inline-block text-3xl font-serif font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Education</h2>
                     {data.education.map((edu, index) => (
                         <div key={index}>
                             <div className="flex justify-between items-baseline"><h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200">{edu.degree}</h3><p className="text-sm font-light text-gray-500 dark:text-gray-400">{edu.location}</p></div>
@@ -299,7 +299,7 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void }> = ({
                     ))}
                 </section>
                 <section>
-                    <h2 className="inline-block text-3xl font-handwriting font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Work Experience</h2>
+                    <h2 className="inline-block text-3xl font-serif font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Work Experience</h2>
                     {data.workExperience.map((job, index) => (
                         <div key={index} className="mb-6 p-4 bg-white/50 dark:bg-gray-800/20 rounded-lg border border-gray-200 dark:border-gray-700/50 shadow-sm">
                             <div className="flex justify-between items-start mb-1">
@@ -342,8 +342,43 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void }> = ({
 
 const PlaceholderPage: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
     <div className="flex flex-col items-center justify-center p-8 md:p-12 min-h-[80vh] text-center bg-white dark:bg-gray-800 transition-colors duration-500">
-        <h1 className="font-handwriting text-5xl md:text-6xl font-bold text-gray-800 dark:text-gray-200 mb-4">{title}</h1>
+        <h1 className="font-serif text-5xl md:text-6xl font-bold text-gray-800 dark:text-gray-200 mb-4">{title}</h1>
         <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">{children}</p>
+    </div>
+);
+
+const AboutContactPage: React.FC<{ data: ResumeData }> = ({ data }) => (
+    <div className="p-8 md:p-12 bg-white dark:bg-gray-800 min-h-[70vh] transition-colors duration-500">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
+            <div className="md:col-span-1 text-center md:text-left">
+                <img src={data.profilePictureUrl} alt={data.name} className="w-48 h-48 rounded-full object-cover border-4 border-gray-200 dark:border-gray-700 shadow-md mx-auto md:mx-0" />
+                <h2 className="mt-4 text-2xl font-semibold text-gray-900 dark:text-gray-100">{data.name}</h2>
+                <p className="text-sm text-gray-600 dark:text-gray-300">{data.title}</p>
+                <div className="mt-4 text-sm text-gray-700 dark:text-gray-300 space-y-2">
+                    <div className="flex items-center gap-2"><MailIcon className="w-4 h-4 text-gray-500" /><a href={`mailto:${data.contact.email}`} className="underline">{data.contact.email}</a></div>
+                    <div className="flex items-center gap-2"><PhoneIcon className="w-4 h-4 text-gray-500" /><span>{data.contact.phone}</span></div>
+                    <div className="flex items-center gap-2"><LocationIcon className="w-4 h-4 text-gray-500" /><span>{data.contact.location}</span></div>
+                    <div className="flex items-center gap-2"><GithubIcon className="w-4 h-4 text-gray-500" /><a href={data.contact.githubLink} target="_blank" rel="noreferrer noopener" className="underline">{data.contact.github}</a></div>
+                </div>
+                <div className="mt-6">
+                    <a href={`mailto:${data.contact.email}`} className="inline-block px-4 py-2 bg-indigo-600 text-white rounded-md">Email me</a>
+                </div>
+            </div>
+            <div className="md:col-span-2">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">About me</h3>
+                <p className="mt-3 text-gray-700 dark:text-gray-300">{data.summary} I combine music production, backend development knowledge and a pragmatic approach to deliver working solutions. I'm passionate about building reliable systems and creating music that moves people.</p>
+
+                <h4 className="mt-6 text-lg font-semibold text-gray-800 dark:text-gray-100">Career goals</h4>
+                <ul className="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
+                    <li>Grow as a backend engineer working with Django and modern cloud tooling.</li>
+                    <li>Ship production-ready APIs and improve automation/CI workflows.</li>
+                    <li>Continue releasing music and collaborate with other creators.</li>
+                </ul>
+
+                <h4 className="mt-6 text-lg font-semibold text-gray-800 dark:text-gray-100">Availability</h4>
+                <p className="mt-2 text-gray-700 dark:text-gray-300">Open to freelance or contract backend roles, collaborations on audio projects, and mentoring opportunities. Reach out via email for enquiries.</p>
+            </div>
+        </div>
     </div>
 );
 
@@ -481,12 +516,12 @@ const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: 
 }
 
 
-const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
+const SkillsDeepDivePage: React.FC<{ data: SkillsData; onOpenDashboard?: (username?: string, token?: string) => void }> = ({ data, onOpenDashboard }) => {
     const [selected, setSelected] = useState<string | null>(null);
     return (
         <div className="skills-deep-container p-8 md:p-12 bg-white dark:bg-gray-800 transition-colors duration-500">
             <div className="flex items-center justify-between mb-6">
-                <h1 className="font-handwriting text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200 text-left">Skills Deep Dive</h1>
+                <h1 className="font-serif text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200 text-left">Skills Deep Dive</h1>
                 <div className="text-sm text-gray-500">Click a disc to highlight</div>
             </div>
                 <div className="mb-4">
@@ -501,21 +536,21 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
             </div>
 
             <section className="mb-12">
-                <h2 className="inline-block text-3xl font-handwriting font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Technical Skills</h2>
+                <h2 className="inline-block text-3xl font-serif font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Technical Skills</h2>
                 <div className="skill-grid grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
                     {data.technical.map((skill, index) => <SkillDetailItem key={index} skill={skill} selected={selected === skill.name} />)}
                 </div>
             </section>
 
             <section className="mb-12">
-                <h2 className="inline-block text-3xl font-handwriting font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Soft Skills</h2>
+                <h2 className="inline-block text-3xl font-serif font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Soft Skills</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {data.soft.map((skill, index) => <SkillDetailItem key={index} skill={skill} selected={selected === skill.name} />)}
                 </div>
             </section>
 
             <section>
-                <h2 className="inline-block text-3xl font-handwriting font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Tools</h2>
+                <h2 className="inline-block text-3xl font-serif font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Tools</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {data.tools.map((skill, index) => <SkillDetailItem key={index} skill={skill} selected={selected === skill.name} />)}
                 </div>
@@ -533,7 +568,7 @@ interface ProjectShowcasePageProps {
     initialUsername?: string; // optional username or URL to auto-load
     autoLoad?: boolean; // whether to fetch on mount
     onNotify?: (msg: string) => void; // simple notification callback
-    onOpenDashboard?: () => void; // request to open the 3D dashboard page
+    onOpenDashboard?: (username?: string, token?: string) => void; // request to open the 3D dashboard page (optional username/token)
 }
 
 const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onProjectChange, onAddProject, onRemoveProject, onImportRepo, initialUsername, autoLoad, onNotify, onOpenDashboard }) => {
@@ -544,6 +579,7 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
     const [token, setToken] = useState<string>('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [showInline, setShowInline] = useState(false);
 
     const extractUsername = (input: string) => {
         // accept either a plain username or a GitHub profile/url like https://github.com/username or github.com/username
@@ -594,6 +630,15 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
                 created_at: r.created_at,
             }));
             setRepos(mapped);
+            // Auto-open the 3D dashboard after successful fetch if requested
+            try {
+                if (mapped.length > 0 && onOpenDashboard && !showInline) {
+                    // pass the normalized username and token (if any)
+                    onOpenDashboard(user, token);
+                }
+            } catch (e) {
+                // swallow errors from caller
+            }
             // also fetch account-level stats
             try {
                 const headers: any = {};
@@ -627,8 +672,11 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
         <div className="p-8 md:p-12 bg-white dark:bg-gray-800 transition-colors duration-500 min-h-[80vh]">
             <div className="max-w-6xl mx-auto">
                 <div className="flex items-center justify-between mb-4">
-                    <h1 className="font-handwriting text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200">Project Showcase</h1>
-                    <p className="text-sm text-gray-500">Highlight your top projects and explore GitHub repositories for any account.</p>
+                    <h1 className="font-serif text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200">Project Showcase</h1>
+                    <div className="flex items-center gap-4">
+                        <p className="text-sm text-gray-500">Highlight your top projects and explore GitHub repositories for any account.</p>
+                        <button onClick={() => onOpenDashboard && onOpenDashboard(username || initialUsername, token)} className="px-3 py-1 rounded-md bg-violet-600 text-white text-sm">Open 3D Dashboard</button>
+                    </div>
                 </div>
 
                 {/* GitHub repo overview controls */}
@@ -679,6 +727,9 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
                                     disabled={!onImportRepo || repos.length === 0}
                                     className="ml-2 px-3 py-1 rounded-md bg-indigo-600 text-white text-sm disabled:opacity-50"
                                     >Import all visible</button>
+                                </div>
+                                <div>
+                                    <button onClick={() => setShowInline(s => !s)} className="ml-2 px-3 py-1 rounded-md bg-violet-600 text-white text-sm">{showInline ? 'Hide inline dashboard' : 'Show inline dashboard'}</button>
                                 </div>
                             </div>
                         </div>
@@ -806,6 +857,12 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
                         Add another project
                     </button>
                 </div>
+                {/* Inline dashboard render (optional) */}
+                {showInline && (
+                    <div className="mt-8 p-6 bg-gray-900/10 dark:bg-black/20 rounded-lg">
+                        <Dashboard3D username={username || initialUsername} token={token} />
+                    </div>
+                )}
             </div>
         </div>
     );
@@ -815,8 +872,13 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
 const App: React.FC = () => {
     const [theme, setTheme] = useState<'light' | 'dark'>('light');
     const [currentPage, setCurrentPage] = useState(0);
+    const [githubUsername, setGithubUsername] = useState<string | undefined>(resumeData.contact.githubLink || undefined);
+    const [githubToken, setGithubToken] = useState<string | undefined>(undefined);
     const [showcaseProjects, setShowcaseProjects] = useState<ShowcaseProject[]>([
-        { name: 'Digital Resume', date: '2024', description: 'A dynamic, multi-page digital resume application built with React and Tailwind CSS, featuring light/dark modes and PDF export functionality.', link: 'https://github.com/nicokuehn-dci/digital-resume' }
+        { name: 'Digital Resume', date: '2024', description: 'A dynamic, multi-page digital resume application built with React and Tailwind CSS, featuring light/dark modes and PDF export functionality.', link: 'https://github.com/nicokuehn-dci/digital-resume' },
+        { name: 'Finegrind & Benson', date: '2010–2025', description: 'House music project — production, releases and live sets.', link: '' },
+        { name: 'Nick de Nitro', date: '2008–2025', description: 'Techno music project — releases and collaborations.', link: '' },
+        { name: 'Personal Portfolio', date: '2025', description: 'Static portfolio and demo site (GitHub Pages).', link: 'https://nicokuehn-dci.github.io' }
     ]);
 
 
@@ -893,12 +955,16 @@ const App: React.FC = () => {
             initialUsername={resumeData.contact.githubLink}
             autoLoad={true}
             onNotify={(m:string) => showToast(m)}
-            onOpenDashboard={() => setCurrentPage(2)}
+            onOpenDashboard={(u?: string, t?: string) => {
+                if (u) setGithubUsername(u);
+                if (t) setGithubToken(t);
+                setCurrentPage(2);
+            }}
         />,
-        <Dashboard3D key={2} />,
-        <SkillsDeepDivePage key={2} data={skillsData} />,
+        <Dashboard3D key={2} username={githubUsername} token={githubToken} />,
+        <SkillsDeepDivePage key={3} data={skillsData} onOpenDashboard={(u?: string, t?: string) => { if (u) setGithubUsername(u); if (t) setGithubToken(t); setCurrentPage(2); }} />,
         <PlaceholderPage key={3} title="My Creative Work">A space to highlight your music production and other creative endeavors. Embed audio players, videos, or link to your portfolio on other platforms.</PlaceholderPage>,
-        <PlaceholderPage key={4} title="About & Contact">Tell your story. What are you passionate about? What are your career goals? This is also a great place to add a contact form or links to your social media profiles.</PlaceholderPage>,
+    <AboutContactPage key={4} data={resumeData} />,
     ];
 
     const goToNextPage = () => setCurrentPage(prev => Math.min(prev + 1, pages.length - 1));
