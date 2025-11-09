@@ -424,126 +424,32 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
     );
 };
 
-// Videos pulled from channel uploads feed (manually synchronized from YouTube feed)
-const youtubeVideos: { id: string; title: string; url: string }[] = [
-    { id: 'gKNuK6W9Vck', title: 'Matrix', url: 'https://www.youtube.com/watch?v=gKNuK6W9Vck' },
-    { id: '8HLDR-2T5Ys', title: 'Stereotype', url: 'https://www.youtube.com/watch?v=8HLDR-2T5Ys' },
-    { id: 'FVPYDF90_wU', title: 'Shadows', url: 'https://www.youtube.com/watch?v=FVPYDF90_wU' },
-    { id: '5yvWyHRExLc', title: 'Dirty Talk', url: 'https://www.youtube.com/watch?v=5yvWyHRExLc' },
-    { id: 'unlM8ZYJHz4', title: 'Nachtgefluester', url: 'https://www.youtube.com/watch?v=unlM8ZYJHz4' },
-    { id: 'JdiZNj5aUFc', title: 'Freakshow', url: 'https://www.youtube.com/watch?v=JdiZNj5aUFc' },
-    { id: 'vb__1sZ6os8', title: 'Mysterium', url: 'https://www.youtube.com/watch?v=vb__1sZ6os8' },
-    { id: '8aj1TWjk_k4', title: 'Nostra Damus', url: 'https://www.youtube.com/watch?v=8aj1TWjk_k4' },
-    { id: 'UhJmVGx7Hlo', title: 'Infinity (Stereotype Club Mix)', url: 'https://www.youtube.com/watch?v=UhJmVGx7Hlo' },
-    { id: 'iZAaG-SdeQU', title: 'Infinity (Radio Edit)', url: 'https://www.youtube.com/watch?v=iZAaG-SdeQU' },
-    { id: 'hQCqv2foDko', title: 'Fantasy Girl (Radio Edit)', url: 'https://www.youtube.com/watch?v=hQCqv2foDko' },
-    { id: 'ks7Xv2Vl_cs', title: 'Freeway (Clubstar Remix)', url: 'https://www.youtube.com/watch?v=ks7Xv2Vl_cs' },
-    { id: 'ppO6A0z9lzU', title: 'Freeway (Original Mix)', url: 'https://www.youtube.com/watch?v=ppO6A0z9lzU' },
-    { id: 'dLygI5luRhI', title: 'Feucht und Froehlich', url: 'https://www.youtube.com/watch?v=dLygI5luRhI' },
-];
-
-const VideoModal: React.FC<{ videoId: string | null; onClose: () => void; large?: boolean }> = ({ videoId, onClose, large }) => {
-    if (!videoId) return null;
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-            <div className={
-                (large ? 'w-11/12 md:w-3/4 h-3/4' : 'w-11/12 md:w-2/3 h-2/3') + ' bg-black rounded-md overflow-hidden shadow-lg'
-            }>
-                <iframe
-                    src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
-                    className="w-full h-full"
-                    allow="autoplay; encrypted-media; picture-in-picture"
-                    title="YouTube player"
-                />
-            </div>
-        </div>
-    );
-};
-
-const CreativeWorkPage: React.FC = () => {
-    const [openVideo, setOpenVideo] = useState<string | null>(null);
-    const [openLarge, setOpenLarge] = useState(false);
-
-    return (
-        <div className="p-8 md:p-12 bg-white dark:bg-gray-800 transition-colors duration-500 min-h-[80vh]">
-            <h1 className="font-handwriting text-5xl md:text-6xl font-bold text-gray-800 dark:text-gray-200 mb-8">My Creative Work</h1>
-            <p className="text-gray-600 dark:text-gray-300 max-w-3xl mb-6">A space to highlight your music production and other creative endeavors. Embed audio players, videos, or link to your portfolio on other platforms.</p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {youtubeVideos.map((v) => (
-                    <article key={v.id} className="p-4 bg-gray-50 dark:bg-gray-800/30 rounded-md border border-gray-200 dark:border-gray-700/50">
-                        <img src={`https://i.ytimg.com/vi/${v.id}/hqdefault.jpg`} alt={v.title} className="w-full h-40 object-cover rounded-md mb-3" />
-                        <h3 className="font-semibold text-lg text-gray-800 dark:text-gray-100">{v.title}</h3>
-                        <div className="mt-3 flex flex-wrap gap-3 items-center">
-                            <a className="inline-block text-blue-600 dark:text-blue-400" href={v.url} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
-                            <button onClick={() => { setOpenVideo(v.id); setOpenLarge(false); }} className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-sm">Open popup</button>
-                            <button onClick={() => { setOpenVideo(v.id); setOpenLarge(true); }} className="px-3 py-1 rounded bg-gray-200 dark:bg-gray-700 text-sm">Open large popup</button>
-                        </div>
-                    </article>
-                ))}
-            </div>
-
-            <VideoModal videoId={openVideo} onClose={() => setOpenVideo(null)} large={openLarge} />
-        </div>
-    );
-};
-
-const AboutContactPage: React.FC = () => (
-    <div className="p-8 md:p-12 bg-white dark:bg-gray-800 transition-colors duration-500 min-h-[80vh]">
-        <h1 className="font-handwriting text-5xl md:text-6xl font-bold text-gray-800 dark:text-gray-200 mb-6">About & Contact</h1>
-        <div className="max-w-3xl text-gray-700 dark:text-gray-300 space-y-4">
-            <p>Hello — I'm Nico Kuehn, a Python backend programmer and musician. I bring years of production experience together with software engineering to build tools, APIs and creative software experiences. I'm currently training at Digital Career Institute (DCI) and working on projects that span music production and backend systems.</p>
-            <p>Technical interests: Django, Postgres, REST APIs, automated deployments, and small services that glue creative workflows together.</p>
-            <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
-                <h3 className="font-semibold">Contact</h3>
-                <ul className="text-sm text-gray-600 dark:text-gray-400 mt-2 space-y-1">
-                    <li>Email: <a className="text-blue-600 dark:text-blue-400" href="mailto:nico.code.evo@gmail.com">nico.code.evo@gmail.com</a></li>
-                    <li>GitHub: <a className="text-blue-600 dark:text-blue-400" href="https://github.com/nicokuehn-dci">github.com/nicokuehn-dci</a></li>
-                    <li>Location: Aue-Bad Schlema, DE</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-);
-
 // --- MAIN APP COMPONENT ---
-type Theme = 'light' | 'dark' | 'sepia' | 'midnight';
-
 const App: React.FC = () => {
-    const [theme, setTheme] = useState<Theme>('dark');
+    const [theme, setTheme] = useState<'light' | 'dark'>('light');
     const [currentPage, setCurrentPage] = useState(0);
     const [showcaseProjects, setShowcaseProjects] = useState<ShowcaseProject[]>([
         { name: 'Digital Resume', date: '2024', description: 'A dynamic, multi-page digital resume application built with React and Tailwind CSS, featuring light/dark modes and PDF export functionality.', link: 'https://github.com/nicokuehn-dci/digital-resume' }
     ]);
 
 
-    // Initialize theme from localStorage or system preference
     useEffect(() => {
-        const stored = localStorage.getItem('siteTheme') as Theme | null;
-        if (stored) {
-            setTheme(stored);
-            return;
-        }
+        const storedTheme = localStorage.getItem('theme');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        setTheme(prefersDark ? 'dark' : 'light');
+        if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+            setTheme('dark');
+        } else {
+            setTheme('light');
+        }
     }, []);
-
-    // Apply theme: for 'dark' we keep Tailwind's dark class, for others we set a theme data attribute
+    
     useEffect(() => {
-        // persist
-        localStorage.setItem('siteTheme', theme);
-
-        // remove previous helpers
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.remove('theme-sepia');
-        document.documentElement.classList.remove('theme-midnight');
-
         if (theme === 'dark') {
             document.documentElement.classList.add('dark');
-        } else if (theme === 'sepia') {
-            document.documentElement.classList.add('theme-sepia');
-        } else if (theme === 'midnight') {
-            document.documentElement.classList.add('theme-midnight');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
         }
     }, [theme]);
 
@@ -582,50 +488,28 @@ const App: React.FC = () => {
             onAddProject={addShowcaseProject}
             onRemoveProject={removeShowcaseProject}
         />,
-        <CreativeWorkPage key={2} />,
-        <SkillsDeepDivePage key={3} data={skillsData} />,
-        <AboutContactPage key={4} />,
+        <SkillsDeepDivePage key={2} data={skillsData} />,
+        <PlaceholderPage key={3} title="My Creative Work">A space to highlight your music production and other creative endeavors. Embed audio players, videos, or link to your portfolio on other platforms.</PlaceholderPage>,
+        <PlaceholderPage key={4} title="About & Contact">Tell your story. What are you passionate about? What are your career goals? This is also a great place to add a contact form or links to your social media profiles.</PlaceholderPage>,
     ];
 
     const goToNextPage = () => setCurrentPage(prev => Math.min(prev + 1, pages.length - 1));
     const goToPrevPage = () => setCurrentPage(prev => Math.max(prev - 1, 0));
 
-        const ThemeSelector: React.FC = () => (
-            <div className="fixed top-6 right-6 z-50 p-2 rounded-md bg-white/60 dark:bg-black/40 backdrop-blur-sm shadow-sm flex items-center gap-2">
-                    <label htmlFor="theme-select" className="sr-only">Theme</label>
-                    <select
-                        id="theme-select"
-                        value={theme}
-                        onChange={(e) => setTheme(e.target.value as Theme)}
-                        className="rounded-md px-2 py-1 bg-transparent border border-gray-200 dark:border-gray-700 text-sm"
-                        aria-label="Select theme"
-                    >
-                        <option value="light">Light</option>
-                        <option value="dark">Dark</option>
-                        <option value="sepia">Sepia</option>
-                        <option value="midnight">Midnight</option>
-                    </select>
-                    <button onClick={toggleTheme} className="p-1 rounded-full bg-gray-200/30 dark:bg-gray-700/30" aria-label="Quick toggle dark">
-                        {theme === 'dark' ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
-                    </button>
-            </div>
-        );
+    const ThemeToggle = () => (
+      <button onClick={toggleTheme} className="fixed top-6 right-6 z-50 p-2 rounded-full bg-gray-200/50 dark:bg-gray-700/50 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-gray-500" aria-label="Toggle theme">
+          {theme === 'light' ? <MoonIcon className="w-6 h-6" /> : <SunIcon className="w-6 h-6" />}
+      </button>
+    );
     
     return (
         <>
-                        <style>{`
-                            @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-                            .animate-fadeIn { animation: fadeIn 0.6s ease-in-out forwards; }
-
-                            /* Theme helpers for non-tailwind themes */
-                            .theme-sepia body, .theme-sepia .bg-white { background-color: #f8efe0 !important; }
-                            .theme-sepia .text-gray-800, .theme-sepia .text-black { color: #5b3e2b !important; }
-
-                            .theme-midnight body { background: linear-gradient(180deg,#0b1220,#000000) !important; }
-                            .theme-midnight .text-gray-800, .theme-midnight .text-black { color: #dbeafe !important; }
-                        `}</style>
-            <div className="bg-gray-100 dark:bg-gray-900 min-h-screen p-4 sm:p-8 md:p-12 transition-colors duration-500 font-sans" data-theme={theme}>
-                <ThemeSelector />
+            <style>{`
+              @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+              .animate-fadeIn { animation: fadeIn 0.6s ease-in-out forwards; }
+            `}</style>
+            <div className="bg-gray-100 dark:bg-gray-900 min-h-screen p-4 sm:p-8 md:p-12 transition-colors duration-500 font-sans">
+                <ThemeToggle />
                 
                 <button onClick={goToPrevPage} disabled={currentPage === 0} className="fixed left-2 md:left-4 top-1/2 -translate-y-1/2 z-40 p-2 rounded-full bg-white/50 dark:bg-black/50 hover:bg-white/80 dark:hover:bg-black/80 disabled:opacity-0 disabled:cursor-not-allowed transition-all duration-300">
                     <LeftArrowIcon className="w-6 h-6 text-gray-800 dark:text-gray-200" />
@@ -634,17 +518,7 @@ const App: React.FC = () => {
                     <RightArrowIcon className="w-6 h-6 text-gray-800 dark:text-gray-200" />
                 </button>
 
-                <div
-                    id="resume-container"
-                    className={
-                        'max-w-6xl mx-auto shadow-2xl rounded-lg overflow-hidden ' +
-                        (theme === 'sepia'
-                            ? 'bg-amber-50 text-amber-900'
-                            : theme === 'midnight'
-                            ? 'bg-gradient-to-b from-slate-900 to-black text-slate-200'
-                            : 'bg-white dark:bg-gray-800 dark:shadow-black/50')
-                    }
-                >
+                <div id="resume-container" className="max-w-6xl mx-auto bg-white dark:bg-gray-800 shadow-2xl dark:shadow-black/50 rounded-lg overflow-hidden">
                     <div id="page-content" className="animate-fadeIn">
                         {pages[currentPage]}
                     </div>
