@@ -727,83 +727,88 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                 }[skill.proficiency];
 
                 const proficiencyColor = {
-                    'Beginner': 'from-blue-400 to-blue-600',
-                    'Intermediate': 'from-yellow-500 to-orange-500',
-                    'Advanced': 'from-orange-500 to-red-500',
-                    'Expert': 'from-purple-500 to-pink-600'
+                    'Beginner': 'from-gray-300 via-gray-400 to-gray-500',
+                    'Intermediate': 'from-gray-400 via-gray-500 to-gray-600',
+                    'Advanced': 'from-gray-500 via-gray-600 to-gray-700',
+                    'Expert': 'from-gray-600 via-gray-700 to-gray-800'
                 }[skill.proficiency];
 
-                const bronzeGlow = 'from-amber-600 via-yellow-700 to-amber-800';
-
                 return (
-                    <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-gray-900 via-gray-800 to-black border border-amber-900/30 shadow-2xl animate-fadeIn">
-                        <div className="flex items-start justify-between mb-4">
-                            <div className="flex-1">
-                                <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 mb-2">
-                                    {skill.name}
-                                </h3>
-                                <p className="text-gray-400 italic">
-                                    {skillTaglines[skill.name] || 'A valuable skill in the modern tech landscape.'}
-                                </p>
-                            </div>
-                            <button 
-                                onClick={() => setSelected(null)}
-                                className="ml-4 px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white transition-all"
-                                aria-label="Close details"
-                            >
-                                ✕
-                            </button>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                            {/* Proficiency Card */}
-                            <div className="p-5 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-amber-700/20 shadow-lg">
-                                <div className="text-sm text-gray-400 uppercase tracking-wider mb-2">Proficiency Level</div>
-                                <div className={`text-2xl font-bold bg-gradient-to-r ${proficiencyColor} bg-clip-text text-transparent mb-3`}>
-                                    {skill.proficiency}
+                    <div className="mt-8 p-8 rounded-3xl bg-gradient-to-br from-neutral-900 via-zinc-900 to-stone-950 border-2 border-neutral-700/40 shadow-2xl backdrop-blur-sm animate-fadeIn relative overflow-hidden">
+                        {/* Modern gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-gray-800/20 via-transparent to-gray-600/10 pointer-events-none"></div>
+                        
+                        <div className="relative z-10">
+                            <div className="flex items-start justify-between mb-6">
+                                <div className="flex-1">
+                                    <h3 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-100 via-gray-300 to-gray-500 mb-3 tracking-tight drop-shadow-lg">
+                                        {skill.name}
+                                    </h3>
+                                    <p className="text-gray-400 italic text-base leading-relaxed">
+                                        {skillTaglines[skill.name] || 'A valuable skill in the modern tech landscape.'}
+                                    </p>
                                 </div>
-                                <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
-                                    <div 
-                                        className={`h-full bg-gradient-to-r ${proficiencyColor} rounded-full transition-all duration-1000 shadow-lg`}
-                                        style={{width: `${proficiencyPercent}%`}}
-                                    />
-                                </div>
-                                <div className="text-right text-xs text-gray-500 mt-1">{proficiencyPercent}%</div>
+                                <button 
+                                    onClick={() => setSelected(null)}
+                                    className="ml-4 w-10 h-10 rounded-full bg-gradient-to-br from-neutral-800 to-neutral-900 hover:from-neutral-700 hover:to-neutral-800 text-gray-300 hover:text-white transition-all shadow-lg hover:shadow-xl border border-neutral-600/50 flex items-center justify-center font-bold text-lg hover:scale-110"
+                                    aria-label="Close details"
+                                >
+                                    ✕
+                                </button>
                             </div>
 
-                            {/* Experience Card */}
-                            <div className="p-5 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-amber-700/20 shadow-lg">
-                                <div className="text-sm text-gray-400 uppercase tracking-wider mb-2">Experience</div>
-                                <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-                                    {skill.experience}
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                                {/* Proficiency Card */}
+                                <div className="group p-6 rounded-2xl bg-gradient-to-br from-neutral-800/80 via-zinc-800/80 to-stone-900/80 border-2 border-neutral-600/30 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-neutral-500/50 hover:scale-105 backdrop-blur-sm">
+                                    <div className="text-xs text-gray-400 uppercase tracking-widest mb-3 font-bold">Proficiency Level</div>
+                                    <div className={`text-3xl font-black bg-gradient-to-r ${proficiencyColor} bg-clip-text text-transparent mb-4 drop-shadow-md group-hover:scale-110 transition-transform`}>
+                                        {skill.proficiency}
+                                    </div>
+                                    <div className="w-full bg-gradient-to-r from-neutral-700 to-neutral-800 rounded-full h-4 overflow-hidden shadow-inner border border-neutral-600/50">
+                                        <div 
+                                            className={`h-full bg-gradient-to-r ${proficiencyColor} rounded-full transition-all duration-1000 shadow-lg relative`}
+                                            style={{width: `${proficiencyPercent}%`}}
+                                        >
+                                            <div className="absolute inset-0 bg-gradient-to-t from-transparent to-white/30"></div>
+                                        </div>
+                                    </div>
+                                    <div className="text-right text-sm text-gray-500 mt-2 font-bold">{proficiencyPercent}%</div>
                                 </div>
-                                <div className="text-sm text-gray-400 mt-1">
-                                    {skill.experience === 1 ? 'year' : 'years'} of hands-on work
+
+                                {/* Experience Card */}
+                                <div className="group p-6 rounded-2xl bg-gradient-to-br from-neutral-800/80 via-zinc-800/80 to-stone-900/80 border-2 border-neutral-600/30 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-neutral-500/50 hover:scale-105 backdrop-blur-sm">
+                                    <div className="text-xs text-gray-400 uppercase tracking-widest mb-3 font-bold">Experience</div>
+                                    <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-200 via-gray-300 to-gray-400 drop-shadow-lg group-hover:scale-110 transition-transform">
+                                        {skill.experience}
+                                    </div>
+                                    <div className="text-sm text-gray-400 mt-2 font-medium">
+                                        {skill.experience === 1 ? 'year' : 'years'} of hands-on work
+                                    </div>
+                                </div>
+
+                                {/* Mastery Score Card */}
+                                <div className="group p-6 rounded-2xl bg-gradient-to-br from-neutral-800/80 via-zinc-800/80 to-stone-900/80 border-2 border-neutral-600/30 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-neutral-500/50 hover:scale-105 backdrop-blur-sm">
+                                    <div className="text-xs text-gray-400 uppercase tracking-widest mb-3 font-bold">Mastery Score</div>
+                                    <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-400 to-gray-600 drop-shadow-lg group-hover:scale-110 transition-transform">
+                                        {Math.round(proficiencyPercent * 0.7 + skill.experience * 3)}
+                                    </div>
+                                    <div className="text-sm text-gray-400 mt-2 font-medium">
+                                        Combined rating
+                                    </div>
                                 </div>
                             </div>
 
-                            {/* Mastery Score Card */}
-                            <div className="p-5 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-amber-700/20 shadow-lg">
-                                <div className="text-sm text-gray-400 uppercase tracking-wider mb-2">Mastery Score</div>
-                                <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600">
-                                    {Math.round(proficiencyPercent * 0.7 + skill.experience * 3)}
-                                </div>
-                                <div className="text-sm text-gray-400 mt-1">
-                                    Combined rating
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Additional Info */}
-                        <div className="p-4 rounded-xl bg-gradient-to-r from-amber-950/40 to-gray-900/40 border border-amber-800/30">
-                            <div className="flex items-center gap-3">
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-600 to-yellow-700 flex items-center justify-center text-2xl shadow-lg">
-                                    ⚡
-                                </div>
-                                <div>
-                                    <div className="text-sm text-amber-400 font-semibold">Pro Tip</div>
-                                    <div className="text-gray-300 text-sm">
-                                        Click other discs to compare skills or use Tab + Enter for keyboard navigation
+                            {/* Additional Info */}
+                            <div className="p-5 rounded-2xl bg-gradient-to-r from-neutral-800/60 via-zinc-800/60 to-stone-900/60 border-2 border-neutral-600/40 shadow-lg backdrop-blur-sm hover:border-neutral-500/60 transition-all">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-neutral-600 via-gray-600 to-neutral-700 flex items-center justify-center text-3xl shadow-xl border-2 border-neutral-500/50">
+                                        ⚡
+                                    </div>
+                                    <div>
+                                        <div className="text-sm text-gray-300 font-bold mb-1 tracking-wide">Pro Tip</div>
+                                        <div className="text-gray-400 text-sm leading-relaxed">
+                                            Click other discs to compare skills or use Tab + Enter for keyboard navigation
+                                        </div>
                                     </div>
                                 </div>
                             </div>
