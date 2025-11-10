@@ -727,30 +727,51 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                 }[skill.proficiency];
 
                 const proficiencyColor = {
-                    'Beginner': 'from-gray-300 via-gray-400 to-gray-500',
-                    'Intermediate': 'from-gray-400 via-gray-500 to-gray-600',
-                    'Advanced': 'from-gray-500 via-gray-600 to-gray-700',
-                    'Expert': 'from-gray-600 via-gray-700 to-gray-800'
+                    'Beginner': 'from-cyan-400 via-blue-500 to-indigo-600',
+                    'Intermediate': 'from-amber-400 via-orange-500 to-red-500',
+                    'Advanced': 'from-emerald-400 via-green-500 to-teal-600',
+                    'Expert': 'from-purple-400 via-pink-500 to-rose-600'
+                }[skill.proficiency];
+
+                const cardBorderColor = {
+                    'Beginner': 'border-blue-500/40 hover:border-blue-400/60',
+                    'Intermediate': 'border-orange-500/40 hover:border-orange-400/60',
+                    'Advanced': 'border-green-500/40 hover:border-green-400/60',
+                    'Expert': 'border-pink-500/40 hover:border-pink-400/60'
+                }[skill.proficiency];
+
+                const cardBgGlow = {
+                    'Beginner': 'from-blue-900/20 via-indigo-900/20 to-stone-950',
+                    'Intermediate': 'from-orange-900/20 via-red-900/20 to-stone-950',
+                    'Advanced': 'from-green-900/20 via-emerald-900/20 to-stone-950',
+                    'Expert': 'from-purple-900/20 via-pink-900/20 to-stone-950'
+                }[skill.proficiency];
+
+                const progressBarColor = {
+                    'Beginner': 'from-cyan-300 via-blue-400 to-indigo-500',
+                    'Intermediate': 'from-amber-300 via-orange-400 to-red-500',
+                    'Advanced': 'from-emerald-300 via-green-400 to-teal-500',
+                    'Expert': 'from-purple-300 via-pink-400 to-rose-500'
                 }[skill.proficiency];
 
                 return (
-                    <div className="mt-8 p-8 rounded-3xl bg-gradient-to-br from-neutral-900 via-zinc-900 to-stone-950 border-2 border-neutral-700/40 shadow-2xl backdrop-blur-sm animate-fadeIn relative overflow-hidden">
+                    <div className={`mt-8 p-8 rounded-3xl bg-gradient-to-br ${cardBgGlow} border-2 ${cardBorderColor} shadow-2xl backdrop-blur-sm animate-fadeIn relative overflow-hidden transition-all duration-300`}>
                         {/* Modern gradient overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-br from-gray-800/20 via-transparent to-gray-600/10 pointer-events-none"></div>
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-white/5 pointer-events-none"></div>
                         
                         <div className="relative z-10">
                             <div className="flex items-start justify-between mb-6">
                                 <div className="flex-1">
-                                    <h3 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-100 via-gray-300 to-gray-500 mb-3 tracking-tight drop-shadow-lg">
+                                    <h3 className={`text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r ${proficiencyColor} mb-3 tracking-tight drop-shadow-lg`}>
                                         {skill.name}
                                     </h3>
-                                    <p className="text-gray-400 italic text-base leading-relaxed">
+                                    <p className="text-gray-300 italic text-base leading-relaxed">
                                         {skillTaglines[skill.name] || 'A valuable skill in the modern tech landscape.'}
                                     </p>
                                 </div>
                                 <button 
                                     onClick={() => setSelected(null)}
-                                    className="ml-4 w-10 h-10 rounded-full bg-gradient-to-br from-neutral-800 to-neutral-900 hover:from-neutral-700 hover:to-neutral-800 text-gray-300 hover:text-white transition-all shadow-lg hover:shadow-xl border border-neutral-600/50 flex items-center justify-center font-bold text-lg hover:scale-110"
+                                    className={`ml-4 w-10 h-10 rounded-full bg-gradient-to-br from-neutral-800 to-neutral-900 hover:from-neutral-700 hover:to-neutral-800 text-gray-300 hover:text-white transition-all shadow-lg hover:shadow-xl border ${cardBorderColor} flex items-center justify-center font-bold text-lg hover:scale-110`}
                                     aria-label="Close details"
                                 >
                                     ✕
@@ -759,21 +780,19 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
 
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                                 {/* Proficiency Card */}
-                                <div className="group p-6 rounded-2xl bg-gradient-to-br from-neutral-800/80 via-zinc-800/80 to-stone-900/80 border-2 border-neutral-600/30 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-neutral-500/50 hover:scale-105 backdrop-blur-sm">
-                                    <div className="text-xs text-gray-400 uppercase tracking-widest mb-3 font-bold">Proficiency Level</div>
+                                <div className={`group p-6 rounded-2xl bg-gradient-to-br from-neutral-800/60 via-zinc-800/60 to-stone-900/60 border-2 ${cardBorderColor} shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm`}>
+                                    <div className="text-xs text-gray-300 uppercase tracking-widest mb-3 font-bold">Proficiency Level</div>
                                     <div className={`text-3xl font-black bg-gradient-to-r ${proficiencyColor} bg-clip-text text-transparent mb-4 drop-shadow-md group-hover:scale-110 transition-transform`}>
                                         {skill.proficiency}
                                     </div>
                                     <div className="w-full bg-gradient-to-r from-neutral-800 to-neutral-900 rounded-full h-4 overflow-hidden shadow-inner border border-neutral-700/50 relative">
                                         <div 
-                                            className="h-full bg-gradient-to-r from-white via-gray-100 to-white rounded-full transition-all duration-1000 relative overflow-hidden"
+                                            className={`h-full bg-gradient-to-r ${progressBarColor} rounded-full transition-all duration-1000 relative overflow-hidden shadow-lg`}
                                             style={{width: `${proficiencyPercent}%`}}
                                         >
-                                            {/* Glowing white effect */}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/40 to-white/60"></div>
-                                            <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/50 to-transparent"></div>
-                                            {/* Inner glow */}
-                                            <div className="absolute inset-0 shadow-[0_0_20px_rgba(255,255,255,0.8),inset_0_0_20px_rgba(255,255,255,0.6)]"></div>
+                                            {/* Glowing effect */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/30 to-white/50"></div>
+                                            <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
                                         </div>
                                         {/* Outer glow effect */}
                                         <div className="absolute inset-0 rounded-full shadow-[inset_0_0_15px_rgba(255,255,255,0.2)]" style={{width: `${proficiencyPercent}%`}}></div>
@@ -782,37 +801,37 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                                 </div>
 
                                 {/* Experience Card */}
-                                <div className="group p-6 rounded-2xl bg-gradient-to-br from-neutral-800/80 via-zinc-800/80 to-stone-900/80 border-2 border-neutral-600/30 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-neutral-500/50 hover:scale-105 backdrop-blur-sm">
-                                    <div className="text-xs text-gray-400 uppercase tracking-widest mb-3 font-bold">Experience</div>
-                                    <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-200 via-gray-300 to-gray-400 drop-shadow-lg group-hover:scale-110 transition-transform">
+                                <div className={`group p-6 rounded-2xl bg-gradient-to-br from-neutral-800/60 via-zinc-800/60 to-stone-900/60 border-2 ${cardBorderColor} shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm`}>
+                                    <div className="text-xs text-gray-300 uppercase tracking-widest mb-3 font-bold">Experience</div>
+                                    <div className={`text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r ${proficiencyColor} drop-shadow-lg group-hover:scale-110 transition-transform`}>
                                         {skill.experience}
                                     </div>
-                                    <div className="text-sm text-gray-400 mt-2 font-medium">
+                                    <div className="text-sm text-gray-300 mt-2 font-medium">
                                         {skill.experience === 1 ? 'year' : 'years'} of hands-on work
                                     </div>
                                 </div>
 
                                 {/* Mastery Score Card */}
-                                <div className="group p-6 rounded-2xl bg-gradient-to-br from-neutral-800/80 via-zinc-800/80 to-stone-900/80 border-2 border-neutral-600/30 shadow-xl hover:shadow-2xl transition-all duration-300 hover:border-neutral-500/50 hover:scale-105 backdrop-blur-sm">
-                                    <div className="text-xs text-gray-400 uppercase tracking-widest mb-3 font-bold">Mastery Score</div>
-                                    <div className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-300 via-gray-400 to-gray-600 drop-shadow-lg group-hover:scale-110 transition-transform">
+                                <div className={`group p-6 rounded-2xl bg-gradient-to-br from-neutral-800/60 via-zinc-800/60 to-stone-900/60 border-2 ${cardBorderColor} shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm`}>
+                                    <div className="text-xs text-gray-300 uppercase tracking-widest mb-3 font-bold">Mastery Score</div>
+                                    <div className={`text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r ${proficiencyColor} drop-shadow-lg group-hover:scale-110 transition-transform`}>
                                         {Math.round(proficiencyPercent * 0.7 + skill.experience * 3)}
                                     </div>
-                                    <div className="text-sm text-gray-400 mt-2 font-medium">
+                                    <div className="text-sm text-gray-300 mt-2 font-medium">
                                         Combined rating
                                     </div>
                                 </div>
                             </div>
 
                             {/* Additional Info */}
-                            <div className="p-5 rounded-2xl bg-gradient-to-r from-neutral-800/60 via-zinc-800/60 to-stone-900/60 border-2 border-neutral-600/40 shadow-lg backdrop-blur-sm hover:border-neutral-500/60 transition-all">
+                            <div className={`p-5 rounded-2xl bg-gradient-to-r from-neutral-800/60 via-zinc-800/60 to-stone-900/60 border-2 ${cardBorderColor} shadow-lg backdrop-blur-sm transition-all`}>
                                 <div className="flex items-center gap-4">
-                                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-neutral-600 via-gray-600 to-neutral-700 flex items-center justify-center text-3xl shadow-xl border-2 border-neutral-500/50">
+                                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${proficiencyColor} flex items-center justify-center text-3xl shadow-xl border-2 border-white/20`}>
                                         ⚡
                                     </div>
                                     <div>
-                                        <div className="text-sm text-gray-300 font-bold mb-1 tracking-wide">Pro Tip</div>
-                                        <div className="text-gray-400 text-sm leading-relaxed">
+                                        <div className={`text-sm font-bold mb-1 tracking-wide bg-gradient-to-r ${proficiencyColor} bg-clip-text text-transparent`}>Pro Tip</div>
+                                        <div className="text-gray-300 text-sm leading-relaxed">
                                             Click other discs to compare skills or use Tab + Enter for keyboard navigation
                                         </div>
                                     </div>
