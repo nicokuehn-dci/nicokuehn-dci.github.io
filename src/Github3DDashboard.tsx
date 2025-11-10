@@ -10,6 +10,29 @@ type GitStats = {
   recentCommits: number; // approximate via recent PushEvent commits
 };
 
+// Helper function to extract username from GitHub URL or return as-is if already a username
+function extractUsername(input: string): string {
+  if (!input) return '';
+  
+  // Remove whitespace
+  const trimmed = input.trim();
+  
+  // If it looks like a URL, extract the username
+  if (trimmed.includes('github.com/')) {
+    // Handle various GitHub URL formats
+    const match = trimmed.match(/github\.com\/([^/?#]+)/);
+    return match ? match[1] : trimmed;
+  }
+  
+  // If it starts with @, remove it
+  if (trimmed.startsWith('@')) {
+    return trimmed.substring(1);
+  }
+  
+  // Otherwise, assume it's already a username
+  return trimmed;
+}
+
 async function fetchGithubStats(username: string, token?: string): Promise<GitStats> {
   const headers: Record<string, string> = { Accept: 'application/vnd.github.v3+json' };
   if (token) headers['Authorization'] = `token ${token}`;
@@ -71,21 +94,25 @@ const MetricBox: React.FC<{ x: number; value: number; label: string; color: stri
 };
 
 const Github3DDashboard: React.FC<{ username?: string; token?: string; onBack?: () => void }> = ({ username: initialUsername, token: initialToken, onBack }) => {
-  const [username, setUsername] = useState(initialUsername || '');
+  const [username, setUsername] = useState(extractUsername(initialUsername || ''));
   const [token, setToken] = useState(initialToken || '');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stats, setStats] = useState<GitStats | null>(null);
 
   useEffect(() => {
-    if (initialUsername) {
+    const cleanUsername = extractUsername(initialUsername || '');
+    if (cleanUsername) {
+      // Update state with cleaned username
+      setUsername(cleanUsername);
+      
       // small delay
       setTimeout(() => {
         (async () => {
           try {
             setLoading(true);
             setError(null);
-            const s = await fetchGithubStats(initialUsername, initialToken);
+            const s = await fetchGithubStats(cleanUsername, initialToken);
             setStats(s);
           } catch (e: any) {
             setError(e.message || 'Failed to fetch');
@@ -99,12 +126,14 @@ const Github3DDashboard: React.FC<{ username?: string; token?: string; onBack?: 
   }, [initialUsername]);
 
   const doFetch = async () => {
-    if (!username) return setError('Enter a username');
+    const cleanUsername = extractUsername(username);
+    if (!cleanUsername) return setError('Enter a username');
     setLoading(true);
     setError(null);
     try {
-      const s = await fetchGithubStats(username, token);
+      const s = await fetchGithubStats(cleanUsername, token);
       setStats(s);
+      setUsername(cleanUsername); // Update to cleaned version
     } catch (e: any) {
       setError(e.message || 'Failed to fetch');
     } finally {
@@ -138,13 +167,29 @@ const Github3DDashboard: React.FC<{ username?: string; token?: string; onBack?: 
         </div>
 
         <div className="mb-4 flex gap-3 items-center">
-          <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="GitHub username (e.g. nicokuehn-dci)" className="flex-1 bg-transparent border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 focus:outline-none" />
-          <input value={token} onChange={(e) => setToken(e.target.value)} placeholder="Optional token" type="password" className="w-64 bg-transparent border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 focus:outline-none" />
-          <button onClick={doFetch} disabled={loading} className="px-4 py-2 rounded-md bg-gradient-to-r from-indigo-600 to-violet-600 text-white">Fetch</button>
+          <input 
+            value={username} 
+            onChange={(e) => setUsername(e.target.value)} 
+            placeholder="GitHub username or URL (e.g. nicokuehn-dci or https://github.com/nicokuehn-dci)" 
+            className="flex-1 bg-transparent border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 focus:outline-none text-gray-800 dark:text-gray-200" 
+          />
+          <input 
+            value={token} 
+            onChange={(e) => setToken(e.target.value)} 
+            placeholder="Optional token" 
+            type="password" 
+            className="w-64 bg-transparent border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 focus:outline-none text-gray-800 dark:text-gray-200" 
+          />
+          <button onClick={doFetch} disabled={loading} className="px-4 py-2 rounded-md bg-gradient-to-r from-indigo-600 to-violet-600 text-white disabled:opacity-50">
+            {loading ? 'Fetching...' : 'Fetch'}
+          </button>
         </div>
 
-        {loading && <div className="text-sm text-gray-600 mb-4">Fetching GitHub data…</div>}
-        {error && <div className="text-sm text-red-600 mb-4">{error}</div>}
+        {loading && <div className="text-sm text-gray-600 dark:text-gray-400 mb-4">Fetching GitHub data for <strong>{username}</strong>…</div>}
+        {error && <div className="text-sm text-red-600 dark:text-red-400 mb-4 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+          <strong>Error:</strong> {error}
+          {error.includes('404') && <div className="mt-1 text-xs">Username "{username}" not found. Please check the spelling or try a different username.</div>}
+        </div>}
 
         <div style={{ height: 520, borderRadius: 12, overflow: 'hidden', background: 'linear-gradient(180deg, #0b1220, #07101a)' }}>
           <Canvas camera={{ position: [0, 3, 8], fov: 50 }}>
