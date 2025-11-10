@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 // Dashboard3D removed — placeholder module deleted to simplify the build and deployment.
 
 declare const html2pdf: any;
@@ -549,8 +549,22 @@ const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: 
 
 const SkillsDeepDivePage: React.FC<{ data: SkillsData; onOpenDashboard?: (username?: string, token?: string) => void }> = ({ data, onOpenDashboard }) => {
     const [selected, setSelected] = useState<string | null>(null);
+    const [sortMode, setSortMode] = useState<'default'|'proficiency'|'experience'|'name'>('default');
+
+    const sortedTech = useMemo(() => {
+        const base = [...data.technical];
+        if (sortMode === 'default') return base;
+        if (sortMode === 'name') return base.sort((a, b) => a.name.localeCompare(b.name));
+        if (sortMode === 'experience') return base.sort((a, b) => b.experience - a.experience);
+        if (sortMode === 'proficiency') {
+            const order = { 'Expert': 3, 'Advanced': 2, 'Intermediate': 1, 'Beginner': 0 } as Record<string, number>;
+            return base.sort((a, b) => (order[b.proficiency] || 0) - (order[a.proficiency] || 0));
+        }
+        return base;
+    }, [data.technical, sortMode]);
+
     return (
-        <div className="skills-deep-container p-8 md:p-12 bg-white dark:bg-gray-800 transition-colors duration-500">
+        <div className="skills-deep-container p-8 md:p-12 transition-colors duration-500">
             <div className="flex items-center justify-between mb-6">
                 <div className="header-with-light relative">
                     <h1 className="font-serif text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200 text-left">Skills Deep Dive</h1>
@@ -558,15 +572,27 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData; onOpenDashboard?: (userna
                         <LightningIcon className="w-8 h-8" />
                     </div>
                 </div>
-                <div className="text-sm text-gray-500">Click a disc to highlight</div>
+                <div className="text-sm text-gray-300">Click a disc to highlight</div>
             </div>
                 <div className="mb-4">
                     <button onClick={() => onOpenDashboard && onOpenDashboard()} className="px-3 py-1 rounded-md bg-violet-600 text-white text-sm">Open 3D Dashboard</button>
                 </div>
 
+            {/* informal sorting controls */}
+            <div className="mb-4 flex items-center gap-3">
+                <div className="text-sm text-gray-300 mr-2">Sort:</div>
+                <div className="sort-controls inline-flex gap-2">
+                    <button className={`sort-button px-3 py-1 rounded-md ${sortMode==='default' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('default')}>Default</button>
+                    <button className={`sort-button px-3 py-1 rounded-md ${sortMode==='proficiency' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('proficiency')}>Proficiency</button>
+                    <button className={`sort-button px-3 py-1 rounded-md ${sortMode==='experience' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('experience')}>Experience</button>
+                    <button className={`sort-button px-3 py-1 rounded-md ${sortMode==='name' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('name')}>Name</button>
+                </div>
+                <div className="ml-auto text-xs text-gray-400 italic">Try different orders for a relaxed, informal view.</div>
+            </div>
+
             {/* Interactive discs row (technical only) */}
             <div className="skill-disc-row" role="list">
-                {data.technical.slice(0,6).map((skill, i) => (
+                {sortedTech.slice(0,6).map((skill, i) => (
                     <SkillDisc key={'t-'+i} skill={skill} onSelect={(n) => setSelected(n)} selected={selected === skill.name} />
                 ))}
             </div>
@@ -606,8 +632,8 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData; onOpenDashboard?: (userna
 
             <section className="mb-12">
                 <h2 className="inline-block text-3xl font-serif font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Technical Skills</h2>
-                <div className="skill-grid grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    {data.technical.map((skill, index) => <SkillDetailItem key={index} skill={skill} selected={selected === skill.name} />)}
+                <div className="skill-grid grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 informal-grid">
+                    {sortedTech.map((skill, index) => <SkillDetailItem key={index} skill={skill} selected={selected === skill.name} />)}
                 </div>
             </section>
 
@@ -1051,16 +1077,17 @@ const App: React.FC = () => {
                                         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
                                         .animate-fadeIn { animation: fadeIn 0.6s ease-in-out forwards; }
 
-                                        /* Skills deep-dive modern card styles with enhanced white glow */
+                                        /* Skills Deep Dive: dark theme variant with white glowing outlines/text */
                                         .skills-deep-container {
                                             position: relative;
                                             padding: 3rem 2rem;
                                             border-radius: 18px;
                                             overflow: visible;
-                                            background: radial-gradient(800px 300px at 10% 20%, rgba(99,102,241,0.06), transparent 10%), radial-gradient(600px 200px at 90% 80%, rgba(236,72,153,0.04), transparent 12%);
+                                            background: linear-gradient(180deg, #060812 0%, #0b1220 60%);
+                                            color: #e6eef8; /* default text color for this section */
                                         }
 
-                                        /* large soft white halo behind the grid */
+                                        /* subtle centered glow behind the grid (cool white/purple) */
                                         .skills-deep-container::before {
                                             content: '';
                                             position: absolute;
@@ -1070,68 +1097,84 @@ const App: React.FC = () => {
                                             width: 1000px;
                                             height: 420px;
                                             border-radius: 50%;
-                                            background: radial-gradient(closest-side, rgba(255,255,255,0.85), rgba(255,255,255,0.12) 45%, transparent 60%);
-                                            filter: blur(36px);
+                                            background: radial-gradient(closest-side, rgba(99,102,241,0.14), rgba(99,102,241,0.06) 30%, transparent 60%);
+                                            filter: blur(44px);
                                             z-index: 0;
                                             pointer-events: none;
+                                            mix-blend-mode: screen;
                                         }
 
                                         @media (prefers-color-scheme: dark) {
                                             .skills-deep-container::before {
-                                                background: radial-gradient(closest-side, rgba(255,255,255,0.06), rgba(255,255,255,0.02) 45%, transparent 60%);
+                                                background: radial-gradient(closest-side, rgba(99,102,241,0.16), rgba(99,102,241,0.06) 30%, transparent 60%);
                                             }
                                         }
 
                                         .skill-grid { position: relative; z-index: 1; }
 
+
                                                         .skill-card {
                                                             position: relative;
-                                                            border-radius: 10px;
-                                                            padding: 0.72rem; /* compact */
+                                                            border-radius: 18px;
+                                                            padding: 1rem; /* informal, roomier */
                                                             overflow: visible;
                                                             transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;
                                                             transform-style: preserve-3d;
-                                                            background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.80));
-                                                            box-shadow: 0 10px 30px rgba(2,6,23,0.06), 0 4px 10px rgba(2,6,23,0.04);
-                                                            border: 1px solid rgba(255,255,255,0.5);
+                                                            /* informal look: softer, playful surface */
+                                                            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+                                                            box-shadow: 0 10px 36px rgba(2,6,23,0.6);
+                                                            border: 2px dashed rgba(255,255,255,0.05);
+                                                            color: #fff;
                                                         }
 
                                         .skill-card.dark {
-                                            background: linear-gradient(180deg, rgba(17,24,39,0.6), rgba(17,24,39,0.45));
-                                            border: 1px solid rgba(255,255,255,0.04);
-                                            box-shadow: 0 20px 60px rgba(2,6,23,0.55), 0 8px 18px rgba(2,6,23,0.25);
+                                            background: linear-gradient(180deg, rgba(8,10,18,0.6), rgba(6,8,15,0.45));
+                                            border: 1px solid rgba(99,102,241,0.08);
+                                            box-shadow: 0 30px 80px rgba(2,6,23,0.6), 0 8px 24px rgba(2,6,23,0.25);
                                         }
 
                                         /* white halo + colored glow behind each card */
+
                                                         .skill-card::before {
+                                                                            content: '';
+                                                                            position: absolute;
+                                                                            inset: -8px;
+                                                                            z-index: -2;
+                                                                            border-radius: 14px;
+                                                                            /* cool white/purple halo */
+                                                                            background: radial-gradient(closest-side, rgba(99,102,241,0.12), rgba(99,102,241,0.04) 28%, transparent 56%);
+                                                                            filter: blur(28px);
+                                                                            opacity: 0.95;
+                                                                            transition: opacity .28s, transform .28s;
+                                                                            transform: translateZ(-16px) scale(0.99);
+                                                                            pointer-events: none;
+                                                                        }
+
+                                                        .skill-card::after {
                                                             content: '';
                                                             position: absolute;
-                                                            inset: -8px;
-                                                            z-index: -2;
-                                                            border-radius: 14px;
-                                                            background: radial-gradient(closest-side, rgba(255,255,255,0.9), rgba(255,255,255,0.5) 24%, rgba(255,255,255,0.08) 48%, transparent 68%);
-                                                            filter: blur(22px);
-                                                            opacity: 0.9;
-                                                            transition: opacity .28s, transform .28s;
-                                                            transform: translateZ(-16px) scale(0.99);
-                                                            pointer-events: none;
+                                                            inset: -6px;
+                                                            z-index: -1;
+                                                            border-radius: 16px;
+                                                            background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(236,72,153,0.04));
+                                                            filter: blur(14px);
+                                                            opacity: 0.95;
+                                                            transition: opacity .35s, transform .35s;
                                                         }
-
-                                        .skill-card::after {
-                                            content: '';
-                                            position: absolute;
-                                            inset: -6px;
-                                            z-index: -1;
-                                            border-radius: 16px;
-                                            background: linear-gradient(135deg, rgba(99,102,241,0.12), rgba(236,72,153,0.08));
-                                            filter: blur(14px);
-                                            opacity: 0.95;
-                                            transition: opacity .35s, transform .35s;
-                                        }
 
                                         .skill-card:hover { transform: translateY(-8px) rotateX(3deg); }
                                         .skill-card:hover::after { opacity: 1; filter: blur(18px); transform: translateY(-2px) scale(1.02); }
                                         .skill-card:hover::before { transform: translateZ(-18px) scale(1.02); opacity: 1; }
+
+                                        /* informal rotation for a casual, scattered feel */
+                                        .informal-grid .skill-card:nth-child(3n+1) { transform: rotate(-1.5deg); }
+                                        .informal-grid .skill-card:nth-child(3n+2) { transform: rotate(0.8deg); }
+                                        .informal-grid .skill-card:nth-child(3n+3) { transform: rotate(-0.6deg); }
+                                        .informal-grid .skill-card:hover { transform: rotate(0deg) translateY(-10px) scale(1.02); }
+
+                                        /* sort control styles */
+                                        .sort-controls .sort-button { background: transparent; color: #e6eef8; border: 1px solid rgba(255,255,255,0.06); padding: 0.35rem 0.6rem; }
+                                        .sort-controls .sort-button:hover { filter: brightness(1.08); }
 
                                           .skill-title { font-weight: 700; font-size: 1rem; color: #0f172a; display:flex; align-items:center; gap:0.5rem }
                                           .skill-meta { font-size: 0.78rem; color: #6b7280; }
