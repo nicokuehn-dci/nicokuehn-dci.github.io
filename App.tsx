@@ -612,6 +612,29 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData; onOpenDashboard?: (userna
                 <div className="ml-auto text-xs text-gray-400 italic">Try different orders for a relaxed, informal view.</div>
             </div>
 
+            {/* Proficiency Legend with 3D glowing shapes */}
+            <div className="proficiency-legend mb-6">
+                <div className="legend-title">Proficiency Levels</div>
+                <div className="legend-items">
+                    <div className="legend-item">
+                        <div className="legend-shape expert-glow" data-level="Expert"></div>
+                        <span className="legend-label">Expert (100%)</span>
+                    </div>
+                    <div className="legend-item">
+                        <div className="legend-shape advanced-glow" data-level="Advanced"></div>
+                        <span className="legend-label">Advanced (75%)</span>
+                    </div>
+                    <div className="legend-item">
+                        <div className="legend-shape intermediate-glow" data-level="Intermediate"></div>
+                        <span className="legend-label">Intermediate (50%)</span>
+                    </div>
+                    <div className="legend-item">
+                        <div className="legend-shape beginner-glow" data-level="Beginner"></div>
+                        <span className="legend-label">Beginner (25%)</span>
+                    </div>
+                </div>
+            </div>
+
             {/* Interactive discs row (technical only) */}
             <div className="skill-disc-row" role="list">
                 {sortedTech.slice(0,6).map((skill, i) => (
@@ -1361,6 +1384,42 @@ const App: React.FC = () => {
                                             50% { opacity: 0.5; }
                                         }
 
+                                        /* Pulsing glow for highlighted/hovered discs */
+                                        @keyframes glow-pulse {
+                                            0%, 100% {
+                                                box-shadow: 
+                                                    0 0 20px rgba(205,127,50,0.4),
+                                                    0 0 40px rgba(212,163,115,0.3),
+                                                    0 12px 40px rgba(0,0,0,0.5);
+                                            }
+                                            50% {
+                                                box-shadow: 
+                                                    0 0 40px rgba(205,127,50,0.8),
+                                                    0 0 80px rgba(212,163,115,0.6),
+                                                    0 16px 60px rgba(205,127,50,0.4);
+                                            }
+                                        }
+                                        .skill-disc.highlight,
+                                        .skill-disc.hovered {
+                                            animation: glow-pulse 2.5s ease-in-out infinite;
+                                        }
+
+                                        /* 3D rounded depth effect on disc container */
+                                        .skill-disc {
+                                            box-shadow: 
+                                                0 10px 30px rgba(0,0,0,0.4),
+                                                inset 0 2px 4px rgba(255,255,255,0.05);
+                                        }
+                                        .skill-disc::before {
+                                            content: '';
+                                            position: absolute;
+                                            inset: 0;
+                                            border-radius: 50%;
+                                            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.08), transparent 60%);
+                                            pointer-events: none;
+                                            z-index: 1;
+                                        }
+
                                         /* Enhanced hover state */
                                         .skill-disc.hovered {
                                             transform: translateY(-12px) scale(1.05);
@@ -1373,6 +1432,129 @@ const App: React.FC = () => {
                                         .skill-disc.hovered .inner {
                                             stroke: rgba(205,127,50,0.2);
                                             filter: drop-shadow(0 12px 30px rgba(205,127,50,0.15));
+                                        }
+
+                                        /* Proficiency Legend - 3D glowing rounded shapes */
+                                        .proficiency-legend {
+                                            background: linear-gradient(135deg, rgba(15,23,42,0.6), rgba(30,41,59,0.4));
+                                            border: 1px solid rgba(139,94,60,0.3);
+                                            border-radius: 16px;
+                                            padding: 1.5rem;
+                                            box-shadow: 0 10px 40px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.05);
+                                            backdrop-filter: blur(10px);
+                                        }
+                                        .legend-title {
+                                            font-size: 1rem;
+                                            font-weight: 700;
+                                            color: #d4a373;
+                                            margin-bottom: 1rem;
+                                            text-transform: uppercase;
+                                            letter-spacing: 1px;
+                                            text-shadow: 0 2px 8px rgba(212,163,115,0.4);
+                                        }
+                                        .legend-items {
+                                            display: flex;
+                                            gap: 1.5rem;
+                                            flex-wrap: wrap;
+                                            justify-content: center;
+                                        }
+                                        .legend-item {
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 0.75rem;
+                                            padding: 0.5rem 1rem;
+                                            background: rgba(0,0,0,0.3);
+                                            border-radius: 12px;
+                                            transition: transform 0.3s ease, box-shadow 0.3s ease;
+                                            cursor: default;
+                                        }
+                                        .legend-item:hover {
+                                            transform: translateY(-4px) scale(1.05);
+                                            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+                                        }
+                                        .legend-shape {
+                                            width: 28px;
+                                            height: 28px;
+                                            border-radius: 50%;
+                                            position: relative;
+                                            transform-style: preserve-3d;
+                                            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+                                        }
+                                        .legend-item:hover .legend-shape {
+                                            transform: translateZ(20px) rotateY(180deg) scale(1.2);
+                                        }
+                                        /* Expert - Bright bronze/gold */
+                                        .expert-glow {
+                                            background: linear-gradient(135deg, #b87333, #d4a373);
+                                            box-shadow: 
+                                                0 0 20px rgba(184,115,51,0.6),
+                                                0 0 40px rgba(212,163,115,0.4),
+                                                inset 0 2px 6px rgba(255,255,255,0.3),
+                                                inset 0 -2px 6px rgba(0,0,0,0.3);
+                                        }
+                                        .legend-item:hover .expert-glow {
+                                            box-shadow: 
+                                                0 0 30px rgba(184,115,51,0.9),
+                                                0 0 60px rgba(212,163,115,0.7),
+                                                0 8px 30px rgba(184,115,51,0.5),
+                                                inset 0 2px 6px rgba(255,255,255,0.4);
+                                        }
+                                        /* Advanced - Deep bronze/brass */
+                                        .advanced-glow {
+                                            background: linear-gradient(135deg, #8b5e3c, #c09a62);
+                                            box-shadow: 
+                                                0 0 20px rgba(140,94,60,0.5),
+                                                0 0 40px rgba(192,154,98,0.3),
+                                                inset 0 2px 6px rgba(255,255,255,0.25),
+                                                inset 0 -2px 6px rgba(0,0,0,0.3);
+                                        }
+                                        .legend-item:hover .advanced-glow {
+                                            box-shadow: 
+                                                0 0 30px rgba(140,94,60,0.8),
+                                                0 0 60px rgba(192,154,98,0.6),
+                                                0 8px 30px rgba(140,94,60,0.4),
+                                                inset 0 2px 6px rgba(255,255,255,0.35);
+                                        }
+                                        /* Intermediate - Antique brass/patina */
+                                        .intermediate-glow {
+                                            background: linear-gradient(135deg, #c9a66b, #7b5a36);
+                                            box-shadow: 
+                                                0 0 20px rgba(201,166,107,0.4),
+                                                0 0 40px rgba(123,90,54,0.3),
+                                                inset 0 2px 6px rgba(255,255,255,0.2),
+                                                inset 0 -2px 6px rgba(0,0,0,0.3);
+                                        }
+                                        .legend-item:hover .intermediate-glow {
+                                            box-shadow: 
+                                                0 0 30px rgba(201,166,107,0.7),
+                                                0 0 60px rgba(123,90,54,0.5),
+                                                0 8px 30px rgba(201,166,107,0.4),
+                                                inset 0 2px 6px rgba(255,255,255,0.3);
+                                        }
+                                        /* Beginner - Dark brown/copper */
+                                        .beginner-glow {
+                                            background: linear-gradient(135deg, #7b4b2a, #b66a3a);
+                                            box-shadow: 
+                                                0 0 20px rgba(123,75,42,0.4),
+                                                0 0 40px rgba(182,106,58,0.3),
+                                                inset 0 2px 6px rgba(255,255,255,0.2),
+                                                inset 0 -2px 6px rgba(0,0,0,0.3);
+                                        }
+                                        .legend-item:hover .beginner-glow {
+                                            box-shadow: 
+                                                0 0 30px rgba(123,75,42,0.7),
+                                                0 0 60px rgba(182,106,58,0.5),
+                                                0 8px 30px rgba(123,75,42,0.4),
+                                                inset 0 2px 6px rgba(255,255,255,0.3);
+                                        }
+                                        .legend-label {
+                                            font-size: 0.875rem;
+                                            font-weight: 600;
+                                            color: #cbd5e1;
+                                            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+                                        }
+                                        .legend-item:hover .legend-label {
+                                            color: #ffffff;
                                         }
 
                                         /* lightning accent overlay inside discs */
