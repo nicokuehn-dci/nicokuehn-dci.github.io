@@ -1364,11 +1364,32 @@ const App: React.FC = () => {
 
                                         /* skill disc chart */
                                         .skill-disc-row { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:1.25rem; }
-                                        /* discs bumped +50% for emphasis and stronger presence */
-                                        .skill-disc { width:210px; height:210px; display:inline-block; position:relative; cursor:pointer; border-radius:999px; perspective:900px; margin:0.6rem; }
+                                        /* discs bumped +50% for emphasis and stronger presence with enhanced 3D depth */
+                                        .skill-disc { 
+                                            width: 210px; 
+                                            height: 210px; 
+                                            display: inline-block; 
+                                            position: relative; 
+                                            cursor: pointer; 
+                                            border-radius: 999px; 
+                                            perspective: 1200px; 
+                                            margin: 0.6rem;
+                                            box-shadow: 
+                                                0 10px 30px rgba(0, 0, 0, 0.4),
+                                                0 0 20px rgba(255, 255, 255, 0.05),
+                                                inset 0 2px 4px rgba(255, 255, 255, 0.05);
+                                            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.2, 1);
+                                        }
+                                        .skill-disc:hover,
+                                        .skill-disc.highlight { 
+                                            box-shadow: 
+                                                0 20px 60px rgba(0, 0, 0, 0.6),
+                                                0 0 40px rgba(255, 255, 255, 0.15),
+                                                inset 0 4px 8px rgba(255, 255, 255, 0.1);
+                                        }
                                         .skill-disc svg { width:100%; height:100%; transform:rotate(-90deg); display:block; transition: transform .35s cubic-bezier(.2,.9,.2,1); }
-                                        .skill-disc .label { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:0.98rem; font-weight:800; color:#e6e6e8; text-align:center; pointer-events:none }
-                                        .skill-disc.highlight .label { color: #ffffff; text-shadow: 0 6px 22px rgba(2,6,23,0.56); }
+                                        .skill-disc .label { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:1.1rem; font-weight:900; color:#000000; text-align:center; pointer-events:none; text-shadow: 0 0 8px rgba(255,255,255,0.9), 0 0 16px rgba(255,255,255,0.7), 0 0 24px rgba(255,255,255,0.5); -webkit-text-stroke: 1px rgba(255,255,255,0.3); }
+                                        .skill-disc.highlight .label { color: #000000; text-shadow: 0 0 12px rgba(255,255,255,1), 0 0 24px rgba(255,255,255,0.8), 0 0 36px rgba(255,255,255,0.6), 0 4px 8px rgba(0,0,0,0.3); }
                                         .skill-disc .sub { display:block; font-size:0.72rem; font-weight:600; color:#6b7280 }
                                         .skill-disc .tooltip { position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(15,23,42,0.95); color:#fff; padding:6px 8px; border-radius:6px; font-size:0.78rem; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s; z-index:30 }
                                         .skill-disc:hover .tooltip, .skill-disc:focus .tooltip { opacity:1 }
@@ -1376,7 +1397,6 @@ const App: React.FC = () => {
                                         .skill-disc .ring { stroke-linecap:round; stroke-width:22; fill:none; filter: drop-shadow(0 12px 20px rgba(0,0,0,0.5)); transform-origin:50% 50%; transition: filter .28s, transform .28s, opacity .28s, stroke .28s; opacity: 0.7; stroke: #5a4a3a; }
                                         /* Center disk: dark grey with subtle soft outline */
                                         .skill-disc .inner { fill:#0f1724; opacity:1; stroke: rgba(255,255,255,0.06); stroke-width:4; filter: drop-shadow(0 8px 20px rgba(255,255,255,0.03)); }
-                                        .skill-disc .label { color: #ffffff; text-shadow: 0 4px 18px rgba(0,0,0,0.6); }
                                         .skill-disc.highlight .inner { stroke: rgba(205,127,50,0.35); filter: drop-shadow(0 22px 54px rgba(205,127,50,0.25)); }
                                         .skill-disc .gloss { fill: url(#diskGloss); opacity: 0.18; pointer-events: none; mix-blend-mode: overlay }
                                         .skill-disc.highlight { transform: translateZ(28px) scale(1.06); }
@@ -1387,45 +1407,66 @@ const App: React.FC = () => {
                                         .skill-disc:focus { outline: none; box-shadow: 0 16px 48px rgba(99,102,241,0.12); transform: translateY(-8px) rotateX(4deg); }
                                         .skill-disc:hover svg { transform: rotate(-90deg) translateZ(14px) rotateX(6deg); }
 
-                                        /* New interactive overlays */
+                                        /* New interactive overlays - Black text with white glow */
                                         .disc-percentage {
                                             position: absolute;
                                             top: 20%;
                                             left: 50%;
                                             transform: translateX(-50%);
-                                            font-size: 2rem;
+                                            font-size: 2.5rem;
                                             font-weight: 900;
-                                            color: #d4a373;
-                                            text-shadow: 0 2px 12px rgba(212, 163, 115, 0.6), 0 0 30px rgba(205, 127, 50, 0.4);
+                                            color: #000000;
+                                            text-shadow: 
+                                                0 0 8px rgba(255, 255, 255, 0.9),
+                                                0 0 16px rgba(255, 255, 255, 0.7),
+                                                0 0 24px rgba(255, 255, 255, 0.5),
+                                                0 2px 4px rgba(0, 0, 0, 0.3);
                                             pointer-events: none;
                                             transition: opacity 0.3s ease, transform 0.3s ease;
                                             z-index: 10;
+                                            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.3);
                                         }
                                         .skill-disc.hovered .disc-percentage,
                                         .skill-disc.highlight .disc-percentage {
-                                            transform: translateX(-50%) translateY(-4px) scale(1.1);
+                                            transform: translateX(-50%) translateY(-4px) scale(1.15);
+                                            text-shadow: 
+                                                0 0 12px rgba(255, 255, 255, 1),
+                                                0 0 24px rgba(255, 255, 255, 0.8),
+                                                0 0 36px rgba(255, 255, 255, 0.6),
+                                                0 4px 8px rgba(0, 0, 0, 0.4);
                                         }
 
                                         .disc-experience-badge {
                                             position: absolute;
                                             bottom: 15%;
                                             right: 12%;
-                                            background: linear-gradient(135deg, #8b5e3c, #c09a62);
-                                            color: #fff;
-                                            padding: 4px 10px;
-                                            border-radius: 12px;
-                                            font-size: 0.75rem;
-                                            font-weight: 800;
-                                            box-shadow: 0 4px 12px rgba(139, 94, 60, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+                                            background: linear-gradient(145deg, #ffffff, #e5e7eb);
+                                            color: #000000;
+                                            padding: 6px 12px;
+                                            border-radius: 16px;
+                                            font-size: 0.8rem;
+                                            font-weight: 900;
+                                            box-shadow: 
+                                                0 6px 16px rgba(0, 0, 0, 0.3),
+                                                0 0 20px rgba(255, 255, 255, 0.6),
+                                                inset 0 2px 4px rgba(255, 255, 255, 0.5),
+                                                inset 0 -2px 4px rgba(0, 0, 0, 0.1);
                                             pointer-events: none;
                                             transition: opacity 0.3s ease, transform 0.3s ease;
                                             z-index: 10;
-                                            border: 1px solid rgba(212, 163, 115, 0.3);
+                                            border: 2px solid rgba(255, 255, 255, 0.8);
+                                            text-shadow: 
+                                                0 0 4px rgba(255, 255, 255, 0.6),
+                                                0 1px 2px rgba(0, 0, 0, 0.2);
                                         }
                                         .skill-disc.hovered .disc-experience-badge,
                                         .skill-disc.highlight .disc-experience-badge {
-                                            transform: scale(1.15) rotate(-5deg);
-                                            box-shadow: 0 6px 18px rgba(139, 94, 60, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+                                            transform: scale(1.2) rotate(-5deg);
+                                            box-shadow: 
+                                                0 8px 24px rgba(0, 0, 0, 0.4),
+                                                0 0 30px rgba(255, 255, 255, 0.9),
+                                                inset 0 2px 4px rgba(255, 255, 255, 0.6),
+                                                inset 0 -2px 4px rgba(0, 0, 0, 0.15);
                                         }
 
                                         /* Shimmer animation */
@@ -1645,9 +1686,30 @@ const App: React.FC = () => {
 
                                         /* Accessibility and contrast tweaks */
                                         /* make disc captions higher contrast and avoid low-contrast grays */
-                                        .disc-caption { margin-top: 0.6rem; text-align: center; font-weight:700; color: #efd8b3; font-size:0.95rem; font-family: Georgia, 'Times New Roman', serif; letter-spacing:0.2px }
+                                        .disc-caption { 
+                                            margin-top: 0.6rem; 
+                                            text-align: center; 
+                                            font-weight: 900; 
+                                            color: #000000; 
+                                            font-size: 1rem; 
+                                            font-family: Georgia, 'Times New Roman', serif; 
+                                            letter-spacing: 0.5px;
+                                            text-shadow: 
+                                                0 0 6px rgba(255, 255, 255, 0.8),
+                                                0 0 12px rgba(255, 255, 255, 0.6),
+                                                0 0 18px rgba(255, 255, 255, 0.4),
+                                                0 2px 4px rgba(0, 0, 0, 0.2);
+                                            -webkit-text-stroke: 0.5px rgba(255, 255, 255, 0.2);
+                                        }
                                         @media (prefers-color-scheme: dark) {
-                                            .disc-caption { color: #efd8b3; }
+                                            .disc-caption { 
+                                                color: #000000; 
+                                                text-shadow: 
+                                                    0 0 8px rgba(255, 255, 255, 0.9),
+                                                    0 0 16px rgba(255, 255, 255, 0.7),
+                                                    0 0 24px rgba(255, 255, 255, 0.5),
+                                                    0 2px 4px rgba(0, 0, 0, 0.3);
+                                            }
                                         }
 
                                         /* Clear focus-visible outline for keyboard users */
