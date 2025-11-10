@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import Dashboard3D from './dashboard3d/App';
+// Dashboard3D removed — placeholder module deleted to simplify the build and deployment.
 
 declare const html2pdf: any;
 
@@ -119,6 +119,13 @@ const DownloadIcon: React.FC<{ className?: string }> = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={className}>
     <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
   </svg>
+);
+
+// --- LIGHTNING ICON (accent used in Skills) ---
+const LightningIcon: React.FC<{ className?: string }> = ({ className }) => (
+    <svg viewBox="0 0 24 24" className={className} xmlns="http://www.w3.org/2000/svg" aria-hidden>
+        <path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z" fill="#FACC15" />
+    </svg>
 );
 
 const LeftArrowIcon: React.FC<{ className?: string }> = ({ className }) => (
@@ -274,12 +281,12 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void }> = ({
         <header className="bg-white dark:bg-gray-800 p-8 md:p-12 transition-colors duration-500">
             <div className="flex flex-col md:flex-row items-center">
                 <div className="flex-shrink-0 mb-6 md:mb-0 md:mr-8">
-                    <img src={data.profilePictureUrl} alt={data.name} className="w-40 h-40 rounded-full object-cover border-4 border-gray-300 dark:border-gray-600 shadow-md transform hover:scale-105 transition-transform duration-300" />
+                    <img src={data.profilePictureUrl} alt={data.name} className="profile-pic w-44 h-44 rounded-full rounded-3d object-cover border-4 border-gray-200 dark:border-gray-700 shadow-lg transform hover:scale-105 transition-transform duration-300" />
                 </div>
-                                <div className="flex-grow text-center md:text-left">
-                                <h1 className="font-serif text-5xl md:text-6xl font-bold text-white drop-shadow-md" style={{ WebkitTextStroke: '1px white' }}>{data.name}</h1>
-                    <h2 className="font-sans text-xl md:text-2xl font-light text-gray-500 dark:text-gray-400 mt-2">{data.title}</h2>
-                    <p className="mt-4 text-gray-600 dark:text-gray-300">{data.summary}</p>
+                <div className="flex-grow text-center md:text-left">
+                    <h1 className="profile-name">{data.name}</h1>
+                    <h2 className="profile-title">{data.title}</h2>
+                    <p className="profile-summary">{data.summary}</p>
                 </div>
             </div>
         </header>
@@ -351,7 +358,7 @@ const AboutContactPage: React.FC<{ data: ResumeData }> = ({ data }) => (
     <div className="p-8 md:p-12 bg-white dark:bg-gray-800 min-h-[70vh] transition-colors duration-500">
         <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
             <div className="md:col-span-1 text-center md:text-left">
-                <img src={data.profilePictureUrl} alt={data.name} className="w-48 h-48 rounded-full object-cover border-4 border-gray-200 dark:border-gray-700 shadow-md mx-auto md:mx-0" />
+                <img src={data.profilePictureUrl} alt={data.name} className="w-48 h-48 rounded-full rounded-3d object-cover border-4 border-gray-200 dark:border-gray-700 shadow-md mx-auto md:mx-0" />
                 <h2 className="mt-4 text-2xl font-semibold text-gray-900 dark:text-gray-100">{data.name}</h2>
                 <p className="text-sm text-gray-600 dark:text-gray-300">{data.title}</p>
                 <div className="mt-4 text-sm text-gray-700 dark:text-gray-300 space-y-2">
@@ -389,6 +396,14 @@ const proficiencyStyles: { [key in SkillDetail['proficiency']]: { width: string;
     Expert: { width: '100%', color: 'bg-green-500' },
 };
 
+// Shared gradient map for proficiency levels (used by discs and stats panel)
+const proficiencyGradientMap: Record<SkillDetail['proficiency'], { start: string; end: string; shadow: string }> = {
+    Expert: { start: '#10b981', end: '#06b6d4', shadow: 'rgba(16,185,129,0.28)' },
+    Advanced: { start: '#38bdf8', end: '#7c3aed', shadow: 'rgba(59,130,246,0.28)' },
+    Intermediate: { start: '#f59e0b', end: '#fb923c', shadow: 'rgba(245,158,11,0.28)' },
+    Beginner: { start: '#fb7185', end: '#f43f5e', shadow: 'rgba(251,113,133,0.28)' },
+};
+
 const getSkillEmoji = (name: string) => {
     const key = name.toLowerCase();
     const cls = 'w-6 h-6';
@@ -407,11 +422,13 @@ const SkillDetailItem: React.FC<{ skill: SkillDetail; selected?: boolean }> = ({
     const ref = useRef<HTMLDivElement | null>(null);
     const innerRef = useRef<HTMLDivElement | null>(null);
 
-    // handle simple mouse tilt effect
+    // handle simple mouse tilt effect (respect prefers-reduced-motion)
     useEffect(() => {
         const el = ref.current;
         const inner = innerRef.current;
         if (!el || !inner) return;
+        const prefersReduce = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReduce) return; // skip interactive motion for reduced-motion users
         let frame: number | null = null;
         const onMove = (e: MouseEvent) => {
             const rect = el.getBoundingClientRect();
@@ -443,12 +460,12 @@ const SkillDetailItem: React.FC<{ skill: SkillDetail; selected?: boolean }> = ({
         <div ref={ref} className={`skill-card skill-card--interactive ${selected ? 'selected' : ''} ${typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? 'dark' : ''}`}>
             <div ref={innerRef} className="skill-inner">
                 <div className="flex justify-between items-center mb-3">
-                    <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-3">
                         <div className="skill-icon" aria-hidden>{getSkillEmoji(skill.name)}</div>
                         <h4 className="skill-title">{skill.name}</h4>
                     </div>
                     <div className="text-right">
-                        <div className={`skill-badge ${skill.proficiency === 'Expert' ? 'bg-green-100 text-green-800' : skill.proficiency === 'Advanced' ? 'bg-blue-100 text-blue-800' : skill.proficiency === 'Intermediate' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'}`}>{skill.proficiency}</div>
+                        <div className={`skill-badge ${skill.proficiency === 'Expert' ? 'bg-emerald-100 text-emerald-800' : skill.proficiency === 'Advanced' ? 'bg-sky-100 text-indigo-800' : skill.proficiency === 'Intermediate' ? 'bg-amber-100 text-amber-800' : 'bg-rose-100 text-rose-800'}`}>{skill.proficiency}</div>
                         <div className="skill-meta">{skill.experience} {skill.experience === 1 ? 'year' : 'years'}</div>
                     </div>
                 </div>
@@ -462,13 +479,22 @@ const SkillDetailItem: React.FC<{ skill: SkillDetail; selected?: boolean }> = ({
 };
 
 // Interactive circular disc component that displays a ring for proficiency
-const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: string) => void; selected?: boolean }> = ({ skill, size = 160, onSelect, selected }) => {
+const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: string) => void; selected?: boolean }> = ({ skill, size = 210, onSelect, selected }) => {
     const stroke = 18; // stronger ring
     const radius = (size / 2) - stroke; // account for stroke width
     const circumference = 2 * Math.PI * radius;
     const pct = proficiencyStyles[skill.proficiency] ? parseInt(proficiencyStyles[skill.proficiency].width) : 50;
     const offset = circumference * (1 - pct / 100);
-    const color = skill.proficiency === 'Expert' ? '#34d399' : skill.proficiency === 'Advanced' ? '#60a5fa' : skill.proficiency === 'Intermediate' ? '#fbbf24' : '#fb7185';
+    // nicer color gradients per proficiency
+    const gradientMap: Record<string, { start: string; end: string; shadow: string }> = {
+        Expert: { start: '#10b981', end: '#06b6d4', shadow: 'rgba(16,185,129,0.28)' }, // emerald -> teal
+        Advanced: { start: '#38bdf8', end: '#7c3aed', shadow: 'rgba(59,130,246,0.28)' }, // sky -> indigo
+        Intermediate: { start: '#f59e0b', end: '#fb923c', shadow: 'rgba(245,158,11,0.28)' }, // amber -> orange
+        Beginner: { start: '#fb7185', end: '#f43f5e', shadow: 'rgba(251,113,133,0.28)' }, // rose -> pink
+    };
+    const map = gradientMap[skill.proficiency] ?? gradientMap['Intermediate'];
+    const color = map.start;
+    const secondStop = map.end;
     const [showTip, setShowTip] = useState(false);
 
     const handleKey = (e: React.KeyboardEvent) => {
@@ -490,26 +516,31 @@ const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: 
             aria-pressed={selected}
             onKeyDown={handleKey}
         >
+            {/* lightning accent for energy/visual flair */}
+            <div className="disc-lightning-wrap" aria-hidden>
+                <LightningIcon className="disc-lightning" />
+            </div>
             <svg viewBox={`0 0 ${size} ${size}`}>
-                <defs>
-                    <linearGradient id={`ringGrad-${skill.name.replace(/\s+/g,'')}`} x1="0%" y1="0%" x2="100%" y2="0%">
+                    <defs>
+                    <linearGradient id={`ringGrad-${skill.name.replace(/\s+/g,'')}`} x1="0%" y1="0%" x2="100%" y2="0">
                         <stop offset="0%" stopColor={color} stopOpacity="1" />
-                        <stop offset="100%" stopColor="#8b5cf6" stopOpacity="0.92" />
+                        <stop offset="100%" stopColor={secondStop} stopOpacity="0.96" />
                     </linearGradient>
                     <radialGradient id={`diskGloss-${skill.name.replace(/\s+/g,'')}`} cx="30%" cy="25%" r="60%">
-                        <stop offset="0%" stopColor="#fff" stopOpacity="0.95" />
-                        <stop offset="50%" stopColor="#fff" stopOpacity="0.14" />
+                        <stop offset="0%" stopColor="#fff" stopOpacity="0.9" />
+                        <stop offset="50%" stopColor="#fff" stopOpacity="0.12" />
                         <stop offset="100%" stopColor="#fff" stopOpacity="0" />
                     </radialGradient>
                 </defs>
                 <g transform={`translate(0,0)`}> 
                     <circle className="ring-bg" cx={size/2} cy={size/2} r={radius} />
-                    <circle className="ring" cx={size/2} cy={size/2} r={radius} stroke={`url(#ringGrad-${skill.name.replace(/\s+/g,'')})`} strokeDasharray={`${circumference} ${circumference}`} strokeDashoffset={offset} style={{ transition: 'stroke-dashoffset .9s cubic-bezier(.2,.9,.2,1), transform .35s' }} />
-                    <circle className="inner" cx={size/2} cy={size/2} r={radius * 0.6} />
-                    <circle className="gloss" cx={size/2.45} cy={size/3.35} r={radius * 0.45} />
+                    <circle className="ring" cx={size/2} cy={size/2} r={radius} stroke={`url(#ringGrad-${skill.name.replace(/\s+/g,'')})`} strokeDasharray={`${circumference} ${circumference}`} strokeDashoffset={offset} style={{ transition: 'stroke-dashoffset .9s cubic-bezier(.2,.9,.2,1), transform .35s', filter: `drop-shadow(0 18px 36px ${map.shadow})` }} />
+                    <circle className="inner" cx={size/2} cy={size/2} r={radius * 0.68} />
+                    <circle className="gloss" cx={size/2.45} cy={size/3.35} r={radius * 0.5} />
                 </g>
             </svg>
-            <div className="label"><span>{skill.name}</span><span className="sub">{skill.proficiency}</span></div>
+            <div className="label"><span className="proficiency-only">{skill.proficiency}</span></div>
+            <div className="disc-caption" aria-hidden>{skill.name}</div>
             <div className="tooltip" role="status" aria-hidden={!showTip} style={{ opacity: showTip ? 1 : 0 }}>{skill.name} — {skill.experience} {skill.experience === 1 ? 'year' : 'years'}</div>
         </div>
     )
@@ -521,7 +552,12 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData; onOpenDashboard?: (userna
     return (
         <div className="skills-deep-container p-8 md:p-12 bg-white dark:bg-gray-800 transition-colors duration-500">
             <div className="flex items-center justify-between mb-6">
-                <h1 className="font-serif text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200 text-left">Skills Deep Dive</h1>
+                <div className="header-with-light relative">
+                    <h1 className="font-serif text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200 text-left">Skills Deep Dive</h1>
+                    <div className="header-lightning" aria-hidden>
+                        <LightningIcon className="w-8 h-8" />
+                    </div>
+                </div>
                 <div className="text-sm text-gray-500">Click a disc to highlight</div>
             </div>
                 <div className="mb-4">
@@ -533,6 +569,39 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData; onOpenDashboard?: (userna
                 {data.technical.slice(0,6).map((skill, i) => (
                     <SkillDisc key={'t-'+i} skill={skill} onSelect={(n) => setSelected(n)} selected={selected === skill.name} />
                 ))}
+            </div>
+
+            {/* Selected skill stats panel (dark highlight, white text) */}
+            <div className="stats-panel">
+                {selected ? (() => {
+                    const s = data.technical.find(sk => sk.name === selected);
+                    if (!s) return null;
+                    const pct = parseInt(proficiencyStyles[s.proficiency].width);
+                    const grad = proficiencyGradientMap[s.proficiency] || proficiencyGradientMap['Intermediate'];
+                    return (
+                        <div className="stats-panel-inner" role="region" aria-live="polite">
+                            <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'1rem'}}>
+                                <div className="stats-percent" style={{background:`linear-gradient(90deg, ${grad.start}, ${grad.end})`}} aria-hidden>{pct}%</div>
+                                <div style={{textAlign:'left'}}>
+                                    <h3 className="stats-title">{s.name}</h3>
+                                    <div className="stats-grid">
+                                        <div className="stat-item">
+                                            <div className="stat-label">Proficiency</div>
+                                            <div className="stat-value">{s.proficiency}</div>
+                                        </div>
+                                        <div className="stat-item">
+                                            <div className="stat-label">Experience</div>
+                                            <div className="stat-value">{s.experience} {s.experience === 1 ? 'year' : 'years'}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <p className="stats-note">Click other discs to compare or press <kbd>Tab</kbd> and <kbd>Enter</kbd> to select.</p>
+                        </div>
+                    )
+                })() : (
+                    <div className="stats-panel-hint">Select a disc to see highlighted stats — they will appear here.</div>
+                )}
             </div>
 
             <section className="mb-12">
@@ -857,10 +926,10 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
                         Add another project
                     </button>
                 </div>
-                {/* Inline dashboard render (optional) */}
+                {/* Inline dashboard render (optional) — removed the 3D dashboard component */}
                 {showInline && (
-                    <div className="mt-8 p-6 bg-gray-900/10 dark:bg-black/20 rounded-lg">
-                        <Dashboard3D username={username || initialUsername} token={token} />
+                    <div className="mt-8 p-6 bg-gray-900/10 dark:bg-black/20 rounded-lg text-sm text-gray-500">
+                        The interactive 3D dashboard has been removed from this build. Use the "Open 3D Dashboard" button to navigate (it now opens the Skills Deep Dive page).
                     </div>
                 )}
             </div>
@@ -958,11 +1027,11 @@ const App: React.FC = () => {
             onOpenDashboard={(u?: string, t?: string) => {
                 if (u) setGithubUsername(u);
                 if (t) setGithubToken(t);
+                // Dashboard was removed; navigate to Skills Deep Dive (now index 2)
                 setCurrentPage(2);
             }}
         />,
-        <Dashboard3D key={2} username={githubUsername} token={githubToken} />,
-        <SkillsDeepDivePage key={3} data={skillsData} onOpenDashboard={(u?: string, t?: string) => { if (u) setGithubUsername(u); if (t) setGithubToken(t); setCurrentPage(2); }} />,
+        <SkillsDeepDivePage key={2} data={skillsData} onOpenDashboard={(u?: string, t?: string) => { if (u) setGithubUsername(u); if (t) setGithubToken(t); setCurrentPage(2); }} />,
         <PlaceholderPage key={3} title="My Creative Work">A space to highlight your music production and other creative endeavors. Embed audio players, videos, or link to your portfolio on other platforms.</PlaceholderPage>,
     <AboutContactPage key={4} data={resumeData} />,
     ];
@@ -1085,10 +1154,10 @@ const App: React.FC = () => {
                                         .skill-progress { height: 10px; background: rgba(15,23,42,0.06); border-radius: 9999px; overflow: hidden; margin-top: .5rem; }
                                         .skill-progress .fill { height: 100%; border-radius: 9999px; transition: width .6s cubic-bezier(.2,.9,.2,1); box-shadow: inset 0 -4px 8px rgba(0,0,0,0.12); }
 
-                                        .fill.gradient-blue { background: linear-gradient(90deg,#60a5fa,#7c3aed); }
-                                        .fill.gradient-green { background: linear-gradient(90deg,#34d399,#06b6d4); }
-                                        .fill.gradient-yellow { background: linear-gradient(90deg,#fbbf24,#f97316); }
-                                        .fill.gradient-red { background: linear-gradient(90deg,#fb7185,#ef4444); }
+                                        .fill.gradient-blue { background: linear-gradient(90deg,#38bdf8,#7c3aed); }
+                                        .fill.gradient-green { background: linear-gradient(90deg,#10b981,#06b6d4); }
+                                        .fill.gradient-yellow { background: linear-gradient(90deg,#f59e0b,#fb923c); }
+                                        .fill.gradient-red { background: linear-gradient(90deg,#fb7185,#f43f5e); }
 
                                         @media (prefers-color-scheme: dark) {
                                             .skill-title { color: #e6eef8; }
@@ -1097,25 +1166,81 @@ const App: React.FC = () => {
                                             .skill-card::before { background: radial-gradient(closest-side, rgba(255,255,255,0.06), rgba(255,255,255,0.02) 30%, transparent 55%); }
                                         }
 
-                                                        /* skill disc chart */
-                                                        .skill-disc-row { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:1.25rem; }
-                                                                                                                                                                                /* discs are ~15% larger and more 3D */
-                                                                                                                                                                                .skill-disc { width:140px; height:140px; display:inline-block; position:relative; cursor:pointer; border-radius:999px; perspective:900px; margin:0.5rem; }
-                                                                                                                                                                                .skill-disc svg { width:100%; height:100%; transform:rotate(-90deg); display:block; transition: transform .35s cubic-bezier(.2,.9,.2,1); }
-                                                                                                                                                                                .skill-disc .label { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:0.86rem; font-weight:700; color:#0f172a; text-align:center; pointer-events:none }
-                                                                                                                                                                                .skill-disc .sub { display:block; font-size:0.68rem; font-weight:600; color:#6b7280 }
-                                                                                                                                                                            .skill-disc .tooltip { position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(15,23,42,0.95); color:#fff; padding:6px 8px; border-radius:6px; font-size:0.78rem; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s; z-index:30 }
-                                                                                                                                                                            .skill-disc:hover .tooltip, .skill-disc:focus .tooltip { opacity:1 }
-                                                                                                                                                                                .skill-disc .ring-bg { stroke: rgba(15,23,42,0.06); stroke-width:18; fill:none }
-                                                                                                                                                                                .skill-disc .ring { stroke-linecap:round; stroke-width:18; fill:none; filter: drop-shadow(0 12px 28px rgba(0,0,0,0.24)); transform-origin:50% 50%; transition: filter .28s, transform .28s }
-                                                                                                                                                                                .skill-disc .inner { fill: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92)); fill:#fff; opacity:0.96; filter: drop-shadow(0 6px 14px rgba(2,6,23,0.06)); }
-                                                                                                                                                                                .skill-disc .gloss { fill: url(#diskGloss); opacity: 0.22; pointer-events: none; mix-blend-mode: overlay }
-                                                                                                                                                                                .skill-disc.highlight { transform: translateZ(24px) scale(1.02); }
-                                                                                                                                                                                .skill-disc.highlight .ring { filter: drop-shadow(0 18px 54px rgba(99,102,241,0.36)); transform: scale(1.04); }
-                                                                                                                                                                                .skill-disc:focus { outline: none; box-shadow: 0 12px 36px rgba(99,102,241,0.12); transform: translateY(-6px) rotateX(4deg); }
-                                                                                                                                                                                .skill-disc:hover svg { transform: rotate(-90deg) translateZ(10px) rotateX(6deg); }
+                                        /* skill disc chart */
+                                        .skill-disc-row { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:1.25rem; }
+                                        /* discs bumped +50% for emphasis and stronger presence */
+                                        .skill-disc { width:210px; height:210px; display:inline-block; position:relative; cursor:pointer; border-radius:999px; perspective:900px; margin:0.6rem; }
+                                        .skill-disc svg { width:100%; height:100%; transform:rotate(-90deg); display:block; transition: transform .35s cubic-bezier(.2,.9,.2,1); }
+                                        .skill-disc .label { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:0.98rem; font-weight:800; color:#e6e6e8; text-align:center; pointer-events:none }
+                                        .skill-disc.highlight .label { color: #ffffff; text-shadow: 0 6px 22px rgba(2,6,23,0.56); }
+                                        .skill-disc .sub { display:block; font-size:0.72rem; font-weight:600; color:#6b7280 }
+                                        .skill-disc .tooltip { position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(15,23,42,0.95); color:#fff; padding:6px 8px; border-radius:6px; font-size:0.78rem; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s; z-index:30 }
+                                        .skill-disc:hover .tooltip, .skill-disc:focus .tooltip { opacity:1 }
+                                        .skill-disc .ring-bg { stroke: rgba(15,23,42,0.06); stroke-width:22; fill:none }
+                                        .skill-disc .ring { stroke-linecap:round; stroke-width:22; fill:none; filter: drop-shadow(0 18px 36px rgba(0,0,0,0.28)); transform-origin:50% 50%; transition: filter .28s, transform .28s }
+                                        .skill-disc .inner { fill: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92)); fill:#fff; opacity:0.96; filter: drop-shadow(0 8px 20px rgba(2,6,23,0.08)); }
+                                        .skill-disc .gloss { fill: url(#diskGloss); opacity: 0.24; pointer-events: none; mix-blend-mode: overlay }
+                                        .skill-disc.highlight { transform: translateZ(28px) scale(1.04); }
+                                        .skill-disc.highlight .ring { filter: drop-shadow(0 24px 68px rgba(99,102,241,0.42)); transform: scale(1.06); }
+                                        .skill-disc:focus { outline: none; box-shadow: 0 16px 48px rgba(99,102,241,0.12); transform: translateY(-8px) rotateX(4deg); }
+                                        .skill-disc:hover svg { transform: rotate(-90deg) translateZ(14px) rotateX(6deg); }
+
+                                        /* lightning accent overlay inside discs */
+                                        .disc-lightning-wrap { position:absolute; right:8%; top:8%; width:54px; height:54px; pointer-events:none; z-index:5; transform:translateZ(20px) rotate(-12deg); opacity:0.14; transition:opacity .25s ease, transform .25s ease; }
+                                        .disc-lightning { width:100%; height:100%; filter: drop-shadow(0 6px 18px rgba(250,204,21,0.12)); }
+                                        .skill-disc:hover .disc-lightning-wrap, .skill-disc.highlight .disc-lightning-wrap { opacity:0.95; transform:translateZ(36px) rotate(-6deg) scale(1.02); }
+                                        @keyframes lightning-flash { 0% { opacity: 0.15; transform: translateY(0) rotate(-12deg) scale(0.96); } 50% { opacity: 1; transform: translateY(-2px) rotate(-6deg) scale(1.02); } 100% { opacity: 0.15; transform: translateY(0) rotate(-12deg) scale(0.96); } }
+                                        .skill-disc.highlight .disc-lightning { animation: lightning-flash 1.5s ease-in-out infinite; }
+
+                                        /* rounded 3D profile image for stronger presence */
+                                        .rounded-3d { border-radius: 9999px !important; box-shadow: 0 24px 60px rgba(2,6,23,0.32), inset 0 6px 18px rgba(255,255,255,0.04); transform-style: preserve-3d; transition: transform .36s cubic-bezier(.2,.9,.2,1), box-shadow .36s; }
+                                        .rounded-3d:hover { transform: translateY(-6px) rotateX(4deg) rotateY(-2deg) scale(1.02); box-shadow: 0 40px 120px rgba(2,6,23,0.48); }
+
+                                        /* responsive discs: smaller on narrow screens */
+                                        @media (max-width: 768px) {
+                                            .skill-disc { width:140px; height:140px; }
+                                            .skill-disc .ring-bg { stroke-width:14; }
+                                            .skill-disc .ring { stroke-width:14; }
+                                            .skill-disc .inner { r: 0; }
+                                        }
+
+                                        /* stats panel under discs */
+                                        .stats-panel { margin-top: 1.25rem; display:flex; justify-content:center; }
+                                        .stats-panel-inner { background: linear-gradient(180deg, #0b1220, #04060b); color: #fff; padding: 1rem 1.25rem; border-radius: 12px; box-shadow: 0 30px 80px rgba(2,6,23,0.7); min-width: 300px; max-width: 800px; text-align:center; }
+                                        .stats-title { font-size:1.25rem; font-weight:800; margin-bottom:0.5rem; }
+                                        .stats-grid { display:flex; gap:1.25rem; justify-content:center; margin-bottom:0.5rem; }
+                                        .stat-item { text-align:center; }
+                                        .stat-label { color: #9ca3af; font-size:0.85rem; }
+                                        .stat-value { color: #ffffff; font-weight:800; font-size:1.05rem; margin-top:0.25rem; }
+                                        .stats-percent { min-width:72px; height:72px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; font-size:1.25rem; box-shadow: 0 10px 30px rgba(2,6,23,0.5); }
+                                        .stats-note { color: #cbd5e1; font-size:0.82rem; margin-top:0.5rem; }
+                                        .stats-panel-hint { color: #6b7280; background: rgba(15,23,42,0.04); padding: 0.8rem 1rem; border-radius:10px; }
+
+                                            /* header lightning accent */
+                                            .header-with-light { display:inline-block; position:relative; }
+                                            .header-lightning { position:absolute; right:-34px; top:-18px; opacity:0.9; transform:rotate(-8deg) scale(1); pointer-events:none; filter: drop-shadow(0 8px 20px rgba(250,204,21,0.12)); }
+
+                                                /* profile header refinements */
+                                                .profile-pic { border-radius: 9999px; border-width: 4px; border-style: solid; box-shadow: 0 28px 70px rgba(2,6,23,0.36); }
+                                                .profile-name { font-family: "Georgia", "Times New Roman", serif; font-weight:800; font-size:2.5rem; line-height:1; color: #ffffff; text-shadow: 0 2px 0 rgba(0,0,0,0.25), 0 8px 30px rgba(2,6,23,0.5); letter-spacing: -0.8px; margin:0; }
+                                                @media(min-width:768px) { .profile-name { font-size:3.5rem; } }
+                                                .profile-title { color: #cbd5e1; font-size:1.05rem; margin-top:8px; }
+                                                .profile-summary { margin-top:1rem; color:#9ca3af; max-width:54ch; }
+
 
                                                         .skill-card.selected { box-shadow: 0 30px 80px rgba(99,102,241,0.18), 0 10px 24px rgba(2,6,23,0.15); transform: translateY(-10px) scale(1.02); }
+
+                                        /* Accessibility and contrast tweaks */
+                                        /* make disc captions higher contrast and avoid low-contrast grays */
+                                        .disc-caption { margin-top: 0.6rem; text-align: center; font-weight:700; color: #0b1220; font-size:0.95rem; }
+                                        @media (prefers-color-scheme: dark) {
+                                            .disc-caption { color: #e6eef8; }
+                                        }
+
+                                        /* Clear focus-visible outline for keyboard users */
+                                        .skill-disc:focus-visible { outline: 3px solid rgba(99,102,241,0.18); outline-offset: 6px; box-shadow: 0 20px 50px rgba(99,102,241,0.12); }
+                                        /* improve tooltip visibility when keyboard focusing */
+                                        .skill-disc:focus-visible .tooltip { opacity:1 }
                                     `}</style>
             <div className="bg-gray-100 dark:bg-gray-900 min-h-screen p-4 sm:p-8 md:p-12 transition-colors duration-500 font-sans">
                 <ThemeToggle />

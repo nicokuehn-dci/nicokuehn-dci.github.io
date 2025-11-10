@@ -1,0 +1,79 @@
+name: Build and deploy docs
+
+on:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    # avoid loops: skip runs triggered by the bot itself
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # keep token available for pushing commits later
+          persist-credentials: true
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (production)
+        run: npm run build
+
+      - name: Copy dist to docs
+        run: |
+          rm -rf docs || true
+          cp -r dist docs
+
+      - name: Commit docs changes (if any)
+        env:
+          GIT_AUTHOR_NAME: github-actions[bot]
+          GIT_AUTHOR_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+        run: |
+          git config user.name "$GIT_AUTHOR_NAME"
+          git config user.email "$GIT_AUTHOR_EMAIL"
+          git add -A docs
+          # only commit if there are staged changes
+          if git diff --cached --quiet; then
+            echo "No changes to docs to commit"
+            exit 0
+          else
+            git commit -m "chore(pages): update docs from build [skip ci]" || true
+          fi
+
+      - name: Push docs using GH_PAT (if provided)
+        if: ${{ secrets.GH_PAT != '' }}
+        run: |
+          echo "Using GH_PAT from secrets to push changes"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
+          git push origin HEAD:main
+
+      - name: Push docs using DEPLOY_KEY (SSH) (if provided)
+        if: ${{ secrets.DEPLOY_KEY != '' }}
+        uses: webfactory/ssh-agent@v0.8.1
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+      - name: Push docs via SSH
+        if: ${{ secrets.DEPLOY_KEY != '' }}
+        run: |
+          git remote set-url origin git@github.com:${{ github.repository }}
+          git push origin HEAD:main
+
+      - name: Push docs using default credentials (fallback)
+        if: ${{ secrets.GH_PAT == '' && secrets.DEPLOY_KEY == '' }}
+        run: |
+          echo "No GH_PAT or DEPLOY_KEY provided; attempting to push using default credentials (may 403)"
+          git push origin HEAD:main || echo "Push failed or was denied (expected if Actions lacks write permissions)"
