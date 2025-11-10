@@ -498,6 +498,7 @@ const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: 
     const color = map.start;
     const secondStop = map.end;
     const [showTip, setShowTip] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
 
     const handleKey = (e: React.KeyboardEvent) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -508,9 +509,9 @@ const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: 
 
     return (
         <div
-            className={`skill-disc ${selected ? 'highlight' : ''}`}
-            onMouseEnter={() => setShowTip(true)}
-            onMouseLeave={() => setShowTip(false)}
+            className={`skill-disc ${selected ? 'highlight' : ''} ${isHovered ? 'hovered' : ''}`}
+            onMouseEnter={() => { setShowTip(true); setIsHovered(true); }}
+            onMouseLeave={() => { setShowTip(false); setIsHovered(false); }}
             onClick={() => onSelect(skill.name)}
             title={skill.name}
             role="button"
@@ -522,6 +523,17 @@ const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: 
             <div className="disc-lightning-wrap" aria-hidden>
                 <LightningIcon className="disc-lightning" />
             </div>
+
+            {/* Percentage overlay */}
+            <div className="disc-percentage" style={{ opacity: isHovered || selected ? 1 : 0 }}>
+                {pct}%
+            </div>
+
+            {/* Experience badge */}
+            <div className="disc-experience-badge" style={{ opacity: isHovered || selected ? 1 : 0 }}>
+                {skill.experience}y
+            </div>
+
             <svg viewBox={`0 0 ${size} ${size}`}>
                     <defs>
                     <linearGradient id={`ringGrad-${skill.name.replace(/\s+/g,'')}`} x1="0%" y1="0%" x2="100%" y2="0">
@@ -533,11 +545,19 @@ const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: 
                         <stop offset="50%" stopColor="#fff" stopOpacity="0.12" />
                         <stop offset="100%" stopColor="#fff" stopOpacity="0" />
                     </radialGradient>
+                    {/* Animated shimmer for hover */}
+                    <linearGradient id={`shimmer-${skill.name.replace(/\s+/g,'')}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="transparent" />
+                        <stop offset="50%" stopColor="rgba(255,255,255,0.3)" />
+                        <stop offset="100%" stopColor="transparent" />
+                    </linearGradient>
                 </defs>
                 <g transform={`translate(0,0)`}> 
                     <circle className="ring-bg" cx={size/2} cy={size/2} r={radius} />
                     <circle className="ring" cx={size/2} cy={size/2} r={radius} stroke={`url(#ringGrad-${skill.name.replace(/\s+/g,'')})`} strokeDasharray={`${circumference} ${circumference}`} strokeDashoffset={offset} style={{ transition: 'stroke-dashoffset .9s cubic-bezier(.2,.9,.2,1), transform .35s', filter: `drop-shadow(0 18px 36px ${map.shadow})` }} />
                     <circle className="inner" cx={size/2} cy={size/2} r={radius * 0.68} />
+                    {/* Shimmer overlay on hover */}
+                    {isHovered && <circle className="shimmer-overlay" cx={size/2} cy={size/2} r={radius * 0.68} fill={`url(#shimmer-${skill.name.replace(/\s+/g,'')})`} opacity="0.4" />}
                     <circle className="gloss" cx={size/2.45} cy={size/3.35} r={radius * 0.5} />
                 </g>
             </svg>
@@ -1290,6 +1310,70 @@ const App: React.FC = () => {
                                         .skill-disc:not(.highlight) .ring { opacity: 0.5 }
                                         .skill-disc:focus { outline: none; box-shadow: 0 16px 48px rgba(99,102,241,0.12); transform: translateY(-8px) rotateX(4deg); }
                                         .skill-disc:hover svg { transform: rotate(-90deg) translateZ(14px) rotateX(6deg); }
+
+                                        /* New interactive overlays */
+                                        .disc-percentage {
+                                            position: absolute;
+                                            top: 20%;
+                                            left: 50%;
+                                            transform: translateX(-50%);
+                                            font-size: 2rem;
+                                            font-weight: 900;
+                                            color: #d4a373;
+                                            text-shadow: 0 2px 12px rgba(212, 163, 115, 0.6), 0 0 30px rgba(205, 127, 50, 0.4);
+                                            pointer-events: none;
+                                            transition: opacity 0.3s ease, transform 0.3s ease;
+                                            z-index: 10;
+                                        }
+                                        .skill-disc.hovered .disc-percentage,
+                                        .skill-disc.highlight .disc-percentage {
+                                            transform: translateX(-50%) translateY(-4px) scale(1.1);
+                                        }
+
+                                        .disc-experience-badge {
+                                            position: absolute;
+                                            bottom: 15%;
+                                            right: 12%;
+                                            background: linear-gradient(135deg, #8b5e3c, #c09a62);
+                                            color: #fff;
+                                            padding: 4px 10px;
+                                            border-radius: 12px;
+                                            font-size: 0.75rem;
+                                            font-weight: 800;
+                                            box-shadow: 0 4px 12px rgba(139, 94, 60, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+                                            pointer-events: none;
+                                            transition: opacity 0.3s ease, transform 0.3s ease;
+                                            z-index: 10;
+                                            border: 1px solid rgba(212, 163, 115, 0.3);
+                                        }
+                                        .skill-disc.hovered .disc-experience-badge,
+                                        .skill-disc.highlight .disc-experience-badge {
+                                            transform: scale(1.15) rotate(-5deg);
+                                            box-shadow: 0 6px 18px rgba(139, 94, 60, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.3);
+                                        }
+
+                                        /* Shimmer animation */
+                                        .shimmer-overlay {
+                                            animation: shimmer-pulse 2s ease-in-out infinite;
+                                        }
+                                        @keyframes shimmer-pulse {
+                                            0%, 100% { opacity: 0.2; }
+                                            50% { opacity: 0.5; }
+                                        }
+
+                                        /* Enhanced hover state */
+                                        .skill-disc.hovered {
+                                            transform: translateY(-12px) scale(1.05);
+                                            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                                        }
+                                        .skill-disc.hovered .ring {
+                                            opacity: 0.85;
+                                            filter: drop-shadow(0 20px 40px rgba(205,127,50,0.4));
+                                        }
+                                        .skill-disc.hovered .inner {
+                                            stroke: rgba(205,127,50,0.2);
+                                            filter: drop-shadow(0 12px 30px rgba(205,127,50,0.15));
+                                        }
 
                                         /* lightning accent overlay inside discs */
                                         .disc-lightning-wrap { position:absolute; right:8%; top:8%; width:54px; height:54px; pointer-events:none; z-index:5; transform:translateZ(20px) rotate(-12deg); opacity:0.14; transition:opacity .25s ease, transform .25s ease; }
