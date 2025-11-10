@@ -785,19 +785,23 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                                     <div className={`text-3xl font-black bg-gradient-to-r ${proficiencyColor} bg-clip-text text-transparent mb-4 drop-shadow-md group-hover:scale-110 transition-transform`}>
                                         {skill.proficiency}
                                     </div>
-                                    <div className="w-full bg-gradient-to-r from-neutral-800 to-neutral-900 rounded-full h-4 overflow-hidden shadow-inner border border-neutral-700/50 relative">
+                                    <div className="w-full bg-gradient-to-r from-neutral-800 to-neutral-900 rounded-full h-5 overflow-hidden shadow-inner border border-neutral-700/50 relative">
                                         <div 
-                                            className={`h-full bg-gradient-to-r ${progressBarColor} rounded-full transition-all duration-1000 relative overflow-hidden shadow-lg`}
+                                            className="h-full bg-gradient-to-r from-white via-gray-50 to-white rounded-full transition-all duration-1000 relative overflow-hidden"
                                             style={{width: `${proficiencyPercent}%`}}
                                         >
-                                            {/* Glowing effect */}
-                                            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/30 to-white/50"></div>
-                                            <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/40 to-transparent"></div>
+                                            {/* Multi-layer white glow */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/50 to-white/70"></div>
+                                            <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/60 to-transparent"></div>
+                                            {/* Inner white glow shadow */}
+                                            <div className="absolute inset-0 shadow-[0_0_25px_rgba(255,255,255,0.9),inset_0_0_25px_rgba(255,255,255,0.7)]"></div>
+                                            {/* Top highlight */}
+                                            <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/40 to-transparent"></div>
                                         </div>
                                         {/* Outer glow effect */}
-                                        <div className="absolute inset-0 rounded-full shadow-[inset_0_0_15px_rgba(255,255,255,0.2)]" style={{width: `${proficiencyPercent}%`}}></div>
+                                        <div className="absolute inset-0 rounded-full shadow-[inset_0_0_20px_rgba(255,255,255,0.3)]" style={{width: `${proficiencyPercent}%`}}></div>
                                     </div>
-                                    <div className="text-right text-sm text-gray-500 mt-2 font-bold">{proficiencyPercent}%</div>
+                                    <div className="text-right text-sm text-gray-400 mt-2 font-bold">{proficiencyPercent}%</div>
                                 </div>
 
                                 {/* Experience Card */}
