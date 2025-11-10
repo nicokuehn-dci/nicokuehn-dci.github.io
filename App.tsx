@@ -260,11 +260,38 @@ const skillTaglines: Record<string, string> = {
 
 // --- UI HELPER COMPONENTS ---
 const SkillTag: React.FC<{ skill: string }> = ({ skill }) => (
-    <span className="inline-block bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full transform hover:-translate-y-1 hover:scale-105 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 cursor-default">{skill}</span>
+    <span 
+        className="inline-block bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full transform hover:-translate-y-1 hover:scale-105 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 cursor-default"
+        style={{
+            border: '1px solid rgba(255,255,255,0.3)',
+            boxShadow: '0 0 8px rgba(255,255,255,0.2), 0 0 16px rgba(255,255,255,0.1)'
+        }}
+        onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 12px rgba(255,255,255,0.4), 0 0 24px rgba(255,255,255,0.2), 0 0 36px rgba(255,255,255,0.1)';
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)';
+        }}
+        onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 8px rgba(255,255,255,0.2), 0 0 16px rgba(255,255,255,0.1)';
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+        }}
+    >{skill}</span>
 );
 
 const InterestTag: React.FC<{ interest: string }> = ({ interest }) => (
-    <span className="inline-block bg-transparent border border-gray-300 text-gray-600 dark:bg-transparent dark:border-gray-600 dark:text-gray-400 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full transform hover:-translate-y-1 transition-transform duration-200 cursor-default">{interest}</span>
+    <span 
+        className="inline-block bg-transparent border border-gray-300 text-gray-600 dark:bg-transparent dark:border-gray-600 dark:text-gray-400 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full transform hover:-translate-y-1 transition-transform duration-200 cursor-default"
+        style={{
+            boxShadow: '0 0 8px rgba(255,255,255,0.15), 0 0 16px rgba(255,255,255,0.08)'
+        }}
+        onMouseEnter={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 12px rgba(255,255,255,0.3), 0 0 24px rgba(255,255,255,0.15), 0 0 36px rgba(255,255,255,0.08)';
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)';
+        }}
+        onMouseLeave={(e) => {
+            e.currentTarget.style.boxShadow = '0 0 8px rgba(255,255,255,0.15), 0 0 16px rgba(255,255,255,0.08)';
+            e.currentTarget.style.borderColor = '';
+        }}
+    >{interest}</span>
 );
 
 const SidebarSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
@@ -276,74 +303,144 @@ const SidebarSection: React.FC<{ title: string; children: React.ReactNode }> = (
 
 // --- PAGE COMPONENTS ---
 
-const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void }> = ({ data, onDownloadPdf }) => (
+const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpenContactForm: () => void }> = ({ data, onDownloadPdf, onOpenContactForm }) => (
     <>
-        <header className="bg-white dark:bg-gray-800 p-8 md:p-12 transition-colors duration-500">
-            <div className="flex flex-col md:flex-row items-center">
-                <div className="flex-shrink-0 mb-6 md:mb-0 md:mr-8">
-                    <img src={data.profilePictureUrl} alt={data.name} className="profile-pic w-44 h-44 rounded-full rounded-3d object-cover border-4 border-gray-200 dark:border-gray-700 shadow-lg transform hover:scale-105 transition-transform duration-300" />
-                </div>
-                <div className="flex-grow text-center md:text-left">
-                    <h1 className="profile-name">{data.name}</h1>
-                    <h2 className="profile-title">{data.title}</h2>
-                    <p className="profile-summary">{data.summary}</p>
-                </div>
-            </div>
-        </header>
-        <hr className="border-t border-gray-200 dark:border-gray-700" />
-        <main className="grid grid-cols-1 md:grid-cols-3">
-            <div className="md:col-span-2 p-8">
-                <section className="mb-10">
-                    <h2 className="inline-block text-3xl font-serif font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Education</h2>
-                    {data.education.map((edu, index) => (
-                        <div key={index}>
-                            <div className="flex justify-between items-baseline"><h3 className="text-xl font-semibold text-gray-700 dark:text-gray-200">{edu.degree}</h3><p className="text-sm font-light text-gray-500 dark:text-gray-400">{edu.location}</p></div>
-                            <p className="font-medium text-gray-600 dark:text-gray-300">{edu.institution}</p>
-                            <p className="text-sm text-gray-500 dark:text-gray-500 mb-3">{edu.date}</p>
-                            <p className="text-gray-600 dark:text-gray-400 mb-2 italic font-semibold">Courses</p>
-                            <ul className="list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1"><li>{edu.courses.join(', ')}</li><li>{edu.description}</li></ul>
+        <div className="about-contact-page p-8 md:p-12 min-h-[50vh]">
+            <div className="max-w-6xl mx-auto">
+                {/* Header with profile */}
+                <div className="about-header-glow mb-8">
+                    <div className="flex flex-col md:flex-row items-center gap-8">
+                        <div className="flex-shrink-0">
+                            <img src={data.profilePictureUrl} alt={data.name} className="profile-pic w-44 h-44 rounded-full rounded-3d object-cover border-4 border-gray-200 dark:border-gray-700 shadow-lg transform hover:scale-105 transition-transform duration-300" />
                         </div>
-                    ))}
-                </section>
-                <section>
-                    <h2 className="inline-block text-3xl font-serif font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Work Experience</h2>
-                    {data.workExperience.map((job, index) => (
-                        <div key={index} className="mb-6 p-4 bg-white/50 dark:bg-gray-800/20 rounded-lg border border-gray-200 dark:border-gray-700/50 shadow-sm">
-                            <div className="flex justify-between items-start mb-1">
-                                <div>
-                                    <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100">{job.role}</h3>
-                                    <p className="font-semibold text-gray-600 dark:text-gray-300">{job.company}</p>
+                        <div className="flex-grow text-center md:text-left">
+                            <h1 className="text-6xl md:text-7xl font-black text-white mb-4" style={{
+                                textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.3), 0 0 70px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
+                                letterSpacing: '0.05em'
+                            }}>- nico_kuehn -</h1>
+                            <h2 className="about-subtitle mb-4">{data.title}</h2>
+                            <p className="text-gray-300 text-lg leading-relaxed">{data.summary}</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Main Content Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {/* Left Column - Education & Experience */}
+                    <div className="md:col-span-2 space-y-8">
+                        {/* Education Card */}
+                        <div className="content-card-3d">
+                            <h2 className="content-title-3d mb-6">Education</h2>
+                            {data.education.map((edu, index) => (
+                                <div key={index} className="mb-6">
+                                    <div className="flex justify-between items-baseline">
+                                        <h3 className="text-xl font-semibold text-gray-200">{edu.degree}</h3>
+                                        <p className="text-sm font-light text-gray-400">{edu.location}</p>
+                                    </div>
+                                    <p className="font-medium text-gray-300">{edu.institution}</p>
+                                    <p className="text-sm text-gray-400 mb-3">{edu.date}</p>
+                                    <p className="text-gray-300 mb-2 italic font-semibold">Courses</p>
+                                    <ul className="list-disc list-inside text-gray-400 space-y-1">
+                                        <li>{edu.courses.join(', ')}</li>
+                                        <li>{edu.description}</li>
+                                    </ul>
                                 </div>
-                                <div className="text-right flex-shrink-0 pl-4">
-                                    <p className="font-medium text-gray-500 dark:text-gray-400">{job.date}</p>
-                                    <p className="text-sm font-light text-gray-400 dark:text-gray-500">{job.location}</p>
+                            ))}
+                        </div>
+
+                        {/* Work Experience Card */}
+                        <div className="content-card-3d">
+                            <h2 className="content-title-3d mb-6">Work Experience</h2>
+                            {data.workExperience.map((job, index) => (
+                                <div key={index} className="mb-6 p-4 bg-neutral-800/40 rounded-lg border border-gray-600/30 shadow-sm">
+                                    <div className="flex justify-between items-start mb-1">
+                                        <div>
+                                            <h3 className="text-xl font-bold text-gray-100">{job.role}</h3>
+                                            <p className="font-semibold text-gray-300">{job.company}</p>
+                                        </div>
+                                        <div className="text-right flex-shrink-0 pl-4">
+                                            <p className="font-medium text-gray-400">{job.date}</p>
+                                            <p className="text-sm font-light text-gray-500">{job.location}</p>
+                                        </div>
+                                    </div>
+                                    <p className="italic text-gray-400 my-2">{job.description}</p>
+                                    <p className="font-semibold text-gray-300">{job.subRole}</p>
+                                    <ul className="list-disc list-inside text-gray-400 mt-2 space-y-1 marker:text-gray-500">
+                                        {job.responsibilities.map((resp, i) => <li key={i}>{resp}</li>)}
+                                    </ul>
                                 </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Right Column - Sidebar */}
+                    <div className="md:col-span-1 space-y-6">
+                        <div className="sticky top-8 space-y-6">
+                            {/* Contact Card */}
+                            <div className="content-card-3d">
+                                <h3 className="content-title-3d mb-4 text-xl">Contact</h3>
+                                <button onClick={onOpenContactForm} className="flex items-center mb-3 text-gray-300 hover:text-white transition-colors w-full text-left">
+                                    <MailIcon className="w-5 h-5 mr-3 text-gray-500" />
+                                    <span>{data.contact.email}</span>
+                                </button>
+                                <div className="flex items-center mb-3 text-gray-300">
+                                    <PhoneIcon className="w-5 h-5 mr-3 text-gray-500" />
+                                    <span>{data.contact.phone}</span>
+                                </div>
+                                <div className="flex items-center mb-3 text-gray-300">
+                                    <LocationIcon className="w-5 h-5 mr-3 text-gray-500" />
+                                    <span>{data.contact.location}</span>
+                                </div>
+                                <a href={data.contact.githubLink} target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-300 hover:text-white transition-colors">
+                                    <GithubIcon className="w-5 h-5 mr-3 text-gray-500" />
+                                    <span>{data.contact.github}</span>
+                                </a>
+                                <button onClick={onDownloadPdf} className="flex items-center mt-4 w-full text-left text-gray-300 hover:text-white transition-colors">
+                                    <DownloadIcon className="w-5 h-5 mr-3 text-gray-500" />
+                                    <span>Download as PDF</span>
+                                </button>
                             </div>
-                            <p className="italic text-gray-500 dark:text-gray-400 my-2">{job.description}</p>
-                            <p className="font-semibold text-gray-700 dark:text-gray-300">{job.subRole}</p>
-                            <ul className="list-disc list-inside text-gray-600 dark:text-gray-400 mt-2 space-y-1 marker:text-gray-400">
-                                {job.responsibilities.map((resp, i) => <li key={i}>{resp}</li>)}
-                            </ul>
+
+                            {/* Skills Card */}
+                            <div className="content-card-3d">
+                                <h3 className="content-title-3d mb-4 text-xl">Skills</h3>
+                                <div className="flex flex-wrap">{data.skills.map((skill, index) => <SkillTag key={index} skill={skill} />)}</div>
+                            </div>
+
+                            {/* Personal Projects Card */}
+                            <div className="content-card-3d">
+                                <h3 className="content-title-3d mb-4 text-xl">Personal Projects</h3>
+                                {data.personalProjects.map((project, index) => (
+                                    <div key={index} className="mb-4">
+                                        <h4 className="font-semibold text-gray-300">
+                                            {project.name} <span className="text-sm font-light text-gray-500">({project.date})</span>
+                                        </h4>
+                                        <p className="text-gray-400 text-sm">{project.description}</p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Languages Card */}
+                            <div className="content-card-3d">
+                                <h3 className="content-title-3d mb-4 text-xl">Languages</h3>
+                                {data.languages.map((lang, index) => (
+                                    <div key={index} className="mb-2">
+                                        <p className="font-semibold text-gray-300">{lang.name}</p>
+                                        <p className="text-sm text-gray-400">{lang.proficiency}</p>
+                                    </div>
+                                ))}
+                            </div>
+
+                            {/* Interests Card */}
+                            <div className="content-card-3d">
+                                <h3 className="content-title-3d mb-4 text-xl">Interests</h3>
+                                <div className="flex flex-wrap">{data.interests.map((interest, index) => <InterestTag key={index} interest={interest} />)}</div>
+                            </div>
                         </div>
-                    ))}
-                </section>
-            </div>
-            <aside className="md:col-span-1 bg-gray-50 dark:bg-gray-800/40 p-8 border-l border-gray-200 dark:border-gray-700 transition-colors duration-500">
-                <div className="sticky top-8">
-                    <SidebarSection title="Contact">
-                        <a href={`mailto:${data.contact.email}`} className="flex items-center mb-3 text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"><MailIcon className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500" /><span>{data.contact.email}</span></a>
-                        <div className="flex items-center mb-3 text-gray-600 dark:text-gray-300"><PhoneIcon className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500" /><span>{data.contact.phone}</span></div>
-                        <div className="flex items-center mb-3 text-gray-600 dark:text-gray-300"><LocationIcon className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500" /><span>{data.contact.location}</span></div>
-                        <a href={data.contact.githubLink} target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"><GithubIcon className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500" /><span>{data.contact.github}</span></a>
-                        <button onClick={onDownloadPdf} className="flex items-center mt-4 w-full text-left text-gray-600 dark:text-gray-300 hover:text-black dark:hover:text-white transition-colors"><DownloadIcon className="w-5 h-5 mr-3 text-gray-400 dark:text-gray-500" /><span>Download as PDF</span></button>
-                    </SidebarSection>
-                    <SidebarSection title="Skills"><div className="flex flex-wrap">{data.skills.map((skill, index) => <SkillTag key={index} skill={skill} />)}</div></SidebarSection>
-                    <SidebarSection title="Personal Projects">{data.personalProjects.map((project, index) => (<div key={index} className="mb-4"><h4 className="font-semibold text-gray-700 dark:text-gray-300">{project.name} <span className="text-sm font-light text-gray-500 dark:text-gray-400">({project.date})</span></h4><p className="text-gray-600 dark:text-gray-400 text-sm">{project.description}</p></div>))}</SidebarSection>
-                    <SidebarSection title="Languages">{data.languages.map((lang, index) => (<div key={index} className="mb-2"><p className="font-semibold text-gray-700 dark:text-gray-300">{lang.name}</p><p className="text-sm text-gray-600 dark:text-gray-400">{lang.proficiency}</p></div>))}</SidebarSection>
-                    <SidebarSection title="Interests"><div className="flex flex-wrap">{data.interests.map((interest, index) => <InterestTag key={index} interest={interest} />)}</div></SidebarSection>
+                    </div>
                 </div>
-            </aside>
-        </main>
+            </div>
+        </div>
     </>
 );
 
@@ -354,12 +451,96 @@ const PlaceholderPage: React.FC<{ title: string; children: React.ReactNode }> = 
     </div>
 );
 
-const AboutContactPage: React.FC<{ data: ResumeData }> = ({ data }) => (
+// My Creative Work Page
+const MyCreativeWorkPage: React.FC = () => (
+    <div className="creative-work-page p-8 md:p-12 min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
+        <div className="max-w-6xl mx-auto">
+            {/* Header */}
+            <div className="text-center mb-12">
+                <h1 className="text-6xl md:text-7xl font-black text-white mb-4" style={{
+                    textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.3), 0 0 70px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
+                    letterSpacing: '0.05em'
+                }}>
+                    - my_creative_work -
+                </h1>
+                <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+                    House & Techno music production spanning over a decade. Releases, collaborations, and live performances.
+                </p>
+            </div>
+
+            {/* Main Content Card */}
+            <div className="content-card-3d max-w-4xl mx-auto">
+                <div className="content-card-header mb-8">
+                    <h2 className="content-title-glow text-3xl">🎵 Listen on Spotify</h2>
+                    <div className="title-underline-glow"></div>
+                </div>
+
+                <p className="content-text-3d text-lg mb-8 leading-relaxed">
+                    Explore my discography featuring house and techno productions. From deep grooves to driving beats, 
+                    each track represents years of passion and dedication to electronic music.
+                </p>
+
+                {/* Spotify Embed */}
+                <div className="spotify-embed-container rounded-2xl overflow-hidden shadow-2xl border-4 border-white/40 dark:border-gray-600/40 mb-8 transform hover:scale-[1.02] transition-transform duration-300">
+                    <iframe 
+                        data-testid="embed-iframe" 
+                        style={{ borderRadius: '16px' }} 
+                        src="https://open.spotify.com/embed/artist/3xtYO8Za3Cs51PZVapJU9G?utm_source=generator&theme=0" 
+                        width="100%" 
+                        height="380" 
+                        frameBorder="0" 
+                        allowFullScreen={true}
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                        loading="lazy"
+                    />
+                </div>
+
+                {/* Additional Info */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                    <div className="p-6 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border border-purple-200/50 dark:border-purple-700/50">
+                        <h3 className="text-xl font-bold text-purple-900 dark:text-purple-300 mb-3">🎧 Genres</h3>
+                        <p className="text-gray-700 dark:text-gray-300">House, Techno, Deep House, Tech House</p>
+                    </div>
+                    <div className="p-6 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border border-blue-200/50 dark:border-blue-700/50">
+                        <h3 className="text-xl font-bold text-blue-900 dark:text-blue-300 mb-3">📅 Active Since</h3>
+                        <p className="text-gray-700 dark:text-gray-300">2010 – Present (15+ years)</p>
+                    </div>
+                </div>
+
+                {/* Projects */}
+                <div className="mt-8 p-6 rounded-xl bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 border border-gray-300 dark:border-gray-600">
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Featured Projects</h3>
+                    <ul className="space-y-3">
+                        <li className="flex items-start gap-3">
+                            <span className="text-2xl">🎹</span>
+                            <div>
+                                <strong className="text-gray-900 dark:text-white">Finegrind & Benson</strong>
+                                <p className="text-gray-600 dark:text-gray-400">House music project – Production, releases and live sets</p>
+                            </div>
+                        </li>
+                        <li className="flex items-start gap-3">
+                            <span className="text-2xl">⚡</span>
+                            <div>
+                                <strong className="text-gray-900 dark:text-white">Nick de Nitro</strong>
+                                <p className="text-gray-600 dark:text-gray-400">Techno music project – Releases and collaborations</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+);
+
+const AboutContactPage: React.FC<{ data: ResumeData, onOpenContactForm: () => void }> = ({ data, onOpenContactForm }) => (
     <div className="about-contact-page p-8 md:p-12 min-h-[70vh] transition-colors duration-500">
         <div className="max-w-6xl mx-auto">
             {/* Glowing header */}
             <div className="about-header-glow mb-12 text-center">
-                <h1 className="about-title">About Me</h1>
+                <h1 className="text-6xl md:text-7xl font-black text-white mb-4" style={{
+                    textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.3), 0 0 70px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
+                    letterSpacing: '0.05em'
+                }}>- about_me -</h1>
                 <div className="about-subtitle">Get to know me better</div>
             </div>
 
@@ -381,7 +562,15 @@ const AboutContactPage: React.FC<{ data: ResumeData }> = ({ data }) => (
                                 <div className="contact-icon-wrapper">
                                     <MailIcon className="contact-icon" />
                                 </div>
-                                <a href={`mailto:${data.contact.email}`} className="contact-link">{data.contact.email}</a>
+                                <button 
+                                    onClick={onOpenContactForm} 
+                                    className="contact-link" 
+                                    type="button"
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                                    aria-label="Open contact form"
+                                >
+                                    {data.contact.email}
+                                </button>
                             </div>
                             <div className="contact-item-glow">
                                 <div className="contact-icon-wrapper">
@@ -404,11 +593,17 @@ const AboutContactPage: React.FC<{ data: ResumeData }> = ({ data }) => (
                         </div>
                         
                         {/* CTA Button with 3D effect */}
-                        <div className="mt-6">
-                            <a href={`mailto:${data.contact.email}`} className="cta-button-3d">
+                        <div className="mt-6" style={{ position: 'relative', zIndex: 10 }}>
+                            <button 
+                                onClick={onOpenContactForm} 
+                                className="cta-button-3d" 
+                                style={{ position: 'relative', zIndex: 10 }}
+                                type="button"
+                                aria-label="Open contact form"
+                            >
                                 <span className="cta-text">Email me</span>
                                 <span className="cta-glow"></span>
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -465,18 +660,18 @@ const AboutContactPage: React.FC<{ data: ResumeData }> = ({ data }) => (
 );
 
 const proficiencyStyles: { [key in SkillDetail['proficiency']]: { width: string; color: string } } = {
-    Beginner: { width: '25%', color: 'bg-red-500' },
-    Intermediate: { width: '50%', color: 'bg-yellow-500' },
-    Advanced: { width: '75%', color: 'bg-blue-500' },
-    Expert: { width: '100%', color: 'bg-green-500' },
+    Beginner: { width: '25%', color: 'bg-orange-500' },
+    Intermediate: { width: '50%', color: 'bg-blue-500' },
+    Advanced: { width: '75%', color: 'bg-indigo-600' },
+    Expert: { width: '100%', color: 'bg-green-600' },
 };
 
 // Shared gradient map for proficiency levels (used by discs and stats panel)
 const proficiencyGradientMap: Record<SkillDetail['proficiency'], { start: string; end: string; shadow: string }> = {
-    Expert: { start: '#10b981', end: '#06b6d4', shadow: 'rgba(16,185,129,0.28)' },
-    Advanced: { start: '#38bdf8', end: '#7c3aed', shadow: 'rgba(59,130,246,0.28)' },
-    Intermediate: { start: '#f59e0b', end: '#fb923c', shadow: 'rgba(245,158,11,0.28)' },
-    Beginner: { start: '#fb7185', end: '#f43f5e', shadow: 'rgba(251,113,133,0.28)' },
+    Expert: { start: '#16a34a', end: '#22c55e', shadow: 'rgba(22,163,74,0.3)' },
+    Advanced: { start: '#4f46e5', end: '#6366f1', shadow: 'rgba(79,70,229,0.3)' },
+    Intermediate: { start: '#3b82f6', end: '#60a5fa', shadow: 'rgba(59,130,246,0.3)' },
+    Beginner: { start: '#f97316', end: '#fb923c', shadow: 'rgba(249,115,22,0.3)' },
 };
 
 const getSkillEmoji = (name: string) => {
@@ -581,6 +776,9 @@ const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: 
         }
     };
 
+    // Calculate animation speed based on proficiency - higher proficiency = faster pulse
+    const pulseSpeed = 4 - (pct / 33); // Range: ~1s (Expert 100%) to ~3s (Beginner 25%)
+
     return (
         <div
             className={`skill-disc ${selected ? 'highlight' : ''} ${isHovered ? 'hovered' : ''}`}
@@ -592,6 +790,10 @@ const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: 
             tabIndex={0}
             aria-pressed={selected}
             onKeyDown={handleKey}
+            style={{
+                animation: `disc-pulse-orange ${pulseSpeed}s ease-in-out infinite`,
+                animationDelay: `${Math.random() * 0.5}s` // Slight random delay for organic feel
+            }}
         >
             {/* lightning accent for energy/visual flair */}
             <div className="disc-lightning-wrap" aria-hidden>
@@ -646,6 +848,77 @@ const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: 
 const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
     const [selected, setSelected] = useState<string | null>(null);
     const [sortMode, setSortMode] = useState<'default'|'proficiency'|'experience'|'name'>('default');
+    const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+    const [currentTime, setCurrentTime] = useState(new Date());
+
+    // Update clock every second
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
+
+    // Auto-slideshow stats data
+    const statsSlides = [
+        { 
+            label: 'GitHub Profile', 
+            value: 'nicokuehn-dci', 
+            unit: 'Active Developer',
+            subtitle: 'Building with Python, JavaScript & React',
+            icon: '👨‍💻'
+        },
+        { 
+            label: 'Project Portfolio', 
+            value: '25+', 
+            unit: 'Projects Completed',
+            subtitle: '500+ commits across repositories',
+            icon: '📦'
+        },
+        { 
+            label: 'Code Volume', 
+            value: '1200+', 
+            unit: 'Lines of Code',
+            subtitle: '12 active repos, 6 deployed apps',
+            icon: '💻'
+        },
+        { 
+            label: 'Skill Mastery', 
+            value: '37%', 
+            unit: 'Overall Proficiency',
+            subtitle: 'Averaged across all technical skills',
+            icon: '📊'
+        },
+        { 
+            label: 'Tech Stack', 
+            value: '15', 
+            unit: 'Technologies',
+            subtitle: '8 frameworks & 180+ hours coded',
+            icon: '🛠️'
+        },
+        { 
+            label: 'Primary Languages', 
+            value: 'Py • JS • TS', 
+            unit: 'Core Stack',
+            subtitle: 'Python, JavaScript, TypeScript expertise',
+            icon: '⚡'
+        },
+        { 
+            label: 'Deployment', 
+            value: '6', 
+            unit: 'Apps Live',
+            subtitle: 'Production-ready applications',
+            icon: '🌐'
+        }
+    ];
+
+    // Auto-advance slideshow every 4 seconds
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setCurrentSlideIndex((prev) => (prev + 1) % statsSlides.length);
+        }, 4000);
+        return () => clearInterval(interval);
+    }, [statsSlides.length]);
 
     const sortedTech = useMemo(() => {
         const base = [...data.technical];
@@ -660,61 +933,722 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
     }, [data.technical, sortMode]);
 
     return (
-        <div className="skills-deep-container p-8 md:p-12 transition-colors duration-500">
-            <div className="flex items-center justify-between mb-6">
-                <div className="header-with-light relative">
-                    <h1 className="font-serif text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200 text-left">Skills Deep Dive</h1>
-                    <div className="header-lightning" aria-hidden>
-                        <LightningIcon className="w-8 h-8" />
+        <div className="about-contact-page p-8 md:p-12 min-h-[70vh] transition-colors duration-500">
+            <div className="max-w-6xl mx-auto">
+                {/* Glowing header - About Me style */}
+                <div className="about-header-glow mb-12 text-center">
+                    <h1 className="text-6xl md:text-7xl font-black text-white mb-4" style={{
+                        textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.3), 0 0 70px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
+                        letterSpacing: '0.05em'
+                    }}>- skills_deep_dive -</h1>
+                    <div className="about-subtitle">Explore my technical expertise</div>
+                </div>
+
+                {/* Dynamic Commercial Stats Banner - Grid Layout with Sliding Ticker & UV Clock */}
+                <div 
+                    className="content-card-3d mb-8 overflow-hidden commercial-banner" 
+                    style={{ 
+                        position: 'relative', 
+                        minHeight: '160px',
+                        display: 'grid',
+                        gridTemplateColumns: '1fr 280px 180px',
+                        gap: '1.5rem',
+                        padding: '1.5rem'
+                    }}
+                    onMouseEnter={() => {
+                        const banner = document.querySelector('.commercial-banner');
+                        if (banner) banner.classList.add('banner-hovered');
+                    }}
+                    onMouseLeave={() => {
+                        const banner = document.querySelector('.commercial-banner');
+                        if (banner) banner.classList.remove('banner-hovered');
+                    }}
+                >
+                    {/* Pulsating Background Light */}
+                    <div className="banner-glow-bg" style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: '120%',
+                        height: '140%',
+                        background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.15), rgba(255,255,255,0.08) 40%, transparent 70%)',
+                        animation: 'pulse-bg-glow 4s ease-in-out infinite',
+                        pointerEvents: 'none',
+                        zIndex: 0,
+                        filter: 'blur(40px)'
+                    }} />
+
+                    {/* Animated Corner Glows */}
+                    <div style={{
+                        position: 'absolute',
+                        top: '0',
+                        left: '0',
+                        width: '100px',
+                        height: '100px',
+                        background: 'radial-gradient(circle at top left, rgba(255,255,255,0.2), transparent 60%)',
+                        animation: 'corner-glow-1 5s ease-in-out infinite',
+                        pointerEvents: 'none',
+                        zIndex: 0,
+                        filter: 'blur(20px)'
+                    }} />
+                    <div style={{
+                        position: 'absolute',
+                        bottom: '0',
+                        right: '0',
+                        width: '100px',
+                        height: '100px',
+                        background: 'radial-gradient(circle at bottom right, rgba(255,255,255,0.2), transparent 60%)',
+                        animation: 'corner-glow-2 5s ease-in-out infinite',
+                        animationDelay: '2.5s',
+                        pointerEvents: 'none',
+                        zIndex: 0,
+                        filter: 'blur(20px)'
+                    }} />
+                    {/* Left Side - 3D Surrounding Stats Grid */}
+                    <div style={{ 
+                        position: 'relative',
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(3, 1fr)',
+                        gridTemplateRows: 'repeat(2, 1fr)',
+                        gap: '1rem',
+                        alignItems: 'center',
+                        zIndex: 1
+                    }}>
+                        {/* Top Row Stats */}
+                        <div className="stat-3d-card playful-card" 
+                            style={{
+                                padding: '0.75rem 1rem',
+                                background: 'linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08))',
+                                borderRadius: '16px',
+                                border: '2px solid rgba(255,255,255,0.3)',
+                                backdropFilter: 'blur(12px)',
+                                boxShadow: '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3)',
+                                cursor: 'pointer',
+                                transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                                transform: 'perspective(1000px) rotateY(0deg) rotateX(0deg)',
+                                transformStyle: 'preserve-3d',
+                                animation: 'float-subtle-1 6s ease-in-out infinite'
+                            }}
+                            onClick={(e) => {
+                                e.currentTarget.style.animation = 'bounce-playful 0.6s ease';
+                                setTimeout(() => {
+                                    e.currentTarget.style.animation = 'float-subtle-1 6s ease-in-out infinite';
+                                }, 600);
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(8deg) rotateX(-3deg) translateZ(25px) scale(1.05)';
+                                e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), 0 0 40px rgba(255,255,255,0.5), inset 0 1px 0 rgba(255,255,255,0.6)';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15))';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) translateZ(0px) scale(1)';
+                                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3)';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08))';
+                            }}
+                        >
+                            <div style={{
+                                fontSize: '1.5rem',
+                                fontWeight: 900,
+                                color: '#ffffff',
+                                textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.5)',
+                                marginBottom: '0.25rem',
+                                transition: 'all 0.3s ease'
+                            }}>🚀 0.5+</div>
+                            <div style={{
+                                fontSize: '0.65rem',
+                                color: '#d0d0d0',
+                                textShadow: '0 0 8px rgba(255,255,255,0.4)',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                                transition: 'all 0.3s ease'
+                            }}>Years</div>
+                        </div>
+
+                        <div className="stat-3d-card playful-card" 
+                            style={{
+                                padding: '0.75rem 1rem',
+                                background: 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06))',
+                                borderRadius: '16px',
+                                border: '2px solid rgba(255,255,255,0.25)',
+                                backdropFilter: 'blur(12px)',
+                                boxShadow: '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.25)',
+                                cursor: 'pointer',
+                                transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                                transform: 'perspective(1000px) rotateY(0deg) rotateX(0deg)',
+                                transformStyle: 'preserve-3d',
+                                animation: 'float-subtle-2 7s ease-in-out infinite'
+                            }}
+                            onClick={(e) => {
+                                e.currentTarget.style.animation = 'wiggle 0.6s ease';
+                                setTimeout(() => {
+                                    e.currentTarget.style.animation = 'float-subtle-2 7s ease-in-out infinite';
+                                }, 600);
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(-8deg) rotateX(3deg) translateZ(25px) scale(1.05)';
+                                e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), 0 0 40px rgba(255,255,255,0.5), inset 0 1px 0 rgba(255,255,255,0.6)';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.13))';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) translateZ(0px) scale(1)';
+                                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.25)';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06))';
+                            }}
+                        >
+                            <div style={{
+                                fontSize: '1.5rem',
+                                fontWeight: 900,
+                                color: '#ffffff',
+                                textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.5)',
+                                marginBottom: '0.25rem',
+                                transition: 'all 0.3s ease'
+                            }}>📦 25+</div>
+                            <div style={{
+                                fontSize: '0.65rem',
+                                color: '#d0d0d0',
+                                textShadow: '0 0 8px rgba(255,255,255,0.4)',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                                transition: 'all 0.3s ease'
+                            }}>Projects</div>
+                        </div>
+
+                        <div className="stat-3d-card playful-card" 
+                            style={{
+                                padding: '0.75rem 1rem',
+                                background: 'linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.07))',
+                                borderRadius: '16px',
+                                border: '2px solid rgba(255,255,255,0.28)',
+                                backdropFilter: 'blur(12px)',
+                                boxShadow: '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.28)',
+                                cursor: 'pointer',
+                                transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                                transform: 'perspective(1000px) rotateY(0deg) rotateX(0deg)',
+                                transformStyle: 'preserve-3d',
+                                animation: 'float-subtle-3 8s ease-in-out infinite'
+                            }}
+                            onClick={(e) => {
+                                e.currentTarget.style.animation = 'spin-playful 0.7s ease';
+                                setTimeout(() => {
+                                    e.currentTarget.style.animation = 'float-subtle-3 8s ease-in-out infinite';
+                                }, 700);
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(8deg) rotateX(-3deg) translateZ(25px) scale(1.05)';
+                                e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), 0 0 40px rgba(255,255,255,0.5), inset 0 1px 0 rgba(255,255,255,0.6)';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.24), rgba(255,255,255,0.14))';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) translateZ(0px) scale(1)';
+                                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.28)';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.14), rgba(255,255,255,0.07))';
+                            }}
+                        >
+                            <div style={{
+                                fontSize: '1.5rem',
+                                fontWeight: 900,
+                                color: '#ffffff',
+                                textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.5)',
+                                marginBottom: '0.25rem',
+                                transition: 'all 0.3s ease'
+                            }}>🌐 6</div>
+                            <div style={{
+                                fontSize: '0.65rem',
+                                color: '#d0d0d0',
+                                textShadow: '0 0 8px rgba(255,255,255,0.4)',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                                transition: 'all 0.3s ease'
+                            }}>Apps Live</div>
+                        </div>
+
+                        {/* Bottom Row Stats */}
+                        <div className="stat-3d-card playful-card" 
+                            style={{
+                                padding: '0.75rem 1rem',
+                                background: 'linear-gradient(135deg, rgba(255,255,255,0.11), rgba(255,255,255,0.05))',
+                                borderRadius: '16px',
+                                border: '2px solid rgba(255,255,255,0.23)',
+                                backdropFilter: 'blur(12px)',
+                                boxShadow: '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.23)',
+                                cursor: 'pointer',
+                                transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                                transform: 'perspective(1000px) rotateY(0deg) rotateX(0deg)',
+                                transformStyle: 'preserve-3d',
+                                animation: 'float-subtle-4 6.5s ease-in-out infinite'
+                            }}
+                            onClick={(e) => {
+                                e.currentTarget.style.animation = 'bounce-playful 0.6s ease';
+                                setTimeout(() => {
+                                    e.currentTarget.style.animation = 'float-subtle-4 6.5s ease-in-out infinite';
+                                }, 600);
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(-8deg) rotateX(3deg) translateZ(25px) scale(1.05)';
+                                e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), 0 0 40px rgba(255,255,255,0.5), inset 0 1px 0 rgba(255,255,255,0.6)';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.21), rgba(255,255,255,0.12))';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) translateZ(0px) scale(1)';
+                                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.23)';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.11), rgba(255,255,255,0.05))';
+                            }}
+                        >
+                            <div style={{
+                                fontSize: '1.5rem',
+                                fontWeight: 900,
+                                color: '#ffffff',
+                                textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.5)',
+                                marginBottom: '0.25rem',
+                                transition: 'all 0.3s ease'
+                            }}>⚡ 3</div>
+                            <div style={{
+                                fontSize: '0.65rem',
+                                color: '#d0d0d0',
+                                textShadow: '0 0 8px rgba(255,255,255,0.4)',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                                transition: 'all 0.3s ease'
+                            }}>Languages</div>
+                        </div>
+
+                        <div className="stat-3d-card playful-card" 
+                            style={{
+                                padding: '0.75rem 1rem',
+                                background: 'linear-gradient(135deg, rgba(255,255,255,0.13), rgba(255,255,255,0.06))',
+                                borderRadius: '16px',
+                                border: '2px solid rgba(255,255,255,0.26)',
+                                backdropFilter: 'blur(12px)',
+                                boxShadow: '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.26)',
+                                cursor: 'pointer',
+                                transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                                transform: 'perspective(1000px) rotateY(0deg) rotateX(0deg)',
+                                transformStyle: 'preserve-3d',
+                                animation: 'float-subtle-5 7.5s ease-in-out infinite'
+                            }}
+                            onClick={(e) => {
+                                e.currentTarget.style.animation = 'wiggle 0.6s ease';
+                                setTimeout(() => {
+                                    e.currentTarget.style.animation = 'float-subtle-5 7.5s ease-in-out infinite';
+                                }, 600);
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(8deg) rotateX(-3deg) translateZ(25px) scale(1.05)';
+                                e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), 0 0 40px rgba(255,255,255,0.5), inset 0 1px 0 rgba(255,255,255,0.6)';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.23), rgba(255,255,255,0.13))';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) translateZ(0px) scale(1)';
+                                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.26)';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.13), rgba(255,255,255,0.06))';
+                            }}
+                        >
+                            <div style={{
+                                fontSize: '1.5rem',
+                                fontWeight: 900,
+                                color: '#ffffff',
+                                textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.5)',
+                                marginBottom: '0.25rem',
+                                transition: 'all 0.3s ease'
+                            }}>�️ 15</div>
+                            <div style={{
+                                fontSize: '0.65rem',
+                                color: '#d0d0d0',
+                                textShadow: '0 0 8px rgba(255,255,255,0.4)',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                                transition: 'all 0.3s ease'
+                            }}>Tech Stack</div>
+                        </div>
+
+                        <div className="stat-3d-card playful-card" 
+                            style={{
+                                padding: '0.75rem 1rem',
+                                background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
+                                borderRadius: '16px',
+                                border: '2px solid rgba(255,255,255,0.22)',
+                                backdropFilter: 'blur(12px)',
+                                boxShadow: '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.22)',
+                                cursor: 'pointer',
+                                transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                                transform: 'perspective(1000px) rotateY(0deg) rotateX(0deg)',
+                                transformStyle: 'preserve-3d',
+                                animation: 'float-subtle-6 8.5s ease-in-out infinite'
+                            }}
+                            onClick={(e) => {
+                                e.currentTarget.style.animation = 'spin-playful 0.7s ease';
+                                setTimeout(() => {
+                                    e.currentTarget.style.animation = 'float-subtle-6 8.5s ease-in-out infinite';
+                                }, 700);
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(-8deg) rotateX(3deg) translateZ(25px) scale(1.05)';
+                                e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), 0 0 40px rgba(255,255,255,0.5), inset 0 1px 0 rgba(255,255,255,0.6)';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.12))';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) translateZ(0px) scale(1)';
+                                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.22)';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))';
+                            }}
+                        >
+                            <div style={{
+                                fontSize: '1.5rem',
+                                fontWeight: 900,
+                                color: '#ffffff',
+                                textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.5)',
+                                marginBottom: '0.25rem',
+                                transition: 'all 0.3s ease'
+                            }}>💻 500+</div>
+                            <div style={{
+                                fontSize: '0.65rem',
+                                color: '#d0d0d0',
+                                textShadow: '0 0 8px rgba(255,255,255,0.4)',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.05em',
+                                transition: 'all 0.3s ease'
+                            }}>Commits</div>
+                        </div>
+                    </div>
+
+                    {/* Right Side - Vertical Sliding Ticker */}
+                    <div 
+                        className="ticker-panel-playful"
+                        style={{
+                            position: 'relative',
+                            background: 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.12))',
+                            borderRadius: '20px',
+                            border: '2px solid rgba(255,255,255,0.3)',
+                            backdropFilter: 'blur(15px)',
+                            boxShadow: '0 10px 30px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.2)',
+                            padding: '1.5rem',
+                            overflow: 'hidden',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            cursor: 'pointer',
+                            transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                            zIndex: 1,
+                            animation: 'ticker-breathing 3s ease-in-out infinite'
+                        }}
+                        onClick={(e) => {
+                            setCurrentSlideIndex((prev) => (prev + 1) % statsSlides.length);
+                            e.currentTarget.style.animation = 'ticker-pop 0.4s ease';
+                            setTimeout(() => {
+                                e.currentTarget.style.animation = 'ticker-breathing 3s ease-in-out infinite';
+                            }, 400);
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'scale(1.05) rotate(1deg)';
+                            e.currentTarget.style.boxShadow = '0 20px 50px rgba(0,0,0,0.6), 0 0 60px rgba(255,255,255,0.6), inset 0 3px 6px rgba(255,255,255,0.4)';
+                            e.currentTarget.style.background = 'linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,255,255,0.22))';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'scale(1) rotate(0deg)';
+                            e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.2)';
+                            e.currentTarget.style.background = 'linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.12))';
+                        }}
+                    >
+                        {/* Sliding Value Container */}
+                        <div style={{
+                            position: 'relative',
+                            height: '80px',
+                            width: '100%',
+                            overflow: 'hidden',
+                            marginBottom: '0.75rem'
+                        }}>
+                            {statsSlides.map((slide, index) => (
+                                <div
+                                    key={index}
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        width: '100%',
+                                        height: '100%',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        transform: currentSlideIndex === index 
+                                            ? 'translateY(0) scale(1)' 
+                                            : currentSlideIndex > index 
+                                                ? 'translateY(-100%) scale(0.8)' 
+                                                : 'translateY(100%) scale(0.8)',
+                                        opacity: currentSlideIndex === index ? 1 : 0,
+                                        transition: 'all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                                        pointerEvents: 'none'
+                                    }}
+                                >
+                                    <div style={{
+                                        fontSize: '3rem',
+                                        fontWeight: 900,
+                                        color: '#ffffff',
+                                        textShadow: '0 0 25px rgba(255,255,255,0.9), 0 0 50px rgba(255,255,255,0.7), 0 0 75px rgba(255,255,255,0.5)',
+                                        letterSpacing: '0.05em',
+                                        animation: currentSlideIndex === index ? 'pulse-glow 3s ease-in-out infinite' : 'none'
+                                    }}>
+                                        {slide.value}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Sliding Label Container */}
+                        <div style={{
+                            position: 'relative',
+                            height: '50px',
+                            width: '100%',
+                            overflow: 'hidden'
+                        }}>
+                            {statsSlides.map((slide, index) => (
+                                <div
+                                    key={index}
+                                    style={{
+                                        position: 'absolute',
+                                        top: 0,
+                                        left: 0,
+                                        width: '100%',
+                                        height: '100%',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        transform: currentSlideIndex === index 
+                                            ? 'translateY(0)' 
+                                            : currentSlideIndex > index 
+                                                ? 'translateY(-100%)' 
+                                                : 'translateY(100%)',
+                                        opacity: currentSlideIndex === index ? 1 : 0,
+                                        transition: 'all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                                        pointerEvents: 'none'
+                                    }}
+                                >
+                                    <div style={{
+                                        fontSize: '1rem',
+                                        fontWeight: 700,
+                                        color: '#e0e0e0',
+                                        textShadow: '0 0 15px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4)',
+                                        textTransform: 'uppercase',
+                                        letterSpacing: '0.15em',
+                                        textAlign: 'center',
+                                        marginBottom: '0.25rem'
+                                    }}>
+                                        {slide.label}
+                                    </div>
+                                    <div style={{
+                                        fontSize: '0.75rem',
+                                        color: '#c0c0c0',
+                                        textShadow: '0 0 10px rgba(255,255,255,0.3)',
+                                        textAlign: 'center'
+                                    }}>
+                                        {slide.unit}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Progress Indicators */}
+                        <div style={{
+                            marginTop: '1rem',
+                            display: 'flex',
+                            gap: '0.4rem',
+                            justifyContent: 'center'
+                        }}>
+                            {statsSlides.map((_, index) => (
+                                <div
+                                    key={index}
+                                    style={{
+                                        width: '6px',
+                                        height: currentSlideIndex === index ? '24px' : '6px',
+                                        borderRadius: '3px',
+                                        background: currentSlideIndex === index 
+                                            ? 'linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.6))'
+                                            : 'rgba(255,255,255,0.3)',
+                                        border: '1px solid rgba(255,255,255,0.4)',
+                                        boxShadow: currentSlideIndex === index 
+                                            ? '0 0 8px rgba(255,255,255,0.6), 0 0 16px rgba(255,255,255,0.3)'
+                                            : 'none',
+                                        transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'
+                                    }}
+                                />
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Ultraviolet 3D Clock */}
+                    <div 
+                        className="uv-clock-container"
+                        style={{
+                            position: 'relative',
+                            background: 'linear-gradient(135deg, rgba(138,43,226,0.15), rgba(75,0,130,0.15))',
+                            borderRadius: '20px',
+                            border: '2px solid rgba(138,43,226,0.4)',
+                            backdropFilter: 'blur(15px)',
+                            boxShadow: '0 8px 32px rgba(138,43,226,0.3), inset 0 2px 4px rgba(138,43,226,0.2), 0 0 40px rgba(138,43,226,0.2)',
+                            padding: '1.5rem',
+                            display: 'flex',
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            cursor: 'pointer',
+                            transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                            zIndex: 1,
+                            animation: 'uv-glow 4s ease-in-out infinite',
+                            overflow: 'hidden'
+                        }}
+                        onClick={(e) => {
+                            e.currentTarget.style.animation = 'uv-pulse 0.6s ease';
+                            setTimeout(() => {
+                                e.currentTarget.style.animation = 'uv-glow 4s ease-in-out infinite';
+                            }, 600);
+                        }}
+                        onMouseEnter={(e) => {
+                            e.currentTarget.style.transform = 'scale(1.08) rotateY(5deg)';
+                            e.currentTarget.style.boxShadow = '0 15px 50px rgba(138,43,226,0.6), 0 0 80px rgba(138,43,226,0.5), inset 0 3px 6px rgba(138,43,226,0.3)';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.currentTarget.style.transform = 'scale(1) rotateY(0deg)';
+                            e.currentTarget.style.boxShadow = '0 8px 32px rgba(138,43,226,0.3), inset 0 2px 4px rgba(138,43,226,0.2), 0 0 40px rgba(138,43,226,0.2)';
+                        }}
+                    >
+                        {/* UV Background Orb */}
+                        <div style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                            width: '150%',
+                            height: '150%',
+                            background: 'radial-gradient(circle, rgba(138,43,226,0.3), rgba(75,0,130,0.1) 60%, transparent)',
+                            animation: 'uv-orb-pulse 3s ease-in-out infinite',
+                            pointerEvents: 'none',
+                            filter: 'blur(30px)'
+                        }} />
+
+                        {/* Time Display */}
+                        <div style={{
+                            position: 'relative',
+                            zIndex: 2,
+                            textAlign: 'center'
+                        }}>
+                            <div style={{
+                                fontSize: '2.5rem',
+                                fontWeight: 900,
+                                color: '#ffffff',
+                                textShadow: '0 0 20px rgba(138,43,226,0.9), 0 0 40px rgba(138,43,226,0.7), 0 0 60px rgba(138,43,226,0.5), 0 0 80px rgba(138,43,226,0.3)',
+                                letterSpacing: '0.05em',
+                                fontFamily: 'monospace',
+                                marginBottom: '0.25rem',
+                                transform: 'perspective(1000px) rotateX(5deg)',
+                                transformStyle: 'preserve-3d'
+                            }}>
+                                {currentTime.toLocaleTimeString('en-US', { 
+                                    hour: '2-digit', 
+                                    minute: '2-digit',
+                                    hour12: false 
+                                })}
+                            </div>
+                            <div style={{
+                                fontSize: '0.7rem',
+                                fontWeight: 700,
+                                color: '#e0c3ff',
+                                textShadow: '0 0 10px rgba(138,43,226,0.6), 0 0 20px rgba(138,43,226,0.4)',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.2em',
+                                marginBottom: '0.5rem'
+                            }}>
+                                {currentTime.toLocaleDateString('en-US', { weekday: 'short' })}
+                            </div>
+                            <div style={{
+                                fontSize: '0.65rem',
+                                color: '#d8b3ff',
+                                textShadow: '0 0 8px rgba(138,43,226,0.4)',
+                                fontWeight: 600,
+                                opacity: 0.9
+                            }}>
+                                {Intl.DateTimeFormat().resolvedOptions().timeZone.split('/').pop()?.replace(/_/g, ' ')}
+                            </div>
+                        </div>
+
+                        {/* Rotating UV Rings */}
+                        <div style={{
+                            position: 'absolute',
+                            width: '100%',
+                            height: '100%',
+                            top: 0,
+                            left: 0,
+                            pointerEvents: 'none'
+                        }}>
+                            <div style={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                width: '90%',
+                                height: '90%',
+                                border: '2px solid rgba(138,43,226,0.3)',
+                                borderRadius: '50%',
+                                animation: 'uv-ring-rotate 20s linear infinite'
+                            }} />
+                            <div style={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                width: '70%',
+                                height: '70%',
+                                border: '2px solid rgba(138,43,226,0.2)',
+                                borderRadius: '50%',
+                                animation: 'uv-ring-rotate-reverse 15s linear infinite'
+                            }} />
+                        </div>
                     </div>
                 </div>
-                <div className="text-sm text-gray-300">Click a disc to highlight</div>
-            </div>
 
-            {/* informal sorting controls */}
-            <div className="mb-4 flex items-center gap-3">
-                <div className="text-sm text-gray-300 mr-2">Sort:</div>
-                <div className="sort-controls inline-flex gap-2">
-                    <button className={`sort-button px-4 py-2 rounded-md text-base ${sortMode==='default' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('default')}>Default</button>
-                    <button className={`sort-button px-4 py-2 rounded-md text-base ${sortMode==='proficiency' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('proficiency')}>Proficiency</button>
-                    <button className={`sort-button px-4 py-2 rounded-md text-base ${sortMode==='experience' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('experience')}>Experience</button>
-                    <button className={`sort-button px-4 py-2 rounded-md text-base ${sortMode==='name' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('name')}>Name</button>
-                </div>
-                <div className="ml-auto text-xs text-gray-400 italic">Try different orders for a relaxed, informal view.</div>
-            </div>
-
-            {/* Proficiency Legend with 3D glowing shapes */}
-            <div className="proficiency-legend mb-6">
-                <div className="legend-title">Proficiency Levels</div>
-                <div className="legend-items">
-                    <div className="legend-item">
-                        <div className="legend-shape expert-glow" data-level="Expert"></div>
-                        <span className="legend-label">Expert (100%)</span>
-                    </div>
-                    <div className="legend-item">
-                        <div className="legend-shape advanced-glow" data-level="Advanced"></div>
-                        <span className="legend-label">Advanced (75%)</span>
-                    </div>
-                    <div className="legend-item">
-                        <div className="legend-shape intermediate-glow" data-level="Intermediate"></div>
-                        <span className="legend-label">Intermediate (50%)</span>
-                    </div>
-                    <div className="legend-item">
-                        <div className="legend-shape beginner-glow" data-level="Beginner"></div>
-                        <span className="legend-label">Beginner (25%)</span>
+                {/* Sorting controls in content card style */}
+                <div className="content-card-3d mb-8">
+                    <div className="flex flex-wrap items-center justify-between gap-4">
+                        <div className="flex items-center gap-3">
+                            <div className="text-sm font-semibold" style={{
+                                color: '#ffffff',
+                                textShadow: '0 0 10px rgba(255,255,255,0.6), 0 0 20px rgba(255,255,255,0.4), 0 0 30px rgba(255,255,255,0.2)'
+                            }}>Sort:</div>
+                            <div className="sort-controls inline-flex gap-2">
+                                <button className={`sort-button px-4 py-2 rounded-md text-base ${sortMode==='default' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('default')}>Default</button>
+                                <button className={`sort-button px-4 py-2 rounded-md text-base ${sortMode==='proficiency' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('proficiency')}>Proficiency</button>
+                                <button className={`sort-button px-4 py-2 rounded-md text-base ${sortMode==='experience' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('experience')}>Experience</button>
+                                <button className={`sort-button px-4 py-2 rounded-md text-base ${sortMode==='name' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('name')}>Name</button>
+                            </div>
+                        </div>
+                        <div className="text-xs italic" style={{
+                            color: '#d0d0d0',
+                            textShadow: '0 0 8px rgba(255,255,255,0.3)'
+                        }}>Click a disc to view details</div>
                     </div>
                 </div>
-            </div>
 
-            {/* Interactive discs row (technical only) */}
-            <div className="skill-disc-row" role="list">
-                {sortedTech.slice(0,6).map((skill, i) => (
-                    <SkillDisc key={'t-'+i} skill={skill} onSelect={(n) => setSelected(n)} selected={selected === skill.name} />
-                ))}
-            </div>
+                {/* Interactive discs row in content card */}
+                <div className="content-card-3d">
+                    <h2 className="mb-6" style={{
+                        fontSize: '1.875rem',
+                        fontWeight: 800,
+                        color: '#ffffff',
+                        textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 0 45px rgba(255,255,255,0.4), 0 0 60px rgba(255,255,255,0.2)',
+                        letterSpacing: '0.05em',
+                        position: 'relative',
+                        zIndex: 10
+                    }}>Technical Skills</h2>
+                    <div className="skill-disc-row" role="list">
+                        {sortedTech.slice(0,6).map((skill, i) => (
+                            <SkillDisc key={'t-'+i} skill={skill} onSelect={(n) => setSelected(n)} selected={selected === skill.name} />
+                        ))}
+                    </div>
+                </div>
 
-            {/* Interactive detailed stats panel */}
-            {selected && (() => {
+                {/* Interactive detailed stats panel */}
+                {selected && (() => {
                 const allSkills = [...data.technical, ...data.soft, ...data.tools];
                 const skill = allSkills.find(s => s.name === selected);
                 if (!skill) return null;
@@ -762,7 +1696,16 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                         <div className="relative z-10">
                             <div className="flex items-start justify-between mb-6">
                                 <div className="flex-1">
-                                    <h3 className={`text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r ${proficiencyColor} mb-3 tracking-tight drop-shadow-lg`}>
+                                    <h3 style={{
+                                        fontSize: '2.25rem',
+                                        fontWeight: 900,
+                                        color: '#ffffff',
+                                        textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 0 45px rgba(255,255,255,0.4), 0 0 60px rgba(255,255,255,0.2)',
+                                        marginBottom: '0.75rem',
+                                        letterSpacing: '-0.025em',
+                                        position: 'relative',
+                                        zIndex: 10
+                                    }}>
                                         {skill.name}
                                     </h3>
                                     <p className="text-gray-300 italic text-base leading-relaxed">
@@ -781,7 +1724,11 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                                 {/* Proficiency Card */}
                                 <div className={`group p-6 rounded-2xl bg-gradient-to-br from-neutral-800/60 via-zinc-800/60 to-stone-900/60 border-2 ${cardBorderColor} shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm`}>
-                                    <div className="text-xs text-gray-300 uppercase tracking-widest mb-3 font-bold">Proficiency Level</div>
+                                    <div className="uppercase tracking-widest mb-3 font-bold" style={{
+                                        fontSize: '0.75rem',
+                                        color: '#ffffff',
+                                        textShadow: '0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.3)'
+                                    }}>Proficiency Level</div>
                                     <div className={`text-3xl font-black bg-gradient-to-r ${proficiencyColor} bg-clip-text text-transparent mb-4 drop-shadow-md group-hover:scale-110 transition-transform`}>
                                         {skill.proficiency}
                                     </div>
@@ -806,7 +1753,11 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
 
                                 {/* Experience Card */}
                                 <div className={`group p-6 rounded-2xl bg-gradient-to-br from-neutral-800/60 via-zinc-800/60 to-stone-900/60 border-2 ${cardBorderColor} shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm`}>
-                                    <div className="text-xs text-gray-300 uppercase tracking-widest mb-3 font-bold">Experience</div>
+                                    <div className="uppercase tracking-widest mb-3 font-bold" style={{
+                                        fontSize: '0.75rem',
+                                        color: '#ffffff',
+                                        textShadow: '0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.3)'
+                                    }}>Experience</div>
                                     <div className={`text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r ${proficiencyColor} drop-shadow-lg group-hover:scale-110 transition-transform`}>
                                         {skill.experience}
                                     </div>
@@ -817,7 +1768,11 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
 
                                 {/* Mastery Score Card */}
                                 <div className={`group p-6 rounded-2xl bg-gradient-to-br from-neutral-800/60 via-zinc-800/60 to-stone-900/60 border-2 ${cardBorderColor} shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm`}>
-                                    <div className="text-xs text-gray-300 uppercase tracking-widest mb-3 font-bold">Mastery Score</div>
+                                    <div className="uppercase tracking-widest mb-3 font-bold" style={{
+                                        fontSize: '0.75rem',
+                                        color: '#ffffff',
+                                        textShadow: '0 0 10px rgba(255,255,255,0.5), 0 0 20px rgba(255,255,255,0.3)'
+                                    }}>Mastery Score</div>
                                     <div className={`text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r ${proficiencyColor} drop-shadow-lg group-hover:scale-110 transition-transform`}>
                                         {Math.round(proficiencyPercent * 0.7 + skill.experience * 3)}
                                     </div>
@@ -845,9 +1800,10 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                     </div>
                 );
             })()}
+            </div>
         </div>
-    )
-}
+    );
+};
 
 interface ProjectShowcasePageProps {
     projects: ShowcaseProject[];
@@ -862,13 +1818,13 @@ interface ProjectShowcasePageProps {
 
 const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onProjectChange, onAddProject, onRemoveProject, onImportRepo, initialUsername, autoLoad, onNotify }) => {
     // local state for GitHub overview
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState('nicokuehn-dci');
     const [repos, setRepos] = useState<any[]>([]);
     const [userStats, setUserStats] = useState<any | null>(null);
     const [token, setToken] = useState<string>('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
-    const [showInline, setShowInline] = useState(false);
+    const [currentSlide, setCurrentSlide] = useState(0);
 
     const extractUsername = (input: string) => {
         // accept either a plain username or a GitHub profile/url like https://github.com/username or github.com/username
@@ -938,208 +1894,455 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
         }
     };
 
-    // auto-load if requested
+    // auto-load GitHub repos on mount
     useEffect(() => {
-        if (autoLoad && initialUsername) {
-            // slight delay to allow mount/UI to settle
-            setTimeout(() => fetchRepos(initialUsername), 80);
-            setUsername(initialUsername);
-        }
+        fetchRepos(username);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [autoLoad, initialUsername]);
+    }, []);
+
+    const nextSlide = () => {
+        if (repos.length === 0) return;
+        setCurrentSlide((prev) => (prev + 1) % repos.length);
+    };
+
+    const prevSlide = () => {
+        if (repos.length === 0) return;
+        setCurrentSlide((prev) => (prev - 1 + repos.length) % repos.length);
+    };
 
     return (
-        <div className="p-8 md:p-12 bg-white dark:bg-gray-800 transition-colors duration-500 min-h-[80vh]">
-            <div className="max-w-6xl mx-auto">
-                <div className="flex items-center justify-between mb-4">
-                    <h1 className="font-serif text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200">Project Showcase</h1>
-                    <div className="flex items-center gap-4">
-                        <p className="text-sm text-gray-500">Highlight your top projects and explore GitHub repositories for any account.</p>
+        <div className="project-showcase-page p-8 md:p-12 min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+            <div className="max-w-7xl mx-auto">
+                {/* Header */}
+                <div className="text-center mb-12">
+                    <h1 className="text-6xl md:text-7xl font-black text-white mb-4" style={{
+                        textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.3), 0 0 70px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
+                        letterSpacing: '0.05em'
+                    }}>
+                        - github_projects -
+                    </h1>
+                    <p className="text-gray-600 dark:text-gray-400 text-lg mb-6">
+                        Showcasing repositories from <span className="font-bold text-gray-900 dark:text-white">nico.kuehn</span>
+                    </p>
+                    
+                    {/* Username Input */}
+                    <div className="max-w-2xl mx-auto mb-8 flex gap-3">
+                        <input 
+                            value={username} 
+                            onChange={(e) => setUsername(e.target.value)} 
+                            placeholder="GitHub username (e.g., nicokuehn-dci)" 
+                            className="flex-1 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-2 border-gray-300 dark:border-gray-600 rounded-xl px-6 py-3 text-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-lg"
+                        />
+                        <button 
+                            onClick={() => fetchRepos(username.trim())} 
+                            className="px-8 py-3 rounded-xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
+                        >
+                            Fetch Repos
+                        </button>
                     </div>
                 </div>
 
-                {/* GitHub repo overview controls */}
-                <div className="mb-6 flex gap-3 items-center">
-                    <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="GitHub username (e.g. nicokuehn-dci or octocat) or profile URL" className="flex-1 bg-transparent border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 focus:outline-none" />
-                    <button onClick={() => fetchRepos(username.trim())} className="px-4 py-2 rounded-md bg-gradient-to-r from-gray-800 to-gray-700 text-white">Fetch repos</button>
-                </div>
+                {loading && <div className="text-center text-gray-500 mb-8 text-lg">Loading repositories…</div>}
+                {error && <div className="text-center text-red-500 mb-8 text-lg">{error}</div>}
 
-                <div className="mb-4 flex gap-3 items-center">
-                    <input value={token} onChange={(e) => setToken(e.target.value)} placeholder="Optional GitHub token (kept in memory)" type="password" className="flex-1 bg-transparent border border-gray-200 dark:border-gray-700 rounded-md px-3 py-2 focus:outline-none" />
-                    <div className="text-xs text-gray-500">Providing a token increases rate limits (kept only in browser memory).</div>
-                </div>
-
-                {loading && <div className="text-sm text-gray-600 mb-4">Loading repositories…</div>}
-                {error && <div className="text-sm text-red-600 mb-4">{error}</div>}
-
-                {repos.length > 0 ? (
-                    <section className="mb-8">
-                        <div className="flex items-center justify-between mb-4">
-                            <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100">Repositories for <span className="font-bold">{username}</span></h2>
-                            <div className="flex items-center gap-3">
-                                {userStats && (
-                                    <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300">
-                                        <img src={userStats.avatar_url} alt={userStats.login} className="w-8 h-8 rounded-full" />
-                                        <div className="mr-2">
-                                            <div className="font-semibold">{userStats.name ?? userStats.login}</div>
-                                            <div className="text-xs text-gray-500">{userStats.followers} followers · {userStats.public_repos} repos</div>
-                                        </div>
+                {/* Showcase Stats Card - Always visible with Glitch Effect */}
+                <div className="max-w-4xl mx-auto mb-12">
+                    <div className="relative p-8 rounded-3xl bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-800 dark:via-gray-750 dark:to-gray-900 shadow-2xl border-2 border-white/60 dark:border-gray-600/60 overflow-hidden glitch-container">
+                        {/* Glitch Overlay Effects */}
+                        <div className="glitch-overlay glitch-overlay-1"></div>
+                        <div className="glitch-overlay glitch-overlay-2"></div>
+                        
+                        {/* Scanline Effect */}
+                        <div className="scanline"></div>
+                        
+                        {/* Glow Effect */}
+                        <div className="absolute inset-0 bg-gradient-to-tr from-white/40 via-transparent to-white/40 pointer-events-none"></div>
+                        <div className="absolute inset-0 shadow-[0_0_60px_rgba(255,255,255,0.5),inset_0_0_60px_rgba(255,255,255,0.2)] dark:shadow-[0_0_50px_rgba(150,150,150,0.3),inset_0_0_50px_rgba(255,255,255,0.1)] rounded-3xl pointer-events-none"></div>
+                        
+                        <div className="relative z-10">
+                            <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-gray-200 mb-8 glitch-text" data-text="Coding_journey">
+                                Coding_journey
+                            </h2>
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+                                {/* Experience Card */}
+                                <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border border-blue-200/50 dark:border-blue-700/50 shadow-lg">
+                                    <div className="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-3 tracking-wider uppercase">
+                                        Professional Experience
                                     </div>
-                                )}
-                                <div>
-                                    <button onClick={() => {
-                                        // import all visible
-                                        if (!onImportRepo) return;
-                                        let count = 0;
-                                        repos.forEach((r: any) => {
-                                            const already = projects.some(p => p.link === r.html_url || p.name === r.name);
-                                            if (!already) {
-                                                onImportRepo({ name: r.name, date: r.created_at ? new Date(r.created_at).getFullYear().toString() : '', description: r.description ?? '', link: r.html_url });
-                                                count++;
-                                            }
-                                        });
-                                        if (onNotify) {
-                                            if (count > 0) onNotify(`Imported ${count} repos`);
-                                            else onNotify('No new repos to import');
-                                        }
-                                    }}
-                                    disabled={!onImportRepo || repos.length === 0}
-                                    className="ml-2 px-3 py-1 rounded-md bg-indigo-600 text-white text-sm disabled:opacity-50"
-                                    >Import all visible</button>
+                                    <div className="text-8xl font-black mb-3 text-white dark:text-white" 
+                                         style={{ 
+                                             textShadow: '0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.8), 0 0 60px rgba(59,130,246,0.6), 0 0 80px rgba(99,102,241,0.4)',
+                                             filter: 'drop-shadow(0 0 15px rgba(255,255,255,1)) drop-shadow(0 0 30px rgba(59,130,246,0.8))',
+                                             WebkitTextStroke: '2px rgba(59,130,246,0.3)'
+                                         }}>
+                                        0.5
+                                    </div>
+                                    <div className="text-base text-gray-700 dark:text-gray-300 font-semibold mb-2">
+                                        Years in Web Development
+                                    </div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-500 italic mb-3">
+                                        Intensive hands-on coding & real-world projects
+                                    </div>
+                                    <div className="flex justify-center gap-4 text-xs">
+                                        <div className="text-blue-600 dark:text-blue-400 font-bold">25+ Projects</div>
+                                        <div className="text-blue-600 dark:text-blue-400 font-bold">500+ Commits</div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <button onClick={() => setShowInline(s => !s)} className="ml-2 px-3 py-1 rounded-md bg-violet-600 text-white text-sm">{showInline ? 'Hide inline dashboard' : 'Show inline dashboard'}</button>
+
+                                {/* Mastery Score Card */}
+                                <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 border border-purple-200/50 dark:border-purple-700/50 shadow-lg">
+                                    <div className="text-sm font-semibold text-purple-600 dark:text-purple-400 mb-3 tracking-wider uppercase">
+                                        Skill Mastery Level
+                                    </div>
+                                    <div className="text-8xl font-black mb-3 text-white dark:text-white"
+                                         style={{ 
+                                             textShadow: '0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.8), 0 0 60px rgba(168,85,247,0.6), 0 0 80px rgba(236,72,153,0.4)',
+                                             filter: 'drop-shadow(0 0 15px rgba(255,255,255,1)) drop-shadow(0 0 30px rgba(168,85,247,0.8))',
+                                             WebkitTextStroke: '2px rgba(168,85,247,0.3)'
+                                         }}>
+                                        37
+                                    </div>
+                                    <div className="text-base text-gray-700 dark:text-gray-300 font-semibold mb-2">
+                                        Overall Proficiency Score
+                                    </div>
+                                    <div className="text-xs text-gray-500 dark:text-gray-500 italic mb-3">
+                                        Averaged across all technical skills & frameworks
+                                    </div>
+                                    <div className="flex justify-center gap-4 text-xs">
+                                        <div className="text-purple-600 dark:text-purple-400 font-bold">15 Technologies</div>
+                                        <div className="text-purple-600 dark:text-purple-400 font-bold">8 Frameworks</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Additional Stats Row */}
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                                <div className="p-4 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200/50 dark:border-green-700/50">
+                                    <div className="text-3xl font-black text-white" style={{ 
+                                        textShadow: '0 0 15px rgba(255,255,255,0.9), 0 0 30px rgba(34,197,94,0.6)',
+                                        filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.8))'
+                                    }}>1200+</div>
+                                    <div className="text-xs text-green-700 dark:text-green-400 font-semibold mt-1">Lines of Code</div>
+                                </div>
+                                <div className="p-4 rounded-xl bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 border border-orange-200/50 dark:border-orange-700/50">
+                                    <div className="text-3xl font-black text-white" style={{ 
+                                        textShadow: '0 0 15px rgba(255,255,255,0.9), 0 0 30px rgba(249,115,22,0.6)',
+                                        filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.8))'
+                                    }}>12</div>
+                                    <div className="text-xs text-orange-700 dark:text-orange-400 font-semibold mt-1">Active Repos</div>
+                                </div>
+                                <div className="p-4 rounded-xl bg-gradient-to-br from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20 border border-cyan-200/50 dark:border-cyan-700/50">
+                                    <div className="text-3xl font-black text-white" style={{ 
+                                        textShadow: '0 0 15px rgba(255,255,255,0.9), 0 0 30px rgba(6,182,212,0.6)',
+                                        filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.8))'
+                                    }}>6</div>
+                                    <div className="text-xs text-cyan-700 dark:text-cyan-400 font-semibold mt-1">Deployed Apps</div>
+                                </div>
+                                <div className="p-4 rounded-xl bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 border border-rose-200/50 dark:border-rose-700/50">
+                                    <div className="text-3xl font-black text-white" style={{ 
+                                        textShadow: '0 0 15px rgba(255,255,255,0.9), 0 0 30px rgba(244,63,94,0.6)',
+                                        filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.8))'
+                                    }}>180+</div>
+                                    <div className="text-xs text-rose-700 dark:text-rose-400 font-semibold mt-1">Hours Coded</div>
                                 </div>
                             </div>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {repos.map((r) => {
-                                const alreadyImported = projects.some(p => p.link === r.html_url || p.name === r.name);
-                                return (
-                                    <div key={r.id} className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/40">
-                                        <div className="flex items-start justify-between gap-3">
-                                            <div className="flex-1">
-                                                <a href={r.html_url} target="_blank" rel="noopener noreferrer" className="text-lg font-semibold text-blue-700 dark:text-blue-300 hover:underline">{r.name}</a>
-                                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{r.description ?? <span className="italic text-gray-400">No description</span>}</p>
-                                                <div className="flex items-center gap-3 mt-3 text-xs text-gray-500">
-                                                    <span>⭐ {r.stargazers_count}</span>
-                                                    <span>🍴 {r.forks_count}</span>
-                                                    {r.language && <span className="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded-md">{r.language}</span>}
-                                                    <span className="ml-auto text-xs text-gray-400">Updated {new Date(r.updated_at).toLocaleDateString()}</span>
+                    </div>
+                </div>
+
+                {/* 3D Carousel for GitHub Repos */}
+                {repos.length > 0 && (
+                    <>
+                        {/* User Stats Card */}
+                        {userStats && (
+                            <div className="flex items-center justify-center gap-6 mb-12 p-8 rounded-3xl bg-gradient-to-r from-white via-gray-50 to-white dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 shadow-2xl border border-white/50 dark:border-gray-600/50">
+                                <img src={userStats.avatar_url} alt={userStats.login} className="w-24 h-24 rounded-full border-4 border-white dark:border-gray-600 shadow-xl" />
+                                <div>
+                                    <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300">{userStats.name ?? userStats.login}</div>
+                                    <div className="text-lg text-gray-600 dark:text-gray-400 mt-1">
+                                        <span className="font-bold">{userStats.followers}</span> followers · 
+                                        <span className="font-bold ml-2">{userStats.public_repos}</span> public repos
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* 3D Carousel - Increased distance */}
+                        <div className="relative mb-32 mt-8" style={{ perspective: '2000px', height: '500px' }}>
+                            <div className="absolute inset-0 flex items-center justify-center">
+                                {repos.map((repo, index) => {
+                                    const offset = (index - currentSlide + repos.length) % repos.length;
+                                    const isActive = offset === 0;
+                                    const isPrev = offset === repos.length - 1;
+                                    const isNext = offset === 1;
+                                    const isVisible = isActive || isPrev || isNext;
+
+                                    let transform = '';
+                                    let opacity = 0;
+                                    let zIndex = 0;
+
+                                    if (isActive) {
+                                        transform = 'translateX(0) translateZ(0) rotateY(0deg) scale(1)';
+                                        opacity = 1;
+                                        zIndex = 10;
+                                    } else if (isPrev) {
+                                        transform = 'translateX(-550px) translateZ(-350px) rotateY(40deg) scale(0.7)';
+                                        opacity = 0.35;
+                                        zIndex = 5;
+                                    } else if (isNext) {
+                                        transform = 'translateX(550px) translateZ(-350px) rotateY(-40deg) scale(0.7)';
+                                        opacity = 0.35;
+                                        zIndex = 5;
+                                    } else {
+                                        transform = 'translateX(0) translateZ(-700px) scale(0.3)';
+                                        opacity = 0;
+                                        zIndex = 0;
+                                    }
+
+                                    // Get language color
+                                    const getLanguageColor = (lang: string | null) => {
+                                        if (!lang) return 'from-gray-500 to-gray-600';
+                                        const colors: Record<string, string> = {
+                                            'JavaScript': 'from-yellow-400 to-yellow-600',
+                                            'TypeScript': 'from-blue-500 to-blue-700',
+                                            'Python': 'from-blue-400 to-blue-600',
+                                            'Java': 'from-red-500 to-orange-600',
+                                            'HTML': 'from-orange-500 to-red-600',
+                                            'CSS': 'from-blue-500 to-purple-600',
+                                            'Go': 'from-cyan-400 to-cyan-600',
+                                            'Rust': 'from-orange-500 to-orange-700',
+                                            'Shell': 'from-green-500 to-green-700',
+                                        };
+                                        return colors[lang] || 'from-gray-500 to-gray-600';
+                                    };
+
+                                    return (
+                                        <div
+                                            key={repo.id}
+                                            className="absolute w-[600px] h-[400px] rounded-3xl transition-all duration-700 ease-out"
+                                            style={{
+                                                transform,
+                                                opacity,
+                                                zIndex,
+                                                pointerEvents: isActive ? 'auto' : 'none',
+                                                filter: isActive ? 'drop-shadow(0 0 40px rgba(255,255,255,0.6))' : 'none'
+                                            }}
+                                        >
+                                            {/* 3D Card with Enhanced White Glow */}
+                                            <div 
+                                                className="relative w-full h-full rounded-3xl overflow-hidden bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-800 dark:via-gray-750 dark:to-gray-900 border-2 transition-all duration-500 cursor-pointer"
+                                                style={{
+                                                    borderColor: isActive ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.4)',
+                                                    boxShadow: isActive 
+                                                        ? '0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(255,255,255,0.7), 0 0 80px rgba(255,255,255,0.5), 0 0 120px rgba(255,255,255,0.3), inset 0 0 60px rgba(255,255,255,0.2)'
+                                                        : '0 10px 40px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.3)'
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    if (isActive) {
+                                                        e.currentTarget.style.transform = 'scale(1.02) translateY(-8px)';
+                                                        e.currentTarget.style.borderColor = 'rgba(255,255,255,1)';
+                                                        e.currentTarget.style.boxShadow = '0 25px 70px rgba(0,0,0,0.5), 0 0 50px rgba(255,255,255,0.9), 0 0 100px rgba(255,255,255,0.7), 0 0 150px rgba(255,255,255,0.5), inset 0 0 80px rgba(255,255,255,0.3)';
+                                                    }
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    if (isActive) {
+                                                        e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                                                        e.currentTarget.style.borderColor = 'rgba(255,255,255,0.8)';
+                                                        e.currentTarget.style.boxShadow = '0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(255,255,255,0.7), 0 0 80px rgba(255,255,255,0.5), 0 0 120px rgba(255,255,255,0.3), inset 0 0 60px rgba(255,255,255,0.2)';
+                                                    }
+                                                }}
+                                            >
+                                                {/* Enhanced Glow Layers */}
+                                                <div className="absolute inset-0 bg-gradient-to-tr from-white/50 via-transparent to-white/50 pointer-events-none"></div>
+                                                <div 
+                                                    className="absolute inset-0 rounded-3xl pointer-events-none transition-opacity duration-500"
+                                                    style={{
+                                                        opacity: isActive ? 1 : 0.5
+                                                    }}
+                                                ></div>
+                                                
+                                                {/* Card Content */}
+                                                <div className="relative z-10 p-8 h-full flex flex-col">
+                                                    {/* Header with Language */}
+                                                    <div className="flex items-start justify-between mb-4">
+                                                        <h3 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 flex-1 pr-4 leading-tight">
+                                                            {repo.name}
+                                                        </h3>
+                                                        {repo.language && (
+                                                            <span 
+                                                                className={`px-4 py-2 rounded-full bg-gradient-to-r ${getLanguageColor(repo.language)} text-white text-sm font-bold whitespace-nowrap transition-all duration-300 cursor-default`}
+                                                                style={{
+                                                                    border: '1px solid rgba(255,255,255,0.4)',
+                                                                    boxShadow: '0 0 15px rgba(255,255,255,0.3), 0 0 30px rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.3)'
+                                                                }}
+                                                                onMouseEnter={(e) => {
+                                                                    e.currentTarget.style.transform = 'scale(1.1) translateY(-2px)';
+                                                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.7)';
+                                                                    e.currentTarget.style.boxShadow = '0 0 20px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.3), 0 0 60px rgba(255,255,255,0.2), 0 6px 16px rgba(0,0,0,0.4)';
+                                                                }}
+                                                                onMouseLeave={(e) => {
+                                                                    e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                                                                    e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)';
+                                                                    e.currentTarget.style.boxShadow = '0 0 15px rgba(255,255,255,0.3), 0 0 30px rgba(255,255,255,0.15), 0 4px 12px rgba(0,0,0,0.3)';
+                                                                }}
+                                                            >
+                                                                {repo.language}
+                                                            </span>
+                                                        )}
+                                                    </div>
+
+                                                    {/* Description */}
+                                                    <p className="text-gray-700 dark:text-gray-300 text-base mb-6 flex-grow line-clamp-4">
+                                                        {repo.description || 'No description provided'}
+                                                    </p>
+
+                                                    {/* Stats */}
+                                                    <div className="flex items-center gap-6 mb-6">
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-2xl">⭐</span>
+                                                            <strong className="text-lg text-gray-800 dark:text-gray-200">{repo.stargazers_count}</strong>
+                                                        </div>
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="text-2xl">🍴</span>
+                                                            <strong className="text-lg text-gray-800 dark:text-gray-200">{repo.forks_count}</strong>
+                                                        </div>
+                                                        <span className="ml-auto text-sm text-gray-500 dark:text-gray-400">
+                                                            Updated {new Date(repo.updated_at).toLocaleDateString()}
+                                                        </span>
+                                                    </div>
+
+                                                    {/* View Button */}
+                                                    <a 
+                                                        href={repo.html_url} 
+                                                        target="_blank" 
+                                                        rel="noopener noreferrer"
+                                                        className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold text-lg transition-all duration-300"
+                                                        style={{
+                                                            border: '2px solid rgba(255,255,255,0.4)',
+                                                            boxShadow: '0 0 20px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.2), 0 8px 24px rgba(0,0,0,0.4)',
+                                                            textShadow: '0 0 10px rgba(255,255,255,0.3)'
+                                                        }}
+                                                        onMouseEnter={(e) => {
+                                                            e.currentTarget.style.transform = 'scale(1.08) translateY(-4px)';
+                                                            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.8)';
+                                                            e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.7), 0 0 60px rgba(255,255,255,0.5), 0 0 90px rgba(255,255,255,0.3), 0 12px 32px rgba(0,0,0,0.5)';
+                                                            e.currentTarget.style.textShadow = '0 0 15px rgba(255,255,255,0.5), 0 0 30px rgba(255,255,255,0.3)';
+                                                        }}
+                                                        onMouseLeave={(e) => {
+                                                            e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                                                            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)';
+                                                            e.currentTarget.style.boxShadow = '0 0 20px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.2), 0 8px 24px rgba(0,0,0,0.4)';
+                                                            e.currentTarget.style.textShadow = '0 0 10px rgba(255,255,255,0.3)';
+                                                        }}
+                                                        onMouseDown={(e) => {
+                                                            e.currentTarget.style.transform = 'scale(1.02) translateY(-2px)';
+                                                        }}
+                                                        onMouseUp={(e) => {
+                                                            e.currentTarget.style.transform = 'scale(1.08) translateY(-4px)';
+                                                        }}
+                                                    >
+                                                        View on GitHub →
+                                                    </a>
                                                 </div>
                                             </div>
-                                            <div className="ml-4 flex-shrink-0 flex flex-col gap-2">
-                                                <button
-                                                    onClick={() => {
-                                                        if (!onImportRepo) return;
-                                                        const imported = ((): boolean => {
-                                                            const exists = projects.some(p => p.link === r.html_url || p.name === r.name);
-                                                            if (exists) return false;
-                                                            onImportRepo({ name: r.name, date: r.created_at ? new Date(r.created_at).getFullYear().toString() : '', description: r.description ?? '', link: r.html_url });
-                                                            return true;
-                                                        })();
-                                                        if (onNotify) {
-                                                            onNotify(imported ? `Imported ${r.name}` : `${r.name} already imported`);
-                                                        }
-                                                    }}
-                                                    disabled={alreadyImported || !onImportRepo}
-                                                    className={`px-3 py-1 rounded-md text-sm ${alreadyImported ? 'bg-gray-200 text-gray-600' : 'bg-green-600 text-white hover:brightness-105'}`}
-                                                >
-                                                    {alreadyImported ? 'Imported' : 'Import'}
-                                                </button>
-                                                <a href={r.html_url} target="_blank" rel="noopener noreferrer" className="px-3 py-1 rounded-md text-sm bg-white dark:bg-gray-900 border text-gray-700 dark:text-gray-200 hover:underline">View</a>
-                                            </div>
                                         </div>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })}
+                            </div>
+
+                            {/* Navigation Controls - Bottom Centered */}
+                            <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 flex items-center gap-6 z-20">
+                                {/* Previous Button */}
+                                <button 
+                                    onClick={prevSlide} 
+                                    className="px-8 py-4 rounded-xl font-black text-lg transition-all duration-300 flex items-center gap-2"
+                                    style={{
+                                        background: 'linear-gradient(135deg, #ffffff, #f0f0f0, #e0e0e0)',
+                                        color: '#000000',
+                                        boxShadow: '0 0 20px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.4), 0 0 60px rgba(255,255,255,0.3), 0 8px 24px rgba(0,0,0,0.4)',
+                                        border: '2px solid rgba(255,255,255,0.8)',
+                                        textShadow: 'none',
+                                        cursor: 'pointer'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.transform = 'scale(1.1) translateY(-4px)';
+                                        e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.9), 0 0 60px rgba(255,255,255,0.7), 0 0 90px rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.5)';
+                                        e.currentTarget.style.background = 'linear-gradient(135deg, #ffffff, #ffffff, #f5f5f5)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                                        e.currentTarget.style.boxShadow = '0 0 20px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.4), 0 0 60px rgba(255,255,255,0.3), 0 8px 24px rgba(0,0,0,0.4)';
+                                        e.currentTarget.style.background = 'linear-gradient(135deg, #ffffff, #f0f0f0, #e0e0e0)';
+                                    }}
+                                    onMouseDown={(e) => {
+                                        e.currentTarget.style.transform = 'scale(0.95) translateY(0)';
+                                        e.currentTarget.style.boxShadow = '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 4px 16px rgba(0,0,0,0.5)';
+                                    }}
+                                    onMouseUp={(e) => {
+                                        e.currentTarget.style.transform = 'scale(1.1) translateY(-4px)';
+                                        e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.9), 0 0 60px rgba(255,255,255,0.7), 0 0 90px rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.5)';
+                                    }}
+                                    aria-label="Previous repository"
+                                >
+                                    ‹ PREV
+                                </button>
+
+                                {/* Slide Indicator */}
+                                <div className="flex items-center gap-2 px-6 py-3 rounded-lg bg-gradient-to-r from-gray-800/80 to-gray-900/80 backdrop-blur-sm border border-gray-700 transition-all duration-300 hover:border-gray-600 hover:bg-gradient-to-r hover:from-gray-800/90 hover:to-gray-900/90">
+                                    <span className="text-2xl font-black text-white transition-all duration-300" style={{
+                                        textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4)',
+                                        filter: 'drop-shadow(0 0 10px rgba(255,255,255,0.5))'
+                                    }}>
+                                        {currentSlide + 1}
+                                    </span>
+                                    <span className="text-gray-400 text-sm font-medium">/</span>
+                                    <span className="text-gray-300 text-lg font-bold">{repos.length}</span>
+                                </div>
+
+                                {/* Next Button */}
+                                <button 
+                                    onClick={nextSlide} 
+                                    className="px-8 py-4 rounded-xl font-black text-lg transition-all duration-300 flex items-center gap-2"
+                                    style={{
+                                        background: 'linear-gradient(135deg, #ffffff, #f0f0f0, #e0e0e0)',
+                                        color: '#000000',
+                                        boxShadow: '0 0 20px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.4), 0 0 60px rgba(255,255,255,0.3), 0 8px 24px rgba(0,0,0,0.4)',
+                                        border: '2px solid rgba(255,255,255,0.8)',
+                                        textShadow: 'none',
+                                        cursor: 'pointer'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.transform = 'scale(1.1) translateY(-4px)';
+                                        e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.9), 0 0 60px rgba(255,255,255,0.7), 0 0 90px rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.5)';
+                                        e.currentTarget.style.background = 'linear-gradient(135deg, #ffffff, #ffffff, #f5f5f5)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.transform = 'scale(1) translateY(0)';
+                                        e.currentTarget.style.boxShadow = '0 0 20px rgba(255,255,255,0.6), 0 0 40px rgba(255,255,255,0.4), 0 0 60px rgba(255,255,255,0.3), 0 8px 24px rgba(0,0,0,0.4)';
+                                        e.currentTarget.style.background = 'linear-gradient(135deg, #ffffff, #f0f0f0, #e0e0e0)';
+                                    }}
+                                    onMouseDown={(e) => {
+                                        e.currentTarget.style.transform = 'scale(0.95) translateY(0)';
+                                        e.currentTarget.style.boxShadow = '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 4px 16px rgba(0,0,0,0.5)';
+                                    }}
+                                    onMouseUp={(e) => {
+                                        e.currentTarget.style.transform = 'scale(1.1) translateY(-4px)';
+                                        e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.9), 0 0 60px rgba(255,255,255,0.7), 0 0 90px rgba(255,255,255,0.5), 0 12px 32px rgba(0,0,0,0.5)';
+                                    }}
+                                    aria-label="Next repository"
+                                >
+                                    NEXT ›
+                                </button>
+                            </div>
                         </div>
-                    </section>
-                ) : (
-                    !loading && <div className="text-sm text-gray-500 mb-6">No repositories loaded. Enter a username and click &quot;Fetch repos&quot; to view public repositories.</div>
+                    </>
                 )}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {projects.map((project, index) => (
-                        <article key={index} className="group relative bg-gray-50 dark:bg-gray-800/40 p-4 md:p-6 rounded-xl border border-gray-200 dark:border-gray-700/50 shadow-sm hover:shadow-lg transition-shadow duration-300">
-                            <div className="flex items-start gap-4">
-                                <div className="flex-shrink-0 w-16 h-16 rounded-lg bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-700 flex items-center justify-center overflow-hidden">
-                                    {/* small link preview or icon */}
-                                    {project.link ? (
-                                        <a href={project.link} target="_blank" rel="noopener noreferrer" className="w-full h-full flex items-center justify-center text-gray-600 hover:text-gray-900 dark:text-gray-300">
-                                            <LinkIcon className="w-6 h-6" />
-                                        </a>
-                                    ) : (
-                                        <div className="text-gray-400"><GitIconSmall className="w-6 h-6" /></div>
-                                    )}
-                                </div>
-
-                                <div className="flex-1">
-                                    <div className="flex items-start justify-between">
-                                        <div>
-                                            <input
-                                                type="text"
-                                                value={project.name}
-                                                onChange={(e) => onProjectChange(index, 'name', e.target.value)}
-                                                placeholder="Project name"
-                                                className="text-lg font-semibold bg-transparent border-0 p-0 text-gray-800 dark:text-gray-100 w-full focus:outline-none"
-                                            />
-                                            <div className="flex items-center gap-3 mt-1">
-                                                <span className="text-sm text-gray-500 dark:text-gray-400">{project.date || '—'}</span>
-                                                {project.link && (
-                                                    <a href={project.link} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1">
-                                                        <LinkIcon className="w-4 h-4" />
-                                                        <span className="truncate max-w-[160px]">{project.link.replace(/https?:\/\//, '')}</span>
-                                                    </a>
-                                                )}
-                                            </div>
-                                        </div>
-
-                                        <div className="ml-4 flex-shrink-0">
-                                            <button onClick={() => onRemoveProject(index)} title="Remove project" className="p-2 rounded-md text-gray-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-opacity opacity-0 group-hover:opacity-100">
-                                                <TrashIcon className="w-5 h-5" />
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <textarea
-                                        rows={3}
-                                        value={project.description}
-                                        onChange={(e) => onProjectChange(index, 'description', e.target.value)}
-                                        placeholder="Short description (technologies, what it solves)"
-                                        className="mt-3 w-full bg-transparent border border-gray-100 dark:border-gray-700 rounded-md px-3 py-2 text-gray-700 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-900 resize-none"
-                                    />
-                                    <div className="mt-3 flex items-center gap-3">
-                                        <input
-                                            type="text"
-                                            value={project.date}
-                                            onChange={(e) => onProjectChange(index, 'date', e.target.value)}
-                                            placeholder="Date"
-                                            className="text-sm bg-transparent border border-gray-100 dark:border-gray-700 rounded-md px-2 py-1 w-28 focus:outline-none"
-                                        />
-                                        <input
-                                            type="url"
-                                            value={project.link}
-                                            onChange={(e) => onProjectChange(index, 'link', e.target.value)}
-                                            placeholder="https://..."
-                                            className="text-sm bg-transparent border border-gray-100 dark:border-gray-700 rounded-md px-2 py-1 flex-1 focus:outline-none"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-                    ))}
-                </div>
-
-                <div className="mt-8 text-center">
-                    <button onClick={onAddProject} className="inline-flex items-center gap-2 px-5 py-2 rounded-md bg-gradient-to-r from-gray-800 to-gray-700 text-white hover:brightness-105 transition">
-                        Add another project
-                    </button>
-                </div>
-                {/* Inline dashboard render (optional) — removed the 3D dashboard component */}
-                {showInline && (
-                    <div className="mt-8 p-6 bg-gray-900/10 dark:bg-black/20 rounded-lg text-sm text-gray-500">
-                        The interactive 3D dashboard has been removed from this build. Use the "Open 3D Dashboard" button to navigate (it now opens the Skills Deep Dive page).
+                {!loading && repos.length === 0 && (
+                    <div className="text-center py-20">
+                        <p className="text-2xl text-gray-500 dark:text-gray-400 mb-4">No repositories found</p>
+                        <p className="text-gray-400 dark:text-gray-500">Enter a GitHub username and click "Fetch Repos"</p>
                     </div>
                 )}
             </div>
@@ -1159,6 +2362,8 @@ const App: React.FC = () => {
         { name: 'Nick de Nitro', date: '2008–2025', description: 'Techno music project — releases and collaborations.', link: '' },
         { name: 'Personal Portfolio', date: '2025', description: 'Static portfolio and demo site (GitHub Pages).', link: 'https://nicokuehn-dci.github.io' }
     ]);
+    const [showContactForm, setShowContactForm] = useState(false);
+    const [contactFormData, setContactFormData] = useState({ name: '', email: '', subject: '', message: '' });
 
 
     useEffect(() => {
@@ -1221,9 +2426,21 @@ const App: React.FC = () => {
         setShowcaseProjects(newProjects);
     };
 
+    const handleContactFormSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // Create mailto link with form data
+        const subject = encodeURIComponent(contactFormData.subject || 'Contact from Resume');
+        const body = encodeURIComponent(
+            `Name: ${contactFormData.name}\nEmail: ${contactFormData.email}\n\n${contactFormData.message}`
+        );
+        window.location.href = `mailto:${resumeData.contact.email}?subject=${subject}&body=${body}`;
+        setShowContactForm(false);
+        setContactFormData({ name: '', email: '', subject: '', message: '' });
+    };
+
 
     const pages = [
-        <ResumePage key={0} data={resumeData} onDownloadPdf={handleDownloadPdf} />,
+        <ResumePage key={0} data={resumeData} onDownloadPdf={handleDownloadPdf} onOpenContactForm={() => setShowContactForm(true)} />,
         <ProjectShowcasePage 
             key={1} 
             projects={showcaseProjects}
@@ -1236,8 +2453,8 @@ const App: React.FC = () => {
             onNotify={(m:string) => showToast(m)}
         />,
         <SkillsDeepDivePage key={2} data={skillsData} />,
-        <PlaceholderPage key={3} title="My Creative Work">A space to highlight your music production and other creative endeavors. Embed audio players, videos, or link to your portfolio on other platforms.</PlaceholderPage>,
-    <AboutContactPage key={4} data={resumeData} />,
+        <MyCreativeWorkPage key={3} />,
+        <AboutContactPage key={4} data={resumeData} onOpenContactForm={() => setShowContactForm(true)} />,
     ];
 
     const goToNextPage = () => setCurrentPage(prev => Math.min(prev + 1, pages.length - 1));
@@ -1254,6 +2471,260 @@ const App: React.FC = () => {
                                     <style>{`
                                         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
                                         .animate-fadeIn { animation: fadeIn 0.6s ease-in-out forwards; }
+
+                                        @keyframes pulse {
+                                            0%, 100% { transform: scale(1); opacity: 1; }
+                                            50% { transform: scale(1.1); opacity: 0.9; }
+                                        }
+
+                                        @keyframes pulse-glow {
+                                            0%, 100% { 
+                                                textShadow: 0 0 20px rgba(255,255,255,0.9), 0 0 40px rgba(255,255,255,0.7), 0 0 60px rgba(255,255,255,0.5);
+                                            }
+                                            50% { 
+                                                textShadow: 0 0 30px rgba(255,255,255,1), 0 0 60px rgba(255,255,255,0.9), 0 0 90px rgba(255,255,255,0.7);
+                                            }
+                                        }
+
+                                        /* Subtle floating animations for commercial banner */
+                                        @keyframes float-subtle-1 {
+                                            0%, 100% { transform: translate(0, 0); }
+                                            50% { transform: translate(8px, -5px); }
+                                        }
+
+                                        @keyframes float-subtle-2 {
+                                            0%, 100% { transform: translate(0, 0); }
+                                            50% { transform: translate(-6px, 4px); }
+                                        }
+
+                                        @keyframes float-subtle-3 {
+                                            0%, 100% { transform: translate(0, 0); }
+                                            50% { transform: translate(7px, 6px); }
+                                        }
+
+                                        @keyframes float-subtle-4 {
+                                            0%, 100% { transform: translate(0, 0); }
+                                            50% { transform: translate(-8px, -4px); }
+                                        }
+
+                                        @keyframes float-subtle-5 {
+                                            0%, 100% { transform: translate(0, 0); }
+                                            50% { transform: translate(10px, 5px); }
+                                        }
+
+                                        @keyframes float-subtle-6 {
+                                            0%, 100% { transform: translate(0, 0); }
+                                            50% { transform: translate(-9px, -6px); }
+                                        }
+
+                                        /* Playful bounce animation for click */
+                                        @keyframes bounce-playful {
+                                            0%, 100% { transform: perspective(1000px) scale(1) translateY(0); }
+                                            25% { transform: perspective(1000px) scale(1.1) translateY(-15px); }
+                                            50% { transform: perspective(1000px) scale(0.95) translateY(0); }
+                                            75% { transform: perspective(1000px) scale(1.05) translateY(-5px); }
+                                        }
+
+                                        /* Wiggle animation */
+                                        @keyframes wiggle {
+                                            0%, 100% { transform: perspective(1000px) rotate(0deg); }
+                                            25% { transform: perspective(1000px) rotate(5deg) scale(1.05); }
+                                            50% { transform: perspective(1000px) rotate(-5deg) scale(1.05); }
+                                            75% { transform: perspective(1000px) rotate(3deg) scale(1.05); }
+                                        }
+
+                                        /* Spin playful animation */
+                                        @keyframes spin-playful {
+                                            0% { transform: perspective(1000px) rotateY(0deg) scale(1); }
+                                            50% { transform: perspective(1000px) rotateY(180deg) scale(1.1); }
+                                            100% { transform: perspective(1000px) rotateY(360deg) scale(1); }
+                                        }
+
+                                        /* Pulsating background glow */
+                                        @keyframes pulse-bg-glow {
+                                            0%, 100% { 
+                                                opacity: 0.6;
+                                                transform: translate(-50%, -50%) scale(1);
+                                            }
+                                            50% { 
+                                                opacity: 1;
+                                                transform: translate(-50%, -50%) scale(1.1);
+                                            }
+                                        }
+
+                                        /* Corner glows */
+                                        @keyframes corner-glow-1 {
+                                            0%, 100% { opacity: 0.4; }
+                                            50% { opacity: 0.8; }
+                                        }
+
+                                        @keyframes corner-glow-2 {
+                                            0%, 100% { opacity: 0.3; }
+                                            50% { opacity: 0.7; }
+                                        }
+
+                                        /* Ticker breathing animation */
+                                        @keyframes ticker-breathing {
+                                            0%, 100% { 
+                                                transform: scale(1);
+                                                box-shadow: 0 10px 30px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.2);
+                                            }
+                                            50% { 
+                                                transform: scale(1.01);
+                                                box-shadow: 0 12px 35px rgba(0,0,0,0.45), 0 0 20px rgba(255,255,255,0.2), inset 0 2px 4px rgba(255,255,255,0.25);
+                                            }
+                                        }
+
+                                        /* Ticker pop animation */
+                                        @keyframes ticker-pop {
+                                            0%, 100% { transform: scale(1) rotate(0deg); }
+                                            50% { transform: scale(1.08) rotate(-2deg); }
+                                        }
+
+                                        /* Orange pulse for skill discs - continuous */
+                                        @keyframes disc-pulse-orange {
+                                            0%, 100% {
+                                                box-shadow: 
+                                                    0 10px 30px rgba(0,0,0,0.4),
+                                                    0 0 20px rgba(205,127,50,0.3),
+                                                    0 0 40px rgba(205,127,50,0.15),
+                                                    inset 0 2px 4px rgba(255,255,255,0.05);
+                                            }
+                                            50% {
+                                                box-shadow: 
+                                                    0 10px 30px rgba(0,0,0,0.4),
+                                                    0 0 35px rgba(205,127,50,0.6),
+                                                    0 0 70px rgba(205,127,50,0.4),
+                                                    0 0 100px rgba(205,127,50,0.2),
+                                                    inset 0 2px 4px rgba(255,255,255,0.05);
+                                            }
+                                        }
+
+                                        /* Ultraviolet clock animations */
+                                        @keyframes uv-glow {
+                                            0%, 100% {
+                                                box-shadow: 0 8px 32px rgba(138,43,226,0.3), inset 0 2px 4px rgba(138,43,226,0.2), 0 0 40px rgba(138,43,226,0.2);
+                                                border-color: rgba(138,43,226,0.4);
+                                            }
+                                            50% {
+                                                box-shadow: 0 12px 48px rgba(138,43,226,0.5), inset 0 2px 4px rgba(138,43,226,0.3), 0 0 60px rgba(138,43,226,0.4);
+                                                border-color: rgba(138,43,226,0.6);
+                                            }
+                                        }
+
+                                        @keyframes uv-pulse {
+                                            0% { transform: scale(1); }
+                                            50% { transform: scale(1.1) rotateY(10deg); }
+                                            100% { transform: scale(1); }
+                                        }
+
+                                        @keyframes uv-orb-pulse {
+                                            0%, 100% {
+                                                opacity: 0.5;
+                                                transform: translate(-50%, -50%) scale(1);
+                                            }
+                                            50% {
+                                                opacity: 0.8;
+                                                transform: translate(-50%, -50%) scale(1.15);
+                                            }
+                                        }
+
+                                        @keyframes uv-ring-rotate {
+                                            0% { transform: translate(-50%, -50%) rotate(0deg); }
+                                            100% { transform: translate(-50%, -50%) rotate(360deg); }
+                                        }
+
+                                        @keyframes uv-ring-rotate-reverse {
+                                            0% { transform: translate(-50%, -50%) rotate(360deg); }
+                                            100% { transform: translate(-50%, -50%) rotate(0deg); }
+                                        }
+
+                                        /* Hover effect for stat bubbles */
+                                        .stat-hover:hover > div {
+                                            background: rgba(255,255,255,0.25) !important;
+                                            box-shadow: 0 0 30px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.4) !important;
+                                            border-color: rgba(255,255,255,0.7) !important;
+                                        }
+
+                                        /* Banner hover effect - pause animations */
+                                        .banner-hovered .floating-stat {
+                                            animation-play-state: paused;
+                                        }
+
+                                        @keyframes float-diagonal-1 {
+                                            0%, 100% { 
+                                                transform: translate(0, 0) rotate(0deg);
+                                                opacity: 0.9;
+                                            }
+                                            25% { 
+                                                transform: translate(30px, -15px) rotate(2deg);
+                                                opacity: 1;
+                                            }
+                                            50% { 
+                                                transform: translate(60px, -10px) rotate(-1deg);
+                                                opacity: 0.85;
+                                            }
+                                            75% { 
+                                                transform: translate(30px, 5px) rotate(1deg);
+                                                opacity: 1;
+                                            }
+                                        }
+
+                                        @keyframes float-diagonal-2 {
+                                            0%, 100% { 
+                                                transform: translate(0, 0) rotate(0deg);
+                                                opacity: 0.85;
+                                            }
+                                            33% { 
+                                                transform: translate(-40px, 20px) rotate(-2deg);
+                                                opacity: 1;
+                                            }
+                                            66% { 
+                                                transform: translate(-20px, -10px) rotate(1deg);
+                                                opacity: 0.9;
+                                            }
+                                        }
+
+                                        @keyframes float-diagonal-3 {
+                                            0%, 100% { 
+                                                transform: translate(0, 0) rotate(0deg);
+                                                opacity: 0.8;
+                                            }
+                                            40% { 
+                                                transform: translate(50px, -20px) rotate(3deg);
+                                                opacity: 1;
+                                            }
+                                            80% { 
+                                                transform: translate(25px, 10px) rotate(-2deg);
+                                                opacity: 0.9;
+                                            }
+                                        }
+
+                                        @keyframes float-diagonal-4 {
+                                            0%, 100% { 
+                                                transform: translate(0, 0) rotate(0deg);
+                                                opacity: 0.9;
+                                            }
+                                            30% { 
+                                                transform: translate(-35px, -25px) rotate(-2deg);
+                                                opacity: 1;
+                                            }
+                                            70% { 
+                                                transform: translate(-50px, 15px) rotate(2deg);
+                                                opacity: 0.85;
+                                            }
+                                        }
+
+                                        @keyframes float-center {
+                                            0%, 100% { 
+                                                transform: translateY(-50%) scale(1);
+                                                opacity: 0.7;
+                                            }
+                                            50% { 
+                                                transform: translateY(-50%) scale(1.05);
+                                                opacity: 1;
+                                            }
+                                        }
 
                                         /* Skills Deep Dive: steampunk theme with leather/bronze textures and warm brass glow */
                                         .skills-deep-container {
@@ -1367,8 +2838,23 @@ const App: React.FC = () => {
                                           .skill-meta { font-size: 0.78rem; color: #6b7280; }
 
                                           /* icon and badge */
-                                          .skill-icon { width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; border-radius:10px; background:rgba(255,255,255,0.92); box-shadow: 0 8px 24px rgba(12,14,20,0.08); }
-                                          .skill-badge { padding: .18rem .5rem; border-radius:9999px; font-size:.7rem; font-weight:700; display:inline-block }
+                                          .skill-icon { width:40px; height:40px; display:inline-flex; align-items:center; justify-content:center; border-radius:10px; background:rgba(255,255,255,0.92); box-shadow: 0 8px 24px rgba(12,14,20,0.08), 0 0 10px rgba(255,255,255,0.3); transition: all 0.3s ease; }
+                                          .skill-icon:hover { box-shadow: 0 12px 32px rgba(12,14,20,0.12), 0 0 20px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.3); transform: translateY(-2px); }
+                                          .skill-badge { 
+                                              padding: .18rem .5rem; 
+                                              border-radius: 9999px; 
+                                              font-size: .7rem; 
+                                              font-weight: 700; 
+                                              display: inline-block;
+                                              border: 1px solid rgba(255,255,255,0.3);
+                                              box-shadow: 0 0 10px rgba(255,255,255,0.2), 0 0 20px rgba(255,255,255,0.1);
+                                              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                                          }
+                                          .skill-badge:hover {
+                                              border-color: rgba(255,255,255,0.5);
+                                              box-shadow: 0 0 15px rgba(255,255,255,0.4), 0 0 30px rgba(255,255,255,0.2), 0 0 45px rgba(255,255,255,0.1);
+                                              transform: translateY(-1px) scale(1.05);
+                                          }
 
                                           /* interactive tilt helpers */
                                           .skill-card--interactive { will-change: transform; transform-style:preserve-3d; }
@@ -1407,7 +2893,7 @@ const App: React.FC = () => {
                                             margin-left: auto;
                                             margin-right: auto;
                                         }
-                                        /* discs bumped +50% for emphasis and stronger presence with enhanced 3D depth */
+                                        /* Enhanced discs with multi-layer depth effects */
                                         .skill-disc { 
                                             width: 210px; 
                                             height: 210px; 
@@ -1417,18 +2903,52 @@ const App: React.FC = () => {
                                             border-radius: 999px; 
                                             perspective: 1200px; 
                                             margin: 0.6rem;
+                                            background: linear-gradient(145deg, rgba(40,40,40,0.8), rgba(20,20,20,0.95));
+                                            border: 2px solid rgba(255,255,255,0.15);
                                             box-shadow: 
-                                                0 10px 30px rgba(0, 0, 0, 0.4),
-                                                0 0 20px rgba(255, 255, 255, 0.05),
-                                                inset 0 2px 4px rgba(255, 255, 255, 0.05);
+                                                0 10px 30px rgba(0, 0, 0, 0.5),
+                                                0 0 20px rgba(255, 255, 255, 0.08),
+                                                0 0 40px rgba(255, 255, 255, 0.05),
+                                                inset 0 2px 4px rgba(255, 255, 255, 0.08),
+                                                inset 0 -2px 6px rgba(0, 0, 0, 0.3);
                                             transition: all 0.4s cubic-bezier(0.2, 0.9, 0.2, 1);
+                                        }
+                                        .skill-disc::before {
+                                            content: '';
+                                            position: absolute;
+                                            inset: -4px;
+                                            border-radius: 999px;
+                                            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1), transparent 70%);
+                                            opacity: 0;
+                                            transition: opacity 0.4s ease;
+                                            pointer-events: none;
+                                            z-index: -1;
+                                        }
+                                        .skill-disc::after {
+                                            content: '';
+                                            position: absolute;
+                                            inset: 10%;
+                                            border-radius: 999px;
+                                            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15), transparent 60%);
+                                            opacity: 0.5;
+                                            pointer-events: none;
                                         }
                                         .skill-disc:hover,
                                         .skill-disc.highlight { 
+                                            transform: translateY(-8px) scale(1.05);
+                                            border-color: rgba(255,255,255,0.4);
+                                            background: linear-gradient(145deg, rgba(50,50,50,0.9), rgba(25,25,25,1));
                                             box-shadow: 
-                                                0 20px 60px rgba(0, 0, 0, 0.6),
-                                                0 0 40px rgba(255, 255, 255, 0.15),
-                                                inset 0 4px 8px rgba(255, 255, 255, 0.1);
+                                                0 20px 60px rgba(0, 0, 0, 0.7),
+                                                0 0 30px rgba(255, 255, 255, 0.2),
+                                                0 0 60px rgba(255, 255, 255, 0.15),
+                                                0 0 90px rgba(255, 255, 255, 0.1),
+                                                inset 0 4px 8px rgba(255, 255, 255, 0.12),
+                                                inset 0 -4px 10px rgba(0, 0, 0, 0.4);
+                                        }
+                                        .skill-disc:hover::before,
+                                        .skill-disc.highlight::before {
+                                            opacity: 1;
                                         }
                                         .skill-disc svg { width:100%; height:100%; transform:rotate(-90deg); display:block; transition: transform .35s cubic-bezier(.2,.9,.2,1); }
                                         .skill-disc .label { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); font-size:1.1rem; font-weight:900; color:#000000; text-align:center; pointer-events:none; text-shadow: 0 0 8px rgba(255,255,255,0.9), 0 0 16px rgba(255,255,255,0.7), 0 0 24px rgba(255,255,255,0.5); -webkit-text-stroke: 1px rgba(255,255,255,0.3); }
@@ -1502,6 +3022,26 @@ const App: React.FC = () => {
                                                 0 0 4px rgba(255, 255, 255, 0.6),
                                                 0 1px 2px rgba(0, 0, 0, 0.2);
                                         }
+
+                                        /* Skill name caption below disc */
+                                        .disc-caption {
+                                            position: absolute;
+                                            bottom: -35px;
+                                            left: 50%;
+                                            transform: translateX(-50%);
+                                            font-size: 0.85rem;
+                                            font-weight: 700;
+                                            color: #ffffff;
+                                            text-align: center;
+                                            white-space: nowrap;
+                                            text-shadow: 
+                                                0 0 10px rgba(255,255,255,0.8),
+                                                0 0 20px rgba(255,255,255,0.6),
+                                                0 0 30px rgba(255,255,255,0.4);
+                                            z-index: 10;
+                                            pointer-events: none;
+                                        }
+
                                         .skill-disc.hovered .disc-experience-badge,
                                         .skill-disc.highlight .disc-experience-badge {
                                             transform: scale(1.2) rotate(-5deg);
@@ -1620,78 +3160,80 @@ const App: React.FC = () => {
                                         .legend-item:hover .legend-shape {
                                             transform: translateZ(20px) rotateY(180deg) scale(1.2);
                                         }
-                                        /* Expert - Bright bronze/gold */
+                                        /* Expert - Green */
                                         .expert-glow {
-                                            background: linear-gradient(135deg, #b87333, #d4a373);
+                                            background: linear-gradient(135deg, #16a34a, #22c55e);
                                             box-shadow: 
-                                                0 0 20px rgba(184,115,51,0.6),
-                                                0 0 40px rgba(212,163,115,0.4),
+                                                0 0 20px rgba(22,163,74,0.5),
+                                                0 0 40px rgba(34,197,94,0.3),
                                                 inset 0 2px 6px rgba(255,255,255,0.3),
-                                                inset 0 -2px 6px rgba(0,0,0,0.3);
+                                                inset 0 -2px 6px rgba(0,0,0,0.2);
                                         }
                                         .legend-item:hover .expert-glow {
                                             box-shadow: 
-                                                0 0 30px rgba(184,115,51,0.9),
-                                                0 0 60px rgba(212,163,115,0.7),
-                                                0 8px 30px rgba(184,115,51,0.5),
+                                                0 0 30px rgba(22,163,74,0.8),
+                                                0 0 60px rgba(34,197,94,0.6),
+                                                0 8px 30px rgba(22,163,74,0.4),
                                                 inset 0 2px 6px rgba(255,255,255,0.4);
                                         }
-                                        /* Advanced - Deep bronze/brass */
+                                        /* Advanced - Indigo */
                                         .advanced-glow {
-                                            background: linear-gradient(135deg, #8b5e3c, #c09a62);
+                                            background: linear-gradient(135deg, #4f46e5, #6366f1);
                                             box-shadow: 
-                                                0 0 20px rgba(140,94,60,0.5),
-                                                0 0 40px rgba(192,154,98,0.3),
+                                                0 0 20px rgba(79,70,229,0.5),
+                                                0 0 40px rgba(99,102,241,0.3),
                                                 inset 0 2px 6px rgba(255,255,255,0.25),
-                                                inset 0 -2px 6px rgba(0,0,0,0.3);
+                                                inset 0 -2px 6px rgba(0,0,0,0.2);
                                         }
                                         .legend-item:hover .advanced-glow {
                                             box-shadow: 
-                                                0 0 30px rgba(140,94,60,0.8),
-                                                0 0 60px rgba(192,154,98,0.6),
-                                                0 8px 30px rgba(140,94,60,0.4),
+                                                0 0 30px rgba(79,70,229,0.8),
+                                                0 0 60px rgba(99,102,241,0.6),
+                                                0 8px 30px rgba(79,70,229,0.4),
                                                 inset 0 2px 6px rgba(255,255,255,0.35);
                                         }
-                                        /* Intermediate - Antique brass/patina */
+                                        /* Intermediate - Blue */
                                         .intermediate-glow {
-                                            background: linear-gradient(135deg, #c9a66b, #7b5a36);
+                                            background: linear-gradient(135deg, #3b82f6, #60a5fa);
                                             box-shadow: 
-                                                0 0 20px rgba(201,166,107,0.4),
-                                                0 0 40px rgba(123,90,54,0.3),
+                                                0 0 20px rgba(59,130,246,0.5),
+                                                0 0 40px rgba(96,165,250,0.3),
                                                 inset 0 2px 6px rgba(255,255,255,0.2),
-                                                inset 0 -2px 6px rgba(0,0,0,0.3);
+                                                inset 0 -2px 6px rgba(0,0,0,0.2);
                                         }
                                         .legend-item:hover .intermediate-glow {
                                             box-shadow: 
-                                                0 0 30px rgba(201,166,107,0.7),
-                                                0 0 60px rgba(123,90,54,0.5),
-                                                0 8px 30px rgba(201,166,107,0.4),
+                                                0 0 30px rgba(59,130,246,0.8),
+                                                0 0 60px rgba(96,165,250,0.6),
+                                                0 8px 30px rgba(59,130,246,0.4),
                                                 inset 0 2px 6px rgba(255,255,255,0.3);
                                         }
-                                        /* Beginner - Dark brown/copper */
+                                        /* Beginner - Orange */
                                         .beginner-glow {
-                                            background: linear-gradient(135deg, #7b4b2a, #b66a3a);
+                                            background: linear-gradient(135deg, #f97316, #fb923c);
                                             box-shadow: 
-                                                0 0 20px rgba(123,75,42,0.4),
-                                                0 0 40px rgba(182,106,58,0.3),
+                                                0 0 20px rgba(249,115,22,0.5),
+                                                0 0 40px rgba(251,146,60,0.3),
                                                 inset 0 2px 6px rgba(255,255,255,0.2),
-                                                inset 0 -2px 6px rgba(0,0,0,0.3);
+                                                inset 0 -2px 6px rgba(0,0,0,0.2);
                                         }
                                         .legend-item:hover .beginner-glow {
                                             box-shadow: 
-                                                0 0 30px rgba(123,75,42,0.7),
-                                                0 0 60px rgba(182,106,58,0.5),
-                                                0 8px 30px rgba(123,75,42,0.4),
+                                                0 0 30px rgba(249,115,22,0.8),
+                                                0 0 60px rgba(251,146,60,0.6),
+                                                0 8px 30px rgba(249,115,22,0.4),
                                                 inset 0 2px 6px rgba(255,255,255,0.3);
                                         }
                                         .legend-label {
-                                            font-size: 0.875rem;
-                                            font-weight: 600;
-                                            color: #cbd5e1;
-                                            text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+                                            font-size: 0.9rem;
+                                            font-weight: 500;
+                                            font-family: Georgia, "Times New Roman", serif;
+                                            color: #e2e8f0;
+                                            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
                                         }
                                         .legend-item:hover .legend-label {
                                             color: #ffffff;
+                                            font-weight: 600;
                                         }
 
                                         /* lightning accent overlay inside discs */
@@ -1817,9 +3359,10 @@ const App: React.FC = () => {
                                             padding: 2rem;
                                             box-shadow: 
                                                 0 20px 60px rgba(0,0,0,0.7),
-                                                0 0 40px rgba(128,128,128,0.2),
+                                                0 0 30px rgba(255,255,255,0.4),
+                                                0 0 60px rgba(255,255,255,0.2),
                                                 inset 0 2px 4px rgba(200,200,200,0.1);
-                                            border: 1px solid rgba(160,160,160,0.3);
+                                            border: 2px solid rgba(255,255,255,0.4);
                                             transform-style: preserve-3d;
                                             transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
                                             position: relative;
@@ -1829,8 +3372,11 @@ const App: React.FC = () => {
                                             transform: translateY(-10px) rotateX(2deg);
                                             box-shadow: 
                                                 0 30px 80px rgba(128,128,128,0.4),
-                                                0 0 60px rgba(160,160,160,0.3),
+                                                0 0 40px rgba(255,255,255,0.7),
+                                                0 0 80px rgba(255,255,255,0.5),
+                                                0 0 120px rgba(255,255,255,0.3),
                                                 inset 0 2px 4px rgba(220,220,220,0.15);
+                                            border-color: rgba(255,255,255,0.6);
                                         }
                                         .profile-card-inner {
                                             text-align: center;
@@ -1846,10 +3392,13 @@ const App: React.FC = () => {
                                             position: absolute;
                                             inset: -15px;
                                             border-radius: 50%;
-                                            background: conic-gradient(from 0deg, #d0d0d0, #a0a0a0, #707070, #d0d0d0);
+                                            background: conic-gradient(from 0deg, #ffffff, #e0e0e0, #c0c0c0, #ffffff);
                                             animation: ring-spin 4s linear infinite;
-                                            opacity: 0.5;
+                                            opacity: 0.7;
                                             filter: blur(20px);
+                                            box-shadow: 
+                                                0 0 30px rgba(255,255,255,0.8),
+                                                0 0 60px rgba(255,255,255,0.5);
                                         }
                                         @keyframes ring-spin {
                                             from { transform: rotate(0deg); }
@@ -1861,16 +3410,18 @@ const App: React.FC = () => {
                                             height: 200px;
                                             border-radius: 50%;
                                             object-fit: cover;
-                                            border: 4px solid rgba(160,160,160,0.6);
+                                            border: 4px solid rgba(255,255,255,0.6);
                                             box-shadow: 
                                                 0 10px 40px rgba(0,0,0,0.7),
-                                                0 0 30px rgba(128,128,128,0.3),
+                                                0 0 20px rgba(255,255,255,0.6),
+                                                0 0 40px rgba(255,255,255,0.4),
                                                 inset 0 4px 8px rgba(200,200,200,0.15);
                                             transition: transform 0.4s ease;
                                             z-index: 1;
                                         }
                                         .profile-card-3d:hover .profile-img-3d {
                                             transform: scale(1.05);
+                                            border-color: rgba(255,255,255,0.8);
                                             box-shadow: 
                                                 0 15px 50px rgba(0,0,0,0.8),
                                                 0 0 40px rgba(160,160,160,0.5),
@@ -1893,16 +3444,17 @@ const App: React.FC = () => {
                                         .profile-name-3d {
                                             font-size: 1.875rem;
                                             font-weight: 800;
-                                            background: linear-gradient(135deg, #f0f0f0, #c0c0c0, #909090);
+                                            background: linear-gradient(135deg, #ffffff, #f0f0f0, #d0d0d0);
                                             -webkit-background-clip: text;
                                             background-clip: text;
                                             color: transparent;
                                             margin-bottom: 0.5rem;
-                                            text-shadow: 0 0 20px rgba(192,192,192,0.4);
+                                            filter: drop-shadow(0 0 10px rgba(255,255,255,0.8)) drop-shadow(0 0 20px rgba(255,255,255,0.5));
                                         }
                                         .profile-title-3d {
                                             font-size: 1rem;
-                                            color: #a0a0a0;
+                                            color: #d0d0d0;
+                                            text-shadow: 0 0 5px rgba(255,255,255,0.3);
                                             margin-bottom: 1.5rem;
                                         }
 
@@ -1951,6 +3503,11 @@ const App: React.FC = () => {
                                             text-decoration: none;
                                             transition: color 0.3s ease;
                                             font-size: 0.875rem;
+                                            background: none;
+                                            border: none;
+                                            cursor: pointer;
+                                            padding: 0;
+                                            font-family: inherit;
                                         }
                                         .contact-link:hover {
                                             color: #e0e0e0;
@@ -1970,26 +3527,44 @@ const App: React.FC = () => {
                                             border-radius: 12px;
                                             text-decoration: none;
                                             overflow: hidden;
+                                            cursor: pointer;
+                                            border: 2px solid rgba(255,255,255,0.3);
                                             box-shadow: 
                                                 0 8px 24px rgba(80,80,80,0.5),
-                                                0 0 20px rgba(128,128,128,0.3),
+                                                0 0 20px rgba(255,255,255,0.4),
+                                                0 0 40px rgba(255,255,255,0.2),
                                                 inset 0 2px 4px rgba(200,200,200,0.2);
                                             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                                            outline: none;
+                                        }
+                                        .cta-button-3d:focus {
+                                            outline: 2px solid rgba(255,255,255,0.6);
+                                            outline-offset: 2px;
+                                        }
+                                        .cta-button-3d:active {
+                                            transform: translateY(-2px) scale(1.02);
                                         }
                                         .cta-button-3d:hover {
                                             transform: translateY(-4px) scale(1.05);
+                                            border-color: rgba(255,255,255,0.6);
                                             box-shadow: 
                                                 0 16px 48px rgba(120,120,120,0.7),
-                                                0 0 40px rgba(160,160,160,0.5),
+                                                0 0 30px rgba(255,255,255,0.8),
+                                                0 0 60px rgba(255,255,255,0.6),
+                                                0 0 90px rgba(255,255,255,0.4),
                                                 inset 0 2px 4px rgba(220,220,220,0.3);
                                         }
                                         .cta-text {
                                             position: relative;
                                             z-index: 1;
-                                            color: #f0f0f0;
+                                            color: #ffffff;
                                             font-weight: 700;
                                             font-size: 1rem;
-                                            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+                                            text-shadow: 
+                                                0 0 5px rgba(255,255,255,0.6),
+                                                0 0 10px rgba(255,255,255,0.4),
+                                                0 0 20px rgba(255,255,255,0.3);
+                                            pointer-events: none;
                                         }
                                         .cta-glow {
                                             position: absolute;
@@ -1997,6 +3572,7 @@ const App: React.FC = () => {
                                             background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
                                             transform: translateX(-100%);
                                             transition: transform 0.6s;
+                                            pointer-events: none;
                                         }
                                         .cta-button-3d:hover .cta-glow {
                                             transform: translateX(100%);
@@ -2009,18 +3585,66 @@ const App: React.FC = () => {
                                             padding: 2rem;
                                             box-shadow: 
                                                 0 10px 40px rgba(0,0,0,0.6),
-                                                0 0 20px rgba(100,100,100,0.2),
-                                                inset 0 2px 4px rgba(180,180,180,0.08);
-                                            border: 1px solid rgba(140,140,140,0.25);
-                                            transition: all 0.4s ease;
+                                                0 0 20px rgba(255,255,255,0.3),
+                                                0 0 40px rgba(255,255,255,0.15),
+                                                inset 0 2px 4px rgba(180,180,180,0.08),
+                                                inset 0 -2px 8px rgba(255,255,255,0.05);
+                                            border: 2px solid rgba(255,255,255,0.4);
+                                            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                                             position: relative;
                                             z-index: 1;
                                             overflow: hidden;
+
+                                            cursor: pointer;
                                         }
                                         /* Highlighted zone overlay */
                                         .content-card-3d::before {
                                             content: '';
                                             position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                            right: 0;
+                                            height: 50%;
+                                            background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 100%);
+                                            pointer-events: none;
+                                            z-index: 0;
+                                            transition: all 0.4s ease;
+                                        }
+                                        /* Glowing accent corner */
+                                        .content-card-3d::after {
+                                            content: '';
+                                            position: absolute;
+                                            top: -50px;
+                                            right: -50px;
+                                            width: 150px;
+                                            height: 150px;
+                                            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+                                            border-radius: 50%;
+                                            pointer-events: none;
+                                            z-index: 0;
+                                            transition: all 0.4s ease;
+                                        }
+                                        .content-card-3d:hover {
+                                            transform: translateY(-8px) scale(1.02);
+                                            box-shadow: 
+                                                0 20px 60px rgba(128,128,128,0.5),
+                                                0 0 40px rgba(255,255,255,0.7),
+                                                0 0 80px rgba(255,255,255,0.5),
+                                                0 0 120px rgba(255,255,255,0.3),
+                                                inset 0 2px 8px rgba(200,200,200,0.15),
+                                                inset 0 -2px 12px rgba(255,255,255,0.1);
+                                            border-color: rgba(255,255,255,0.7);
+                                        }
+                                        .content-card-3d:hover::before {
+                                            background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%);
+                                        }
+                                        .content-card-3d:hover::after {
+                                            width: 200px;
+                                            height: 200px;
+                                            top: -60px;
+                                            right: -60px;
+                                            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+                                        }
                                             top: 0;
                                             left: 0;
                                             right: 0;
@@ -2037,7 +3661,7 @@ const App: React.FC = () => {
                                             right: -50px;
                                             width: 150px;
                                             height: 150px;
-                                            background: radial-gradient(circle, rgba(200,200,200,0.2) 0%, transparent 70%);
+                                            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
                                             border-radius: 50%;
                                             pointer-events: none;
                                             z-index: 0;
@@ -2046,9 +3670,11 @@ const App: React.FC = () => {
                                             transform: translateY(-6px);
                                             box-shadow: 
                                                 0 20px 60px rgba(128,128,128,0.4),
-                                                0 0 40px rgba(160,160,160,0.3),
+                                                0 0 30px rgba(255,255,255,0.6),
+                                                0 0 60px rgba(255,255,255,0.4),
+                                                0 0 90px rgba(255,255,255,0.2),
                                                 inset 0 2px 4px rgba(200,200,200,0.12);
-                                            border-color: rgba(180,180,180,0.4);
+                                            border-color: rgba(255,255,255,0.6);
                                         }
                                         .content-card-3d:hover::before {
                                             background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 100%);
@@ -2061,20 +3687,26 @@ const App: React.FC = () => {
                                         .content-title-glow {
                                             font-size: 1.5rem;
                                             font-weight: 700;
-                                            background: linear-gradient(135deg, #ffffff, #d0d0d0, #a0a0a0);
+                                            background: linear-gradient(135deg, #ffffff, #f0f0f0, #d0d0d0);
                                             -webkit-background-clip: text;
                                             background-clip: text;
                                             color: transparent;
-                                            filter: drop-shadow(0 2px 8px rgba(200,200,200,0.6));
-                                            text-shadow: 0 0 20px rgba(255,255,255,0.3);
+                                            filter: drop-shadow(0 0 8px rgba(255,255,255,0.8)) drop-shadow(0 0 16px rgba(255,255,255,0.6));
+                                            text-shadow: 
+                                                0 0 10px rgba(255,255,255,0.6),
+                                                0 0 20px rgba(255,255,255,0.4),
+                                                0 0 30px rgba(255,255,255,0.3);
                                         }
                                         .title-underline-glow {
                                             width: 60px;
                                             height: 3px;
-                                            background: linear-gradient(90deg, #ffffff, #c0c0c0, transparent);
+                                            background: linear-gradient(90deg, #ffffff, #e0e0e0, transparent);
                                             margin-top: 0.5rem;
                                             border-radius: 2px;
-                                            box-shadow: 0 2px 12px rgba(255,255,255,0.6), 0 0 20px rgba(200,200,200,0.4);
+                                            box-shadow: 
+                                                0 0 10px rgba(255,255,255,0.9),
+                                                0 0 20px rgba(255,255,255,0.7),
+                                                0 0 30px rgba(255,255,255,0.5);
                                         }
                                         .content-text-3d {
                                             color: #d8d8d8;
@@ -2158,41 +3790,278 @@ const App: React.FC = () => {
                                             align-items: center;
                                             gap: 0.75rem;
                                             padding: 0.75rem 1.5rem;
-                                            background: linear-gradient(135deg, rgba(140,140,140,0.3), rgba(100,100,100,0.3));
-                                            border: 1px solid rgba(160,160,160,0.5);
+                                            background: linear-gradient(135deg, rgba(34,197,94,0.3), rgba(22,163,74,0.3));
+                                            border: 2px solid rgba(255,255,255,0.4);
                                             border-radius: 24px;
                                             box-shadow: 
-                                                0 4px 16px rgba(128,128,128,0.3),
-                                                0 0 20px rgba(160,160,160,0.2);
+                                                0 4px 16px rgba(34,197,94,0.4),
+                                                0 0 20px rgba(255,255,255,0.4),
+                                                0 0 40px rgba(255,255,255,0.2),
+                                                0 0 20px rgba(34,197,94,0.3);
+                                            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                                            cursor: default;
+                                        }
+                                        .availability-badge-3d:hover {
+                                            border-color: rgba(255,255,255,0.6);
+                                            box-shadow: 
+                                                0 4px 20px rgba(34,197,94,0.5),
+                                                0 0 30px rgba(255,255,255,0.6),
+                                                0 0 60px rgba(255,255,255,0.4),
+                                                0 0 90px rgba(255,255,255,0.2),
+                                                0 0 30px rgba(34,197,94,0.4);
+                                            transform: translateY(-2px) scale(1.02);
                                         }
                                         .badge-pulse {
                                             width: 10px;
                                             height: 10px;
                                             border-radius: 50%;
-                                            background: #b0b0b0;
-                                            box-shadow: 0 0 10px #c0c0c0;
+                                            background: #22c55e;
+                                            box-shadow: 0 0 10px #22c55e, 0 0 20px #22c55e;
                                             animation: pulse-grow 2s ease-in-out infinite;
                                         }
                                         @keyframes pulse-grow {
                                             0%, 100% { transform: scale(1); opacity: 1; }
-                                            50% { transform: scale(1.3); opacity: 0.7; }
+                                            50% { transform: scale(1.3); opacity: 0.8; }
                                         }
                                         .badge-text {
-                                            color: #d8d8d8;
-                                            font-weight: 600;
+                                            color: #22c55e;
+                                            font-weight: 700;
                                             font-size: 0.875rem;
+                                        }
+
+                                        /* Glitch Effects for Stats Card */
+                                        .glitch-container {
+                                            position: relative;
+                                            animation: container-glitch 8s infinite;
+                                        }
+                                        
+                                        @keyframes container-glitch {
+                                            0%, 90%, 100% { transform: translate(0); }
+                                            91% { transform: translate(-2px, 2px); }
+                                            92% { transform: translate(2px, -2px); }
+                                            93% { transform: translate(-1px, 1px); }
+                                            94% { transform: translate(1px, -1px); }
+                                        }
+                                        
+                                        .glitch-overlay {
+                                            position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                            width: 100%;
+                                            height: 100%;
+                                            opacity: 0;
+                                            pointer-events: none;
+                                            z-index: 5;
+                                        }
+                                        
+                                        .glitch-overlay-1 {
+                                            background: linear-gradient(90deg, 
+                                                transparent 0%, 
+                                                rgba(255, 0, 0, 0.1) 25%, 
+                                                transparent 50%, 
+                                                rgba(0, 255, 255, 0.1) 75%, 
+                                                transparent 100%);
+                                            animation: glitch-1 7s infinite;
+                                        }
+                                        
+                                        .glitch-overlay-2 {
+                                            background: linear-gradient(180deg, 
+                                                transparent 0%, 
+                                                rgba(0, 255, 0, 0.05) 50%, 
+                                                transparent 100%);
+                                            animation: glitch-2 5s infinite;
+                                        }
+                                        
+                                        @keyframes glitch-1 {
+                                            0%, 85%, 100% { opacity: 0; transform: translateX(0); }
+                                            86% { opacity: 0.7; transform: translateX(-5px); }
+                                            87% { opacity: 0.5; transform: translateX(5px); }
+                                            88% { opacity: 0.3; transform: translateX(-3px); }
+                                            89% { opacity: 0; transform: translateX(0); }
+                                        }
+                                        
+                                        @keyframes glitch-2 {
+                                            0%, 80%, 100% { opacity: 0; transform: translateY(0); }
+                                            81% { opacity: 0.4; transform: translateY(-3px); }
+                                            82% { opacity: 0.6; transform: translateY(3px); }
+                                            83% { opacity: 0.2; transform: translateY(-2px); }
+                                            84% { opacity: 0; transform: translateY(0); }
+                                        }
+                                        
+                                        .scanline {
+                                            position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                            width: 100%;
+                                            height: 2px;
+                                            background: linear-gradient(90deg, 
+                                                transparent 0%, 
+                                                rgba(255, 255, 255, 0.3) 50%, 
+                                                transparent 100%);
+                                            animation: scanline-move 3s linear infinite;
+                                            z-index: 6;
+                                            pointer-events: none;
+                                        }
+                                        
+                                        @keyframes scanline-move {
+                                            0% { top: 0%; opacity: 0.7; }
+                                            50% { opacity: 0.3; }
+                                            100% { top: 100%; opacity: 0.7; }
+                                        }
+                                        
+                                        .glitch-text {
+                                            position: relative;
+                                            animation: text-glitch 6s infinite;
+                                        }
+                                        
+                                        .glitch-text::before,
+                                        .glitch-text::after {
+                                            content: attr(data-text);
+                                            position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                            width: 100%;
+                                            height: 100%;
+                                            opacity: 0;
+                                        }
+                                        
+                                        .glitch-text::before {
+                                            color: #ff00ff;
+                                            animation: glitch-text-1 4s infinite;
+                                            clip-path: polygon(0 0, 100% 0, 100% 45%, 0 45%);
+                                        }
+                                        
+                                        .glitch-text::after {
+                                            color: #00ffff;
+                                            animation: glitch-text-2 3s infinite;
+                                            clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+                                        }
+                                        
+                                        @keyframes text-glitch {
+                                            0%, 92%, 100% { transform: translate(0); }
+                                            93% { transform: translate(-1px, 1px); }
+                                            94% { transform: translate(1px, -1px); }
+                                        }
+                                        
+                                        @keyframes glitch-text-1 {
+                                            0%, 88%, 100% { opacity: 0; transform: translate(0); }
+                                            89% { opacity: 0.8; transform: translate(-2px, 2px); }
+                                            90% { opacity: 0; transform: translate(0); }
+                                        }
+                                        
+                                        @keyframes glitch-text-2 {
+                                            0%, 90%, 100% { opacity: 0; transform: translate(0); }
+                                            91% { opacity: 0.8; transform: translate(2px, -2px); }
+                                            92% { opacity: 0; transform: translate(0); }
+                                        }
+
+                                        /* 3D Keyboard Key Style Tabs */
+                                        .keyboard-key {
+                                            position: relative;
+                                            cursor: pointer;
+                                            border: none;
+                                            outline: none;
+                                        }
+                                        
+                                        .keyboard-key-inactive {
+                                            background: linear-gradient(180deg, #fde047 0%, #facc15 50%, #eab308 100%);
+                                            color: #1f2937;
+                                            box-shadow: 
+                                                0 4px 0 0 #ca8a04,
+                                                0 6px 8px rgba(0, 0, 0, 0.3),
+                                                inset 0 1px 0 rgba(255, 255, 255, 0.5),
+                                                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+                                            transform: translateY(0);
+                                        }
+                                        
+                                        .keyboard-key-inactive:hover {
+                                            background: linear-gradient(180deg, #fef08a 0%, #fde047 50%, #facc15 100%);
+                                            box-shadow: 
+                                                0 4px 0 0 #ca8a04,
+                                                0 6px 12px rgba(0, 0, 0, 0.4),
+                                                inset 0 1px 0 rgba(255, 255, 255, 0.6),
+                                                inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+                                        }
+                                        
+                                        .keyboard-key-inactive:active {
+                                            transform: translateY(2px);
+                                            box-shadow: 
+                                                0 2px 0 0 #ca8a04,
+                                                0 3px 5px rgba(0, 0, 0, 0.3),
+                                                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                                                inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+                                        }
+                                        
+                                        .keyboard-key-active {
+                                            background: linear-gradient(180deg, #facc15 0%, #eab308 50%, #ca8a04 100%);
+                                            color: #000000;
+                                            box-shadow: 
+                                                0 2px 0 0 #854d0e,
+                                                0 4px 10px rgba(250, 204, 21, 0.6),
+                                                0 0 20px rgba(250, 204, 21, 0.4),
+                                                inset 0 2px 4px rgba(0, 0, 0, 0.3),
+                                                inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+                                            transform: translateY(2px) scale(1.05);
                                         }
                                     `}</style>
             <div className="bg-gray-100 dark:bg-gray-900 min-h-screen p-4 sm:p-8 md:p-12 transition-colors duration-500 font-sans">
                 <ThemeToggle />
                 
-                <button onClick={goToPrevPage} disabled={currentPage === 0} title="Previous page" aria-label="Previous page" className="fixed left-2 md:left-4 top-1/2 -translate-y-1/2 z-40 flex items-center gap-2 px-3 py-2 rounded-full bg-white/50 dark:bg-black/50 hover:bg-white/80 dark:hover:bg-black/80 disabled:opacity-0 disabled:cursor-not-allowed transition-all duration-300">
-                    <LeftArrowIcon className="w-5 h-5 text-gray-800 dark:text-gray-200" />
-                    <span className="hidden md:inline text-sm text-gray-800 dark:text-gray-200">Prev</span>
+                <button 
+                    onClick={goToPrevPage} 
+                    disabled={currentPage === 0} 
+                    title="Previous page" 
+                    aria-label="Previous page" 
+                    className="fixed left-2 md:left-4 top-1/2 -translate-y-1/2 z-40 flex items-center gap-2 px-4 py-3 rounded-full transition-all duration-300 disabled:opacity-0 disabled:cursor-not-allowed"
+                    style={{
+                        background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,240,240,0.9))',
+                        backdropFilter: 'blur(10px)',
+                        border: '2px solid rgba(255,255,255,0.6)',
+                        boxShadow: '0 0 20px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3)'
+                    }}
+                    onMouseEnter={(e) => {
+                        if (currentPage !== 0) {
+                            e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+                            e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.7), 0 0 60px rgba(255,255,255,0.5), 0 0 90px rgba(255,255,255,0.3), 0 8px 24px rgba(0,0,0,0.4)';
+                            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,1), rgba(250,250,250,1))';
+                        }
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+                        e.currentTarget.style.boxShadow = '0 0 20px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3)';
+                        e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,240,240,0.9))';
+                    }}
+                >
+                    <LeftArrowIcon className="w-5 h-5 text-gray-800" />
+                    <span className="hidden md:inline text-sm font-bold text-gray-800">Prev</span>
                 </button>
-                <button onClick={goToNextPage} disabled={currentPage === pages.length - 1} title="Next page" aria-label="Next page" className="fixed right-2 md:right-4 top-1/2 -translate-y-1/2 z-40 flex items-center gap-2 px-3 py-2 rounded-full bg-white/50 dark:bg-black/50 hover:bg-white/80 dark:hover:bg-black/80 disabled:opacity-0 disabled:cursor-not-allowed transition-all duration-300">
-                    <span className="hidden md:inline text-sm text-gray-800 dark:text-gray-200">Next</span>
-                    <RightArrowIcon className="w-5 h-5 text-gray-800 dark:text-gray-200" />
+                <button 
+                    onClick={goToNextPage} 
+                    disabled={currentPage === pages.length - 1} 
+                    title="Next page" 
+                    aria-label="Next page" 
+                    className="fixed right-2 md:right-4 top-1/2 -translate-y-1/2 z-40 flex items-center gap-2 px-4 py-3 rounded-full transition-all duration-300 disabled:opacity-0 disabled:cursor-not-allowed"
+                    style={{
+                        background: 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,240,240,0.9))',
+                        backdropFilter: 'blur(10px)',
+                        border: '2px solid rgba(255,255,255,0.6)',
+                        boxShadow: '0 0 20px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3)'
+                    }}
+                    onMouseEnter={(e) => {
+                        if (currentPage !== pages.length - 1) {
+                            e.currentTarget.style.transform = 'translateY(-50%) scale(1.1)';
+                            e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.7), 0 0 60px rgba(255,255,255,0.5), 0 0 90px rgba(255,255,255,0.3), 0 8px 24px rgba(0,0,0,0.4)';
+                            e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,1), rgba(250,250,250,1))';
+                        }
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'translateY(-50%) scale(1)';
+                        e.currentTarget.style.boxShadow = '0 0 20px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.2), 0 4px 16px rgba(0,0,0,0.3)';
+                        e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,240,240,0.9))';
+                    }}
+                >
+                    <span className="hidden md:inline text-sm font-bold text-gray-800">Next</span>
+                    <RightArrowIcon className="w-5 h-5 text-gray-800" />
                 </button>
 
                 <div id="resume-container" className="max-w-6xl mx-auto bg-white dark:bg-gray-800 shadow-2xl dark:shadow-black/50 rounded-lg overflow-hidden">
@@ -2200,6 +4069,155 @@ const App: React.FC = () => {
                         {pages[currentPage]}
                     </div>
                 </div>
+
+                {/* Contact Form Modal */}
+                {showContactForm && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setShowContactForm(false)}>
+                        <div 
+                            className="relative max-w-2xl w-full bg-white dark:bg-gray-800 rounded-2xl p-8 animate-fadeIn" 
+                            onClick={(e) => e.stopPropagation()}
+                            style={{
+                                border: '2px solid rgba(255,255,255,0.4)',
+                                boxShadow: '0 0 40px rgba(255,255,255,0.6), 0 0 80px rgba(255,255,255,0.4), 0 0 120px rgba(255,255,255,0.2), 0 20px 60px rgba(0,0,0,0.5)'
+                            }}
+                        >
+                            <button 
+                                onClick={() => setShowContactForm(false)}
+                                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-2xl font-bold transition-all duration-300"
+                                style={{
+                                    width: '40px',
+                                    height: '40px',
+                                    borderRadius: '50%',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    border: '1px solid rgba(255,255,255,0.2)',
+                                    cursor: 'pointer'
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                                    e.currentTarget.style.boxShadow = '0 0 10px rgba(255,255,255,0.3)';
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.currentTarget.style.background = 'transparent';
+                                    e.currentTarget.style.boxShadow = 'none';
+                                }}
+                            >
+                                ×
+                            </button>
+                            
+                            <h2 
+                                className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6"
+                                style={{
+                                    textShadow: '0 0 10px rgba(255,255,255,0.3)'
+                                }}
+                            >
+                                Contact Me
+                            </h2>
+                            
+                            <form onSubmit={handleContactFormSubmit} className="space-y-6">
+                                <div>
+                                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Your Name</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        required
+                                        value={contactFormData.name}
+                                        onChange={(e) => setContactFormData({...contactFormData, name: e.target.value})}
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        placeholder="John Doe"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Your Email</label>
+                                    <input
+                                        type="email"
+                                        id="email"
+                                        required
+                                        value={contactFormData.email}
+                                        onChange={(e) => setContactFormData({...contactFormData, email: e.target.value})}
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        placeholder="john@example.com"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="subject" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Subject</label>
+                                    <input
+                                        type="text"
+                                        id="subject"
+                                        required
+                                        value={contactFormData.subject}
+                                        onChange={(e) => setContactFormData({...contactFormData, subject: e.target.value})}
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                        placeholder="Let's work together"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="message" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Message</label>
+                                    <textarea
+                                        id="message"
+                                        required
+                                        rows={6}
+                                        value={contactFormData.message}
+                                        onChange={(e) => setContactFormData({...contactFormData, message: e.target.value})}
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all resize-none"
+                                        placeholder="Tell me about your project or inquiry..."
+                                    />
+                                </div>
+
+                                <div className="flex gap-4 justify-end">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowContactForm(false)}
+                                        className="px-6 py-3 rounded-lg border text-gray-700 dark:text-gray-300 transition-all duration-300"
+                                        style={{
+                                            borderColor: 'rgba(255,255,255,0.3)',
+                                            boxShadow: '0 0 10px rgba(255,255,255,0.1)'
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.background = 'rgba(255,255,255,0.1)';
+                                            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.5)';
+                                            e.currentTarget.style.boxShadow = '0 0 15px rgba(255,255,255,0.3)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.background = 'transparent';
+                                            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.3)';
+                                            e.currentTarget.style.boxShadow = '0 0 10px rgba(255,255,255,0.1)';
+                                        }}
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        type="submit"
+                                        className="px-8 py-3 rounded-lg bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white font-bold transition-all duration-300"
+                                        style={{
+                                            border: '2px solid rgba(255,255,255,0.4)',
+                                            boxShadow: '0 0 20px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.2), 0 8px 24px rgba(0,0,0,0.3)',
+                                            textShadow: '0 0 10px rgba(255,255,255,0.3)'
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.currentTarget.style.transform = 'scale(1.05)';
+                                            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.7)';
+                                            e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.7), 0 0 60px rgba(255,255,255,0.5), 0 0 90px rgba(255,255,255,0.3), 0 12px 32px rgba(0,0,0,0.4)';
+                                            e.currentTarget.style.textShadow = '0 0 15px rgba(255,255,255,0.5), 0 0 30px rgba(255,255,255,0.3)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.currentTarget.style.transform = 'scale(1)';
+                                            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.4)';
+                                            e.currentTarget.style.boxShadow = '0 0 20px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.2), 0 8px 24px rgba(0,0,0,0.3)';
+                                            e.currentTarget.style.textShadow = '0 0 10px rgba(255,255,255,0.3)';
+                                        }}
+                                    >
+                                        Send Message
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                )}
             </div>
         </>
     );
