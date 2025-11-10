@@ -764,13 +764,19 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                                     <div className={`text-3xl font-black bg-gradient-to-r ${proficiencyColor} bg-clip-text text-transparent mb-4 drop-shadow-md group-hover:scale-110 transition-transform`}>
                                         {skill.proficiency}
                                     </div>
-                                    <div className="w-full bg-gradient-to-r from-neutral-700 to-neutral-800 rounded-full h-4 overflow-hidden shadow-inner border border-neutral-600/50">
+                                    <div className="w-full bg-gradient-to-r from-neutral-800 to-neutral-900 rounded-full h-4 overflow-hidden shadow-inner border border-neutral-700/50 relative">
                                         <div 
-                                            className={`h-full bg-gradient-to-r ${proficiencyColor} rounded-full transition-all duration-1000 shadow-lg relative`}
+                                            className="h-full bg-gradient-to-r from-white via-gray-100 to-white rounded-full transition-all duration-1000 relative overflow-hidden"
                                             style={{width: `${proficiencyPercent}%`}}
                                         >
-                                            <div className="absolute inset-0 bg-gradient-to-t from-transparent to-white/30"></div>
+                                            {/* Glowing white effect */}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/40 to-white/60"></div>
+                                            <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/50 to-transparent"></div>
+                                            {/* Inner glow */}
+                                            <div className="absolute inset-0 shadow-[0_0_20px_rgba(255,255,255,0.8),inset_0_0_20px_rgba(255,255,255,0.6)]"></div>
                                         </div>
+                                        {/* Outer glow effect */}
+                                        <div className="absolute inset-0 rounded-full shadow-[inset_0_0_15px_rgba(255,255,255,0.2)]" style={{width: `${proficiencyPercent}%`}}></div>
                                     </div>
                                     <div className="text-right text-sm text-gray-500 mt-2 font-bold">{proficiencyPercent}%</div>
                                 </div>
