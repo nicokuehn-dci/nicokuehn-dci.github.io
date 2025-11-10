@@ -1230,14 +1230,17 @@ const App: React.FC = () => {
                                         .skill-disc .tooltip { position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(15,23,42,0.95); color:#fff; padding:6px 8px; border-radius:6px; font-size:0.78rem; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s; z-index:30 }
                                         .skill-disc:hover .tooltip, .skill-disc:focus .tooltip { opacity:1 }
                                         .skill-disc .ring-bg { stroke: rgba(15,23,42,0.06); stroke-width:22; fill:none }
-                                        .skill-disc .ring { stroke-linecap:round; stroke-width:22; fill:none; filter: drop-shadow(0 18px 36px rgba(0,0,0,0.28)); transform-origin:50% 50%; transition: filter .28s, transform .28s }
-                                        /* Center disk: switch from white to dark grey with subtle parchment glow outline */
+                                        .skill-disc .ring { stroke-linecap:round; stroke-width:22; fill:none; filter: drop-shadow(0 12px 20px rgba(0,0,0,0.5)); transform-origin:50% 50%; transition: filter .28s, transform .28s, opacity .28s; opacity: 0.7 }
+                                        /* Center disk: dark grey with subtle soft outline */
                                         .skill-disc .inner { fill:#0f1724; opacity:1; stroke: rgba(255,255,255,0.06); stroke-width:4; filter: drop-shadow(0 8px 20px rgba(255,255,255,0.03)); }
-                                        .skill-disc .label { color: #efe3c4; text-shadow: 0 4px 18px rgba(0,0,0,0.6); }
-                                        .skill-disc.highlight .inner { stroke: rgba(255,255,255,0.18); filter: drop-shadow(0 20px 48px rgba(255,255,255,0.12)); }
-                                        .skill-disc .gloss { fill: url(#diskGloss); opacity: 0.24; pointer-events: none; mix-blend-mode: overlay }
-                                        .skill-disc.highlight { transform: translateZ(28px) scale(1.04); }
-                                        .skill-disc.highlight .ring { filter: drop-shadow(0 24px 68px rgba(99,102,241,0.42)); transform: scale(1.06); }
+                                        .skill-disc .label { color: #ffffff; text-shadow: 0 4px 18px rgba(0,0,0,0.6); }
+                                        .skill-disc.highlight .inner { stroke: rgba(255,255,255,0.22); filter: drop-shadow(0 22px 54px rgba(255,255,255,0.14)); }
+                                        .skill-disc .gloss { fill: url(#diskGloss); opacity: 0.18; pointer-events: none; mix-blend-mode: overlay }
+                                        .skill-disc.highlight { transform: translateZ(28px) scale(1.06); }
+                                        /* highlighted ring: stronger glow (white + cool accent), full opacity and slight scale */
+                                        .skill-disc.highlight .ring { opacity: 1; transform: scale(1.08); filter: drop-shadow(0 18px 40px rgba(255,255,255,0.06)) drop-shadow(0 28px 72px rgba(88,136,255,0.26)); }
+                                        /* non-highlighted rings slightly dimmed */
+                                        .skill-disc:not(.highlight) .ring { opacity: 0.5 }
                                         .skill-disc:focus { outline: none; box-shadow: 0 16px 48px rgba(99,102,241,0.12); transform: translateY(-8px) rotateX(4deg); }
                                         .skill-disc:hover svg { transform: rotate(-90deg) translateZ(14px) rotateX(6deg); }
 
@@ -1262,7 +1265,7 @@ const App: React.FC = () => {
 
                                         /* stats panel under discs */
                                         .stats-panel { margin-top: 1.25rem; display:flex; justify-content:center; }
-                                        .stats-panel-inner { background: linear-gradient(180deg, #0b1220, #04060b); color: #fff; padding: 1rem 1.25rem; border-radius: 12px; box-shadow: 0 30px 80px rgba(2,6,23,0.7); min-width: 300px; max-width: 800px; text-align:center; }
+                                        .stats-panel-inner { background: linear-gradient(180deg, #151718 0%, #0b0c0d 100%); color: #ffffff; padding: 1rem 1.25rem; border-radius: 12px; box-shadow: inset 0 2px 10px rgba(255,255,255,0.02), 0 30px 80px rgba(0,0,0,0.7); min-width: 300px; max-width: 800px; text-align:center; border: 1px solid rgba(255,255,255,0.03); }
                                         .stats-title { font-size:1.25rem; font-weight:800; margin-bottom:0.5rem; }
                                         .stats-grid { display:flex; gap:1.25rem; justify-content:center; margin-bottom:0.5rem; }
                                         .stat-item { text-align:center; }
