@@ -528,7 +528,7 @@ const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: 
                         <stop offset="100%" stopColor={secondStop} stopOpacity="0.96" />
                     </linearGradient>
                     <radialGradient id={`diskGloss-${skill.name.replace(/\s+/g,'')}`} cx="30%" cy="25%" r="60%">
-                        <stop offset="0%" stopColor="#fff" stopOpacity="0.9" />
+                        <stop offset="0%" stopColor="#302c2cff" stopOpacity="0.9" />
                         <stop offset="50%" stopColor="#fff" stopOpacity="0.12" />
                         <stop offset="100%" stopColor="#fff" stopOpacity="0" />
                     </radialGradient>
@@ -1231,7 +1231,10 @@ const App: React.FC = () => {
                                         .skill-disc:hover .tooltip, .skill-disc:focus .tooltip { opacity:1 }
                                         .skill-disc .ring-bg { stroke: rgba(15,23,42,0.06); stroke-width:22; fill:none }
                                         .skill-disc .ring { stroke-linecap:round; stroke-width:22; fill:none; filter: drop-shadow(0 18px 36px rgba(0,0,0,0.28)); transform-origin:50% 50%; transition: filter .28s, transform .28s }
-                                        .skill-disc .inner { fill: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,250,252,0.92)); fill:#fff; opacity:0.96; filter: drop-shadow(0 8px 20px rgba(2,6,23,0.08)); }
+                                        /* Center disk: switch from white to dark grey with subtle parchment glow outline */
+                                        .skill-disc .inner { fill:#0f1724; opacity:1; stroke: rgba(255,255,255,0.06); stroke-width:4; filter: drop-shadow(0 8px 20px rgba(255,255,255,0.03)); }
+                                        .skill-disc .label { color: #efe3c4; text-shadow: 0 4px 18px rgba(0,0,0,0.6); }
+                                        .skill-disc.highlight .inner { stroke: rgba(255,255,255,0.18); filter: drop-shadow(0 20px 48px rgba(255,255,255,0.12)); }
                                         .skill-disc .gloss { fill: url(#diskGloss); opacity: 0.24; pointer-events: none; mix-blend-mode: overlay }
                                         .skill-disc.highlight { transform: translateZ(28px) scale(1.04); }
                                         .skill-disc.highlight .ring { filter: drop-shadow(0 24px 68px rgba(99,102,241,0.42)); transform: scale(1.06); }
