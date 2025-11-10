@@ -1,6 +1,5 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import Github3DDashboard from './src/Github3DDashboard';
 // Dashboard3D removed — placeholder module deleted to simplify the build and deployment.
 
 declare const html2pdf: any;
@@ -356,35 +355,110 @@ const PlaceholderPage: React.FC<{ title: string; children: React.ReactNode }> = 
 );
 
 const AboutContactPage: React.FC<{ data: ResumeData }> = ({ data }) => (
-    <div className="p-8 md:p-12 bg-white dark:bg-gray-800 min-h-[70vh] transition-colors duration-500">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-            <div className="md:col-span-1 text-center md:text-left">
-                <img src={data.profilePictureUrl} alt={data.name} className="w-48 h-48 rounded-full rounded-3d object-cover border-4 border-gray-200 dark:border-gray-700 shadow-md mx-auto md:mx-0" />
-                <h2 className="mt-4 text-2xl font-semibold text-gray-900 dark:text-gray-100">{data.name}</h2>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{data.title}</p>
-                <div className="mt-4 text-sm text-gray-700 dark:text-gray-300 space-y-2">
-                    <div className="flex items-center gap-2"><MailIcon className="w-4 h-4 text-gray-500" /><a href={`mailto:${data.contact.email}`} className="underline">{data.contact.email}</a></div>
-                    <div className="flex items-center gap-2"><PhoneIcon className="w-4 h-4 text-gray-500" /><span>{data.contact.phone}</span></div>
-                    <div className="flex items-center gap-2"><LocationIcon className="w-4 h-4 text-gray-500" /><span>{data.contact.location}</span></div>
-                    <div className="flex items-center gap-2"><GithubIcon className="w-4 h-4 text-gray-500" /><a href={data.contact.githubLink} target="_blank" rel="noreferrer noopener" className="underline">{data.contact.github}</a></div>
-                </div>
-                <div className="mt-6">
-                    <a href={`mailto:${data.contact.email}`} className="inline-block px-4 py-2 bg-indigo-600 text-white rounded-md">Email me</a>
-                </div>
+    <div className="about-contact-page p-8 md:p-12 min-h-[70vh] transition-colors duration-500">
+        <div className="max-w-6xl mx-auto">
+            {/* Glowing header */}
+            <div className="about-header-glow mb-12 text-center">
+                <h1 className="about-title">About Me</h1>
+                <div className="about-subtitle">Get to know me better</div>
             </div>
-            <div className="md:col-span-2">
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100">About me</h3>
-                <p className="mt-3 text-gray-700 dark:text-gray-300">{data.summary} I combine music production, backend development knowledge and a pragmatic approach to deliver working solutions. I'm passionate about building reliable systems and creating music that moves people.</p>
 
-                <h4 className="mt-6 text-lg font-semibold text-gray-800 dark:text-gray-100">Career goals</h4>
-                <ul className="list-disc list-inside mt-2 text-gray-700 dark:text-gray-300">
-                    <li>Grow as a backend engineer working with Django and modern cloud tooling.</li>
-                    <li>Ship production-ready APIs and improve automation/CI workflows.</li>
-                    <li>Continue releasing music and collaborate with other creators.</li>
-                </ul>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                {/* Profile Card - 3D Floating */}
+                <div className="profile-card-3d">
+                    <div className="profile-card-inner">
+                        <div className="profile-image-container">
+                            <div className="profile-glow-ring"></div>
+                            <img src={data.profilePictureUrl} alt={data.name} className="profile-img-3d" />
+                            <div className="profile-shimmer"></div>
+                        </div>
+                        <h2 className="profile-name-3d">{data.name}</h2>
+                        <p className="profile-title-3d">{data.title}</p>
+                        
+                        {/* Contact info with glowing icons */}
+                        <div className="contact-list-3d">
+                            <div className="contact-item-glow">
+                                <div className="contact-icon-wrapper">
+                                    <MailIcon className="contact-icon" />
+                                </div>
+                                <a href={`mailto:${data.contact.email}`} className="contact-link">{data.contact.email}</a>
+                            </div>
+                            <div className="contact-item-glow">
+                                <div className="contact-icon-wrapper">
+                                    <PhoneIcon className="contact-icon" />
+                                </div>
+                                <span className="contact-text">{data.contact.phone}</span>
+                            </div>
+                            <div className="contact-item-glow">
+                                <div className="contact-icon-wrapper">
+                                    <LocationIcon className="contact-icon" />
+                                </div>
+                                <span className="contact-text">{data.contact.location}</span>
+                            </div>
+                            <div className="contact-item-glow">
+                                <div className="contact-icon-wrapper">
+                                    <GithubIcon className="contact-icon" />
+                                </div>
+                                <a href={data.contact.githubLink} target="_blank" rel="noreferrer noopener" className="contact-link">{data.contact.github}</a>
+                            </div>
+                        </div>
+                        
+                        {/* CTA Button with 3D effect */}
+                        <div className="mt-6">
+                            <a href={`mailto:${data.contact.email}`} className="cta-button-3d">
+                                <span className="cta-text">Email me</span>
+                                <span className="cta-glow"></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-                <h4 className="mt-6 text-lg font-semibold text-gray-800 dark:text-gray-100">Availability</h4>
-                <p className="mt-2 text-gray-700 dark:text-gray-300">Open to freelance or contract backend roles, collaborations on audio projects, and mentoring opportunities. Reach out via email for enquiries.</p>
+                {/* Content Cards - 3D Panels */}
+                <div className="lg:col-span-2 space-y-6">
+                    {/* About Section */}
+                    <div className="content-card-3d">
+                        <div className="content-card-header">
+                            <h3 className="content-title-glow">About me</h3>
+                            <div className="title-underline-glow"></div>
+                        </div>
+                        <p className="content-text-3d">{data.summary} I combine music production, backend development knowledge and a pragmatic approach to deliver working solutions. I'm passionate about building reliable systems and creating music that moves people.</p>
+                    </div>
+
+                    {/* Career Goals */}
+                    <div className="content-card-3d">
+                        <div className="content-card-header">
+                            <h4 className="content-title-glow">Career goals</h4>
+                            <div className="title-underline-glow"></div>
+                        </div>
+                        <ul className="goals-list-3d">
+                            <li className="goal-item-glow">
+                                <span className="goal-bullet"></span>
+                                <span>Grow as a backend engineer working with Django and modern cloud tooling.</span>
+                            </li>
+                            <li className="goal-item-glow">
+                                <span className="goal-bullet"></span>
+                                <span>Ship production-ready APIs and improve automation/CI workflows.</span>
+                            </li>
+                            <li className="goal-item-glow">
+                                <span className="goal-bullet"></span>
+                                <span>Continue releasing music and collaborate with other creators.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    {/* Availability */}
+                    <div className="content-card-3d availability-card-highlight">
+                        <div className="content-card-header">
+                            <h4 className="content-title-glow">Availability</h4>
+                            <div className="title-underline-glow"></div>
+                        </div>
+                        <p className="content-text-3d">Open to freelance or contract backend roles, collaborations on audio projects, and mentoring opportunities. Reach out via email for enquiries.</p>
+                        <div className="availability-badge-3d">
+                            <span className="badge-pulse"></span>
+                            <span className="badge-text">Available for hire</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -569,7 +643,7 @@ const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: 
 }
 
 
-const SkillsDeepDivePage: React.FC<{ data: SkillsData; onOpenDashboard?: (username?: string, token?: string) => void }> = ({ data, onOpenDashboard }) => {
+const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
     const [selected, setSelected] = useState<string | null>(null);
     const [sortMode, setSortMode] = useState<'default'|'proficiency'|'experience'|'name'>('default');
 
@@ -596,9 +670,6 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData; onOpenDashboard?: (userna
                 </div>
                 <div className="text-sm text-gray-300">Click a disc to highlight</div>
             </div>
-                <div className="mb-4">
-                    <button onClick={() => onOpenDashboard && onOpenDashboard()} className="px-3 py-1 rounded-md bg-violet-600 text-white text-sm">Open 3D Dashboard</button>
-                </div>
 
             {/* informal sorting controls */}
             <div className="mb-4 flex items-center gap-3">
@@ -753,10 +824,9 @@ interface ProjectShowcasePageProps {
     initialUsername?: string; // optional username or URL to auto-load
     autoLoad?: boolean; // whether to fetch on mount
     onNotify?: (msg: string) => void; // simple notification callback
-    onOpenDashboard?: (username?: string, token?: string) => void; // request to open the 3D dashboard page (optional username/token)
 }
 
-const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onProjectChange, onAddProject, onRemoveProject, onImportRepo, initialUsername, autoLoad, onNotify, onOpenDashboard }) => {
+const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onProjectChange, onAddProject, onRemoveProject, onImportRepo, initialUsername, autoLoad, onNotify }) => {
     // local state for GitHub overview
     const [username, setUsername] = useState('');
     const [repos, setRepos] = useState<any[]>([]);
@@ -815,15 +885,6 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
                 created_at: r.created_at,
             }));
             setRepos(mapped);
-            // Auto-open the 3D dashboard after successful fetch if requested
-            try {
-                if (mapped.length > 0 && onOpenDashboard && !showInline) {
-                    // pass the normalized username and token (if any)
-                    onOpenDashboard(user, token);
-                }
-            } catch (e) {
-                // swallow errors from caller
-            }
             // also fetch account-level stats
             try {
                 const headers: any = {};
@@ -860,7 +921,6 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
                     <h1 className="font-serif text-4xl md:text-5xl font-bold text-gray-800 dark:text-gray-200">Project Showcase</h1>
                     <div className="flex items-center gap-4">
                         <p className="text-sm text-gray-500">Highlight your top projects and explore GitHub repositories for any account.</p>
-                        <button onClick={() => onOpenDashboard && onOpenDashboard(username || initialUsername, token)} className="px-3 py-1 rounded-md bg-violet-600 text-white text-sm">Open 3D Dashboard</button>
                     </div>
                 </div>
 
@@ -1140,17 +1200,10 @@ const App: React.FC = () => {
             initialUsername={resumeData.contact.githubLink}
             autoLoad={true}
             onNotify={(m:string) => showToast(m)}
-            onOpenDashboard={(u?: string, t?: string) => {
-                if (u) setGithubUsername(u);
-                if (t) setGithubToken(t);
-                // Open the new 3D dashboard (index 2)
-                setCurrentPage(2);
-            }}
         />,
-        <Github3DDashboard key={2} username={githubUsername} token={githubToken} onBack={() => setCurrentPage(1)} />,
-        <SkillsDeepDivePage key={3} data={skillsData} onOpenDashboard={(u?: string, t?: string) => { if (u) setGithubUsername(u); if (t) setGithubToken(t); setCurrentPage(2); }} />,
-        <PlaceholderPage key={4} title="My Creative Work">A space to highlight your music production and other creative endeavors. Embed audio players, videos, or link to your portfolio on other platforms.</PlaceholderPage>,
-    <AboutContactPage key={5} data={resumeData} />,
+        <SkillsDeepDivePage key={2} data={skillsData} />,
+        <PlaceholderPage key={3} title="My Creative Work">A space to highlight your music production and other creative endeavors. Embed audio players, videos, or link to your portfolio on other platforms.</PlaceholderPage>,
+    <AboutContactPage key={4} data={resumeData} />,
     ];
 
     const goToNextPage = () => setCurrentPage(prev => Math.min(prev + 1, pages.length - 1));
@@ -1601,6 +1654,353 @@ const App: React.FC = () => {
                                         .skill-disc:focus-visible { outline: 3px solid rgba(99,102,241,0.18); outline-offset: 6px; box-shadow: 0 20px 50px rgba(99,102,241,0.12); }
                                         /* improve tooltip visibility when keyboard focusing */
                                         .skill-disc:focus-visible .tooltip { opacity:1 }
+
+                                        /* ==================== ABOUT/CONTACT PAGE 3D STYLING ==================== */
+                                        .about-contact-page {
+                                            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 50%, #0f1419 100%);
+                                            position: relative;
+                                            overflow: hidden;
+                                        }
+                                        .about-contact-page::before {
+                                            content: '';
+                                            position: absolute;
+                                            top: -50%;
+                                            left: -50%;
+                                            width: 200%;
+                                            height: 200%;
+                                            background: radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%);
+                                            animation: slow-rotate 30s linear infinite;
+                                        }
+                                        @keyframes slow-rotate {
+                                            from { transform: rotate(0deg); }
+                                            to { transform: rotate(360deg); }
+                                        }
+
+                                        /* Glowing Header */
+                                        .about-header-glow {
+                                            position: relative;
+                                            z-index: 1;
+                                        }
+                                        .about-title {
+                                            font-size: 3.5rem;
+                                            font-weight: 900;
+                                            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+                                            -webkit-background-clip: text;
+                                            background-clip: text;
+                                            color: transparent;
+                                            text-shadow: 0 0 40px rgba(96,165,250,0.5);
+                                            animation: title-glow 3s ease-in-out infinite;
+                                            font-family: Georgia, serif;
+                                            letter-spacing: -1px;
+                                        }
+                                        @keyframes title-glow {
+                                            0%, 100% { filter: drop-shadow(0 0 20px rgba(96,165,250,0.6)); }
+                                            50% { filter: drop-shadow(0 0 40px rgba(167,139,250,0.8)); }
+                                        }
+                                        .about-subtitle {
+                                            font-size: 1.125rem;
+                                            color: #9ca3af;
+                                            margin-top: 0.5rem;
+                                            letter-spacing: 2px;
+                                            text-transform: uppercase;
+                                        }
+
+                                        /* 3D Profile Card */
+                                        .profile-card-3d {
+                                            background: linear-gradient(145deg, rgba(30,41,59,0.8), rgba(15,23,42,0.9));
+                                            border-radius: 24px;
+                                            padding: 2rem;
+                                            box-shadow: 
+                                                0 20px 60px rgba(0,0,0,0.5),
+                                                inset 0 2px 4px rgba(255,255,255,0.05);
+                                            border: 1px solid rgba(99,102,241,0.2);
+                                            transform-style: preserve-3d;
+                                            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+                                            position: relative;
+                                            z-index: 1;
+                                        }
+                                        .profile-card-3d:hover {
+                                            transform: translateY(-10px) rotateX(2deg);
+                                            box-shadow: 
+                                                0 30px 80px rgba(99,102,241,0.3),
+                                                0 0 60px rgba(167,139,250,0.2),
+                                                inset 0 2px 4px rgba(255,255,255,0.08);
+                                        }
+                                        .profile-card-inner {
+                                            text-align: center;
+                                        }
+
+                                        /* Profile Image with Glow Ring */
+                                        .profile-image-container {
+                                            position: relative;
+                                            display: inline-block;
+                                            margin-bottom: 1.5rem;
+                                        }
+                                        .profile-glow-ring {
+                                            position: absolute;
+                                            inset: -15px;
+                                            border-radius: 50%;
+                                            background: conic-gradient(from 0deg, #60a5fa, #a78bfa, #f472b6, #60a5fa);
+                                            animation: ring-spin 4s linear infinite;
+                                            opacity: 0.4;
+                                            filter: blur(20px);
+                                        }
+                                        @keyframes ring-spin {
+                                            from { transform: rotate(0deg); }
+                                            to { transform: rotate(360deg); }
+                                        }
+                                        .profile-img-3d {
+                                            position: relative;
+                                            width: 200px;
+                                            height: 200px;
+                                            border-radius: 50%;
+                                            object-fit: cover;
+                                            border: 4px solid rgba(99,102,241,0.5);
+                                            box-shadow: 
+                                                0 10px 40px rgba(0,0,0,0.6),
+                                                inset 0 4px 8px rgba(255,255,255,0.1);
+                                            transition: transform 0.4s ease;
+                                            z-index: 1;
+                                        }
+                                        .profile-card-3d:hover .profile-img-3d {
+                                            transform: scale(1.05);
+                                        }
+                                        .profile-shimmer {
+                                            position: absolute;
+                                            inset: 0;
+                                            border-radius: 50%;
+                                            background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+                                            opacity: 0;
+                                            animation: shimmer-sweep 3s ease-in-out infinite;
+                                            pointer-events: none;
+                                        }
+                                        @keyframes shimmer-sweep {
+                                            0%, 100% { opacity: 0; transform: translateX(-100%); }
+                                            50% { opacity: 1; transform: translateX(100%); }
+                                        }
+
+                                        .profile-name-3d {
+                                            font-size: 1.875rem;
+                                            font-weight: 800;
+                                            background: linear-gradient(135deg, #f8fafc, #cbd5e1);
+                                            -webkit-background-clip: text;
+                                            background-clip: text;
+                                            color: transparent;
+                                            margin-bottom: 0.5rem;
+                                        }
+                                        .profile-title-3d {
+                                            font-size: 1rem;
+                                            color: #9ca3af;
+                                            margin-bottom: 1.5rem;
+                                        }
+
+                                        /* Contact List with Glowing Items */
+                                        .contact-list-3d {
+                                            margin-top: 1.5rem;
+                                            space-y: 0.75rem;
+                                        }
+                                        .contact-item-glow {
+                                            display: flex;
+                                            align-items: center;
+                                            gap: 0.75rem;
+                                            padding: 0.75rem;
+                                            background: rgba(15,23,42,0.5);
+                                            border-radius: 12px;
+                                            border: 1px solid rgba(99,102,241,0.2);
+                                            transition: all 0.3s ease;
+                                            margin-bottom: 0.75rem;
+                                        }
+                                        .contact-item-glow:hover {
+                                            background: rgba(30,41,59,0.7);
+                                            border-color: rgba(167,139,250,0.5);
+                                            transform: translateX(8px);
+                                            box-shadow: 
+                                                0 4px 20px rgba(99,102,241,0.3),
+                                                inset 0 1px 2px rgba(255,255,255,0.05);
+                                        }
+                                        .contact-icon-wrapper {
+                                            width: 36px;
+                                            height: 36px;
+                                            border-radius: 8px;
+                                            background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(167,139,250,0.3));
+                                            display: flex;
+                                            align-items: center;
+                                            justify-content: center;
+                                            box-shadow: 0 2px 8px rgba(99,102,241,0.3);
+                                        }
+                                        .contact-icon {
+                                            width: 18px;
+                                            height: 18px;
+                                            color: #a78bfa;
+                                        }
+                                        .contact-link {
+                                            color: #60a5fa;
+                                            text-decoration: none;
+                                            transition: color 0.3s ease;
+                                            font-size: 0.875rem;
+                                        }
+                                        .contact-link:hover {
+                                            color: #a78bfa;
+                                            text-shadow: 0 0 10px rgba(167,139,250,0.5);
+                                        }
+                                        .contact-text {
+                                            color: #cbd5e1;
+                                            font-size: 0.875rem;
+                                        }
+
+                                        /* 3D CTA Button */
+                                        .cta-button-3d {
+                                            display: inline-block;
+                                            position: relative;
+                                            padding: 0.875rem 2rem;
+                                            background: linear-gradient(135deg, #6366f1, #a855f7);
+                                            border-radius: 12px;
+                                            text-decoration: none;
+                                            overflow: hidden;
+                                            box-shadow: 
+                                                0 8px 24px rgba(99,102,241,0.4),
+                                                inset 0 2px 4px rgba(255,255,255,0.2);
+                                            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+                                        }
+                                        .cta-button-3d:hover {
+                                            transform: translateY(-4px) scale(1.05);
+                                            box-shadow: 
+                                                0 16px 48px rgba(99,102,241,0.6),
+                                                0 0 40px rgba(167,139,250,0.4),
+                                                inset 0 2px 4px rgba(255,255,255,0.3);
+                                        }
+                                        .cta-text {
+                                            position: relative;
+                                            z-index: 1;
+                                            color: white;
+                                            font-weight: 700;
+                                            font-size: 1rem;
+                                        }
+                                        .cta-glow {
+                                            position: absolute;
+                                            inset: 0;
+                                            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+                                            transform: translateX(-100%);
+                                            transition: transform 0.6s;
+                                        }
+                                        .cta-button-3d:hover .cta-glow {
+                                            transform: translateX(100%);
+                                        }
+
+                                        /* Content Cards */
+                                        .content-card-3d {
+                                            background: linear-gradient(145deg, rgba(30,41,59,0.6), rgba(15,23,42,0.8));
+                                            border-radius: 20px;
+                                            padding: 2rem;
+                                            box-shadow: 
+                                                0 10px 40px rgba(0,0,0,0.4),
+                                                inset 0 2px 4px rgba(255,255,255,0.03);
+                                            border: 1px solid rgba(99,102,241,0.15);
+                                            transition: all 0.4s ease;
+                                            position: relative;
+                                            z-index: 1;
+                                        }
+                                        .content-card-3d:hover {
+                                            transform: translateY(-6px);
+                                            box-shadow: 
+                                                0 20px 60px rgba(99,102,241,0.25),
+                                                inset 0 2px 4px rgba(255,255,255,0.05);
+                                            border-color: rgba(167,139,250,0.3);
+                                        }
+                                        .content-card-header {
+                                            margin-bottom: 1.5rem;
+                                        }
+                                        .content-title-glow {
+                                            font-size: 1.5rem;
+                                            font-weight: 700;
+                                            background: linear-gradient(135deg, #a78bfa, #f472b6);
+                                            -webkit-background-clip: text;
+                                            background-clip: text;
+                                            color: transparent;
+                                            filter: drop-shadow(0 2px 8px rgba(167,139,250,0.3));
+                                        }
+                                        .title-underline-glow {
+                                            width: 60px;
+                                            height: 3px;
+                                            background: linear-gradient(90deg, #a78bfa, transparent);
+                                            margin-top: 0.5rem;
+                                            border-radius: 2px;
+                                            box-shadow: 0 2px 8px rgba(167,139,250,0.4);
+                                        }
+                                        .content-text-3d {
+                                            color: #cbd5e1;
+                                            line-height: 1.7;
+                                            font-size: 1rem;
+                                        }
+
+                                        /* Goals List */
+                                        .goals-list-3d {
+                                            list-style: none;
+                                            padding: 0;
+                                            margin: 0;
+                                        }
+                                        .goal-item-glow {
+                                            display: flex;
+                                            align-items: flex-start;
+                                            gap: 1rem;
+                                            padding: 1rem;
+                                            margin-bottom: 0.75rem;
+                                            background: rgba(15,23,42,0.4);
+                                            border-radius: 12px;
+                                            border: 1px solid rgba(99,102,241,0.1);
+                                            transition: all 0.3s ease;
+                                            color: #cbd5e1;
+                                        }
+                                        .goal-item-glow:hover {
+                                            background: rgba(30,41,59,0.6);
+                                            border-color: rgba(167,139,250,0.3);
+                                            transform: translateX(6px);
+                                            box-shadow: 0 4px 16px rgba(99,102,241,0.2);
+                                        }
+                                        .goal-bullet {
+                                            display: block;
+                                            width: 8px;
+                                            height: 8px;
+                                            min-width: 8px;
+                                            border-radius: 50%;
+                                            background: linear-gradient(135deg, #a78bfa, #f472b6);
+                                            box-shadow: 0 0 10px rgba(167,139,250,0.6);
+                                            margin-top: 0.5rem;
+                                        }
+
+                                        /* Availability Highlight */
+                                        .availability-card-highlight {
+                                            border: 2px solid rgba(167,139,250,0.4);
+                                            background: linear-gradient(145deg, rgba(99,102,241,0.1), rgba(30,41,59,0.8));
+                                        }
+                                        .availability-badge-3d {
+                                            margin-top: 1.5rem;
+                                            display: inline-flex;
+                                            align-items: center;
+                                            gap: 0.75rem;
+                                            padding: 0.75rem 1.5rem;
+                                            background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(16,185,129,0.2));
+                                            border: 1px solid rgba(34,197,94,0.4);
+                                            border-radius: 24px;
+                                            box-shadow: 0 4px 16px rgba(34,197,94,0.2);
+                                        }
+                                        .badge-pulse {
+                                            width: 10px;
+                                            height: 10px;
+                                            border-radius: 50%;
+                                            background: #22c55e;
+                                            box-shadow: 0 0 10px #22c55e;
+                                            animation: pulse-grow 2s ease-in-out infinite;
+                                        }
+                                        @keyframes pulse-grow {
+                                            0%, 100% { transform: scale(1); opacity: 1; }
+                                            50% { transform: scale(1.3); opacity: 0.7; }
+                                        }
+                                        .badge-text {
+                                            color: #6ee7b7;
+                                            font-weight: 600;
+                                            font-size: 0.875rem;
+                                        }
                                     `}</style>
             <div className="bg-gray-100 dark:bg-gray-900 min-h-screen p-4 sm:p-8 md:p-12 transition-colors duration-500 font-sans">
                 <ThemeToggle />
