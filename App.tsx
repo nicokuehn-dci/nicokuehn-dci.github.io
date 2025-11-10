@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
+import Github3DDashboard from './src/Github3DDashboard';
 // Dashboard3D removed — placeholder module deleted to simplify the build and deployment.
 
 declare const html2pdf: any;
@@ -598,59 +599,104 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData; onOpenDashboard?: (userna
                 ))}
             </div>
 
-            {/* Selected skill stats panel (dark highlight, white text) */}
-            <div className="stats-panel">
-                {selected ? (() => {
-                    const s = data.technical.find(sk => sk.name === selected);
-                    if (!s) return null;
-                    const pct = parseInt(proficiencyStyles[s.proficiency].width);
-                    const grad = proficiencyGradientMap[s.proficiency] || proficiencyGradientMap['Intermediate'];
-                    return (
-                        <div className="stats-panel-inner" role="region" aria-live="polite">
-                            <div style={{display:'flex',alignItems:'center',justifyContent:'center',gap:'1rem'}}>
-                                <div className="stats-percent" style={{background:`linear-gradient(90deg, ${grad.start}, ${grad.end})`}} aria-hidden>{pct}%</div>
-                                <div style={{textAlign:'left'}}>
-                                    <h3 className="stats-title">{s.name}</h3>
-                                    <div className="stats-grid">
-                                        <div className="stat-item">
-                                            <div className="stat-label">Proficiency</div>
-                                            <div className="stat-value">{s.proficiency}</div>
-                                        </div>
-                                        <div className="stat-item">
-                                            <div className="stat-label">Experience</div>
-                                            <div className="stat-value">{s.experience} {s.experience === 1 ? 'year' : 'years'}</div>
-                                        </div>
+            {/* Interactive detailed stats panel */}
+            {selected && (() => {
+                const allSkills = [...data.technical, ...data.soft, ...data.tools];
+                const skill = allSkills.find(s => s.name === selected);
+                if (!skill) return null;
+                
+                const proficiencyPercent = {
+                    'Beginner': 25,
+                    'Intermediate': 50,
+                    'Advanced': 75,
+                    'Expert': 100
+                }[skill.proficiency];
+
+                const proficiencyColor = {
+                    'Beginner': 'from-blue-400 to-blue-600',
+                    'Intermediate': 'from-yellow-500 to-orange-500',
+                    'Advanced': 'from-orange-500 to-red-500',
+                    'Expert': 'from-purple-500 to-pink-600'
+                }[skill.proficiency];
+
+                const bronzeGlow = 'from-amber-600 via-yellow-700 to-amber-800';
+
+                return (
+                    <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-gray-900 via-gray-800 to-black border border-amber-900/30 shadow-2xl animate-fadeIn">
+                        <div className="flex items-start justify-between mb-4">
+                            <div className="flex-1">
+                                <h3 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600 mb-2">
+                                    {skill.name}
+                                </h3>
+                                <p className="text-gray-400 italic">
+                                    {skillTaglines[skill.name] || 'A valuable skill in the modern tech landscape.'}
+                                </p>
+                            </div>
+                            <button 
+                                onClick={() => setSelected(null)}
+                                className="ml-4 px-4 py-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white transition-all"
+                                aria-label="Close details"
+                            >
+                                ✕
+                            </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                            {/* Proficiency Card */}
+                            <div className="p-5 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-amber-700/20 shadow-lg">
+                                <div className="text-sm text-gray-400 uppercase tracking-wider mb-2">Proficiency Level</div>
+                                <div className={`text-2xl font-bold bg-gradient-to-r ${proficiencyColor} bg-clip-text text-transparent mb-3`}>
+                                    {skill.proficiency}
+                                </div>
+                                <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
+                                    <div 
+                                        className={`h-full bg-gradient-to-r ${proficiencyColor} rounded-full transition-all duration-1000 shadow-lg`}
+                                        style={{width: `${proficiencyPercent}%`}}
+                                    />
+                                </div>
+                                <div className="text-right text-xs text-gray-500 mt-1">{proficiencyPercent}%</div>
+                            </div>
+
+                            {/* Experience Card */}
+                            <div className="p-5 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-amber-700/20 shadow-lg">
+                                <div className="text-sm text-gray-400 uppercase tracking-wider mb-2">Experience</div>
+                                <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+                                    {skill.experience}
+                                </div>
+                                <div className="text-sm text-gray-400 mt-1">
+                                    {skill.experience === 1 ? 'year' : 'years'} of hands-on work
+                                </div>
+                            </div>
+
+                            {/* Mastery Score Card */}
+                            <div className="p-5 rounded-xl bg-gradient-to-br from-gray-800 to-gray-900 border border-amber-700/20 shadow-lg">
+                                <div className="text-sm text-gray-400 uppercase tracking-wider mb-2">Mastery Score</div>
+                                <div className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-500 to-amber-600">
+                                    {Math.round(proficiencyPercent * 0.7 + skill.experience * 3)}
+                                </div>
+                                <div className="text-sm text-gray-400 mt-1">
+                                    Combined rating
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Additional Info */}
+                        <div className="p-4 rounded-xl bg-gradient-to-r from-amber-950/40 to-gray-900/40 border border-amber-800/30">
+                            <div className="flex items-center gap-3">
+                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-600 to-yellow-700 flex items-center justify-center text-2xl shadow-lg">
+                                    ⚡
+                                </div>
+                                <div>
+                                    <div className="text-sm text-amber-400 font-semibold">Pro Tip</div>
+                                    <div className="text-gray-300 text-sm">
+                                        Click other discs to compare skills or use Tab + Enter for keyboard navigation
                                     </div>
                                 </div>
                             </div>
-                            <p className="stats-note">Click other discs to compare or press <kbd>Tab</kbd> and <kbd>Enter</kbd> to select.</p>
                         </div>
-                    )
-                })() : (
-                    <div className="stats-panel-hint">Select a disc to see highlighted stats — they will appear here.</div>
-                )}
-            </div>
-
-            <section className="mb-12">
-                <h2 className="inline-block text-3xl font-serif font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Technical Skills</h2>
-                <div className="skill-grid grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 informal-grid">
-                    {sortedTech.map((skill, index) => <SkillDetailItem key={index} skill={skill} selected={selected === skill.name} />)}
-                </div>
-            </section>
-
-            <section className="mb-12">
-                <h2 className="inline-block text-3xl font-serif font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Soft Skills</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {data.soft.map((skill, index) => <SkillDetailItem key={index} skill={skill} selected={selected === skill.name} />)}
-                </div>
-            </section>
-
-            <section>
-                <h2 className="inline-block text-3xl font-serif font-bold text-white mb-6 py-3 px-4 rounded-lg bg-gradient-to-r from-gray-700 to-gray-900 dark:from-gray-800 dark:to-black">Tools</h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {data.tools.map((skill, index) => <SkillDetailItem key={index} skill={skill} selected={selected === skill.name} />)}
-                </div>
-            </section>
+                    </div>
+                );
+            })()}
         </div>
     )
 }
@@ -1054,13 +1100,14 @@ const App: React.FC = () => {
             onOpenDashboard={(u?: string, t?: string) => {
                 if (u) setGithubUsername(u);
                 if (t) setGithubToken(t);
-                // Dashboard was removed; navigate to Skills Deep Dive (now index 2)
+                // Open the new 3D dashboard (index 2)
                 setCurrentPage(2);
             }}
         />,
-        <SkillsDeepDivePage key={2} data={skillsData} onOpenDashboard={(u?: string, t?: string) => { if (u) setGithubUsername(u); if (t) setGithubToken(t); setCurrentPage(2); }} />,
-        <PlaceholderPage key={3} title="My Creative Work">A space to highlight your music production and other creative endeavors. Embed audio players, videos, or link to your portfolio on other platforms.</PlaceholderPage>,
-    <AboutContactPage key={4} data={resumeData} />,
+        <Github3DDashboard key={2} username={githubUsername} token={githubToken} onBack={() => setCurrentPage(1)} />,
+        <SkillsDeepDivePage key={3} data={skillsData} onOpenDashboard={(u?: string, t?: string) => { if (u) setGithubUsername(u); if (t) setGithubToken(t); setCurrentPage(2); }} />,
+        <PlaceholderPage key={4} title="My Creative Work">A space to highlight your music production and other creative endeavors. Embed audio players, videos, or link to your portfolio on other platforms.</PlaceholderPage>,
+    <AboutContactPage key={5} data={resumeData} />,
     ];
 
     const goToNextPage = () => setCurrentPage(prev => Math.min(prev + 1, pages.length - 1));
@@ -1230,15 +1277,15 @@ const App: React.FC = () => {
                                         .skill-disc .tooltip { position:absolute; bottom:calc(100% + 8px); left:50%; transform:translateX(-50%); background:rgba(15,23,42,0.95); color:#fff; padding:6px 8px; border-radius:6px; font-size:0.78rem; white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s; z-index:30 }
                                         .skill-disc:hover .tooltip, .skill-disc:focus .tooltip { opacity:1 }
                                         .skill-disc .ring-bg { stroke: rgba(15,23,42,0.06); stroke-width:22; fill:none }
-                                        .skill-disc .ring { stroke-linecap:round; stroke-width:22; fill:none; filter: drop-shadow(0 12px 20px rgba(0,0,0,0.5)); transform-origin:50% 50%; transition: filter .28s, transform .28s, opacity .28s; opacity: 0.7 }
+                                        .skill-disc .ring { stroke-linecap:round; stroke-width:22; fill:none; filter: drop-shadow(0 12px 20px rgba(0,0,0,0.5)); transform-origin:50% 50%; transition: filter .28s, transform .28s, opacity .28s, stroke .28s; opacity: 0.7; stroke: #5a4a3a; }
                                         /* Center disk: dark grey with subtle soft outline */
                                         .skill-disc .inner { fill:#0f1724; opacity:1; stroke: rgba(255,255,255,0.06); stroke-width:4; filter: drop-shadow(0 8px 20px rgba(255,255,255,0.03)); }
                                         .skill-disc .label { color: #ffffff; text-shadow: 0 4px 18px rgba(0,0,0,0.6); }
-                                        .skill-disc.highlight .inner { stroke: rgba(255,255,255,0.22); filter: drop-shadow(0 22px 54px rgba(255,255,255,0.14)); }
+                                        .skill-disc.highlight .inner { stroke: rgba(205,127,50,0.35); filter: drop-shadow(0 22px 54px rgba(205,127,50,0.25)); }
                                         .skill-disc .gloss { fill: url(#diskGloss); opacity: 0.18; pointer-events: none; mix-blend-mode: overlay }
                                         .skill-disc.highlight { transform: translateZ(28px) scale(1.06); }
-                                        /* highlighted ring: stronger glow (white + cool accent), full opacity and slight scale */
-                                        .skill-disc.highlight .ring { opacity: 1; transform: scale(1.08); filter: drop-shadow(0 18px 40px rgba(255,255,255,0.06)) drop-shadow(0 28px 72px rgba(88,136,255,0.26)); }
+                                        /* highlighted ring: steampunk bronze/copper/gold glow with full opacity */
+                                        .skill-disc.highlight .ring { opacity: 1; transform: scale(1.08); stroke: #CD7F32; filter: drop-shadow(0 18px 40px rgba(205,127,50,0.35)) drop-shadow(0 28px 72px rgba(218,165,32,0.45)) drop-shadow(0 0 35px rgba(255,215,0,0.25)); }
                                         /* non-highlighted rings slightly dimmed */
                                         .skill-disc:not(.highlight) .ring { opacity: 0.5 }
                                         .skill-disc:focus { outline: none; box-shadow: 0 16px 48px rgba(99,102,241,0.12); transform: translateY(-8px) rotateX(4deg); }
@@ -1262,18 +1309,6 @@ const App: React.FC = () => {
                                             .skill-disc .ring { stroke-width:14; }
                                             .skill-disc .inner { r: 0; }
                                         }
-
-                                        /* stats panel under discs */
-                                        .stats-panel { margin-top: 1.25rem; display:flex; justify-content:center; }
-                                        .stats-panel-inner { background: linear-gradient(180deg, #151718 0%, #0b0c0d 100%); color: #ffffff; padding: 1rem 1.25rem; border-radius: 12px; box-shadow: inset 0 2px 10px rgba(255,255,255,0.02), 0 30px 80px rgba(0,0,0,0.7); min-width: 300px; max-width: 800px; text-align:center; border: 1px solid rgba(255,255,255,0.03); }
-                                        .stats-title { font-size:1.25rem; font-weight:800; margin-bottom:0.5rem; }
-                                        .stats-grid { display:flex; gap:1.25rem; justify-content:center; margin-bottom:0.5rem; }
-                                        .stat-item { text-align:center; }
-                                        .stat-label { color: #9ca3af; font-size:0.85rem; }
-                                        .stat-value { color: #ffffff; font-weight:800; font-size:1.05rem; margin-top:0.25rem; }
-                                        .stats-percent { min-width:72px; height:72px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:900; color:#fff; font-size:1.25rem; box-shadow: 0 10px 30px rgba(2,6,23,0.5); }
-                                        .stats-note { color: #cbd5e1; font-size:0.82rem; margin-top:0.5rem; }
-                                        .stats-panel-hint { color: #6b7280; background: rgba(15,23,42,0.04); padding: 0.8rem 1rem; border-radius:10px; }
 
                                             /* header lightning accent */
                                             .header-with-light { display:inline-block; position:relative; }
