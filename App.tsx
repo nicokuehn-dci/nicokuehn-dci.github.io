@@ -675,10 +675,10 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
             <div className="mb-4 flex items-center gap-3">
                 <div className="text-sm text-gray-300 mr-2">Sort:</div>
                 <div className="sort-controls inline-flex gap-2">
-                    <button className={`sort-button px-3 py-1 rounded-md ${sortMode==='default' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('default')}>Default</button>
-                    <button className={`sort-button px-3 py-1 rounded-md ${sortMode==='proficiency' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('proficiency')}>Proficiency</button>
-                    <button className={`sort-button px-3 py-1 rounded-md ${sortMode==='experience' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('experience')}>Experience</button>
-                    <button className={`sort-button px-3 py-1 rounded-md ${sortMode==='name' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('name')}>Name</button>
+                    <button className={`sort-button px-4 py-2 rounded-md text-base ${sortMode==='default' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('default')}>Default</button>
+                    <button className={`sort-button px-4 py-2 rounded-md text-base ${sortMode==='proficiency' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('proficiency')}>Proficiency</button>
+                    <button className={`sort-button px-4 py-2 rounded-md text-base ${sortMode==='experience' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('experience')}>Experience</button>
+                    <button className={`sort-button px-4 py-2 rounded-md text-base ${sortMode==='name' ? 'bg-white/10' : 'bg-white/6'}`} onClick={() => setSortMode('name')}>Name</button>
                 </div>
                 <div className="ml-auto text-xs text-gray-400 italic">Try different orders for a relaxed, informal view.</div>
             </div>
@@ -1374,7 +1374,16 @@ const App: React.FC = () => {
                                         }
 
                                         /* skill disc chart */
-                                        .skill-disc-row { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:1.25rem; }
+                                        .skill-disc-row { 
+                                            display: grid; 
+                                            grid-template-columns: repeat(3, 1fr); 
+                                            gap: 2.5rem; 
+                                            justify-items: center; 
+                                            margin-bottom: 2rem; 
+                                            max-width: 900px;
+                                            margin-left: auto;
+                                            margin-right: auto;
+                                        }
                                         /* discs bumped +50% for emphasis and stronger presence with enhanced 3D depth */
                                         .skill-disc { 
                                             width: 210px; 
