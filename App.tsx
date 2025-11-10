@@ -2015,6 +2015,32 @@ const App: React.FC = () => {
                                             transition: all 0.4s ease;
                                             position: relative;
                                             z-index: 1;
+                                            overflow: hidden;
+                                        }
+                                        /* Highlighted zone overlay */
+                                        .content-card-3d::before {
+                                            content: '';
+                                            position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                            right: 0;
+                                            height: 50%;
+                                            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%);
+                                            pointer-events: none;
+                                            z-index: 0;
+                                        }
+                                        /* Glowing accent corner */
+                                        .content-card-3d::after {
+                                            content: '';
+                                            position: absolute;
+                                            top: -50px;
+                                            right: -50px;
+                                            width: 150px;
+                                            height: 150px;
+                                            background: radial-gradient(circle, rgba(200,200,200,0.2) 0%, transparent 70%);
+                                            border-radius: 50%;
+                                            pointer-events: none;
+                                            z-index: 0;
                                         }
                                         .content-card-3d:hover {
                                             transform: translateY(-6px);
@@ -2024,30 +2050,38 @@ const App: React.FC = () => {
                                                 inset 0 2px 4px rgba(200,200,200,0.12);
                                             border-color: rgba(180,180,180,0.4);
                                         }
+                                        .content-card-3d:hover::before {
+                                            background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 100%);
+                                        }
                                         .content-card-header {
                                             margin-bottom: 1.5rem;
+                                            position: relative;
+                                            z-index: 1;
                                         }
                                         .content-title-glow {
                                             font-size: 1.5rem;
                                             font-weight: 700;
-                                            background: linear-gradient(135deg, #d0d0d0, #a0a0a0, #707070);
+                                            background: linear-gradient(135deg, #ffffff, #d0d0d0, #a0a0a0);
                                             -webkit-background-clip: text;
                                             background-clip: text;
                                             color: transparent;
-                                            filter: drop-shadow(0 2px 8px rgba(160,160,160,0.4));
+                                            filter: drop-shadow(0 2px 8px rgba(200,200,200,0.6));
+                                            text-shadow: 0 0 20px rgba(255,255,255,0.3);
                                         }
                                         .title-underline-glow {
                                             width: 60px;
                                             height: 3px;
-                                            background: linear-gradient(90deg, #a0a0a0, transparent);
+                                            background: linear-gradient(90deg, #ffffff, #c0c0c0, transparent);
                                             margin-top: 0.5rem;
                                             border-radius: 2px;
-                                            box-shadow: 0 2px 8px rgba(128,128,128,0.5);
+                                            box-shadow: 0 2px 12px rgba(255,255,255,0.6), 0 0 20px rgba(200,200,200,0.4);
                                         }
                                         .content-text-3d {
-                                            color: #c8c8c8;
+                                            color: #d8d8d8;
                                             line-height: 1.7;
                                             font-size: 1rem;
+                                            position: relative;
+                                            z-index: 1;
                                         }
 
                                         /* Goals List */
@@ -2067,6 +2101,20 @@ const App: React.FC = () => {
                                             border: 1px solid rgba(120,120,120,0.2);
                                             transition: all 0.3s ease;
                                             color: #d0d0d0;
+                                            position: relative;
+                                            overflow: hidden;
+                                        }
+                                        /* Highlighted zone for goal items */
+                                        .goal-item-glow::before {
+                                            content: '';
+                                            position: absolute;
+                                            left: 0;
+                                            top: 0;
+                                            bottom: 0;
+                                            width: 4px;
+                                            background: linear-gradient(180deg, #ffffff, #c0c0c0, #808080);
+                                            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+                                            transition: all 0.3s ease;
                                         }
                                         .goal-item-glow:hover {
                                             background: rgba(60,60,60,0.7);
@@ -2076,8 +2124,20 @@ const App: React.FC = () => {
                                                 0 4px 16px rgba(128,128,128,0.3),
                                                 0 0 20px rgba(160,160,160,0.2);
                                         }
+                                        .goal-item-glow:hover::before {
+                                            width: 6px;
+                                            box-shadow: 0 0 15px rgba(255,255,255,0.8);
+                                        }
                                         .goal-bullet {
                                             display: block;
+                                            width: 8px;
+                                            height: 8px;
+                                            min-width: 8px;
+                                            border-radius: 50%;
+                                            background: linear-gradient(135deg, #ffffff, #c0c0c0);
+                                            box-shadow: 0 0 10px rgba(255,255,255,0.7), 0 0 20px rgba(200,200,200,0.5);
+                                            margin-top: 0.5rem;
+                                        }
                                             width: 8px;
                                             height: 8px;
                                             min-width: 8px;
