@@ -1717,9 +1717,9 @@ const App: React.FC = () => {
                                         /* improve tooltip visibility when keyboard focusing */
                                         .skill-disc:focus-visible .tooltip { opacity:1 }
 
-                                        /* ==================== ABOUT/CONTACT PAGE 3D STYLING ==================== */
+                                        /* ==================== ABOUT/CONTACT PAGE 3D STYLING - FIFTY SHADES OF GREY ==================== */
                                         .about-contact-page {
-                                            background: linear-gradient(135deg, #0a0e1a 0%, #1a1f2e 50%, #0f1419 100%);
+                                            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 25%, #2d2d2d 50%, #1f1f1f 75%, #121212 100%);
                                             position: relative;
                                             overflow: hidden;
                                         }
@@ -1730,7 +1730,7 @@ const App: React.FC = () => {
                                             left: -50%;
                                             width: 200%;
                                             height: 200%;
-                                            background: radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%);
+                                            background: radial-gradient(circle, rgba(128,128,128,0.15) 0%, rgba(64,64,64,0.1) 40%, transparent 70%);
                                             animation: slow-rotate 30s linear infinite;
                                         }
                                         @keyframes slow-rotate {
@@ -1746,18 +1746,18 @@ const App: React.FC = () => {
                                         .about-title {
                                             font-size: 3.5rem;
                                             font-weight: 900;
-                                            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+                                            background: linear-gradient(135deg, #e5e5e5, #b8b8b8, #8c8c8c, #606060);
                                             -webkit-background-clip: text;
                                             background-clip: text;
                                             color: transparent;
-                                            text-shadow: 0 0 40px rgba(96,165,250,0.5);
+                                            text-shadow: 0 0 40px rgba(192,192,192,0.5);
                                             animation: title-glow 3s ease-in-out infinite;
                                             font-family: Georgia, serif;
                                             letter-spacing: -1px;
                                         }
                                         @keyframes title-glow {
-                                            0%, 100% { filter: drop-shadow(0 0 20px rgba(96,165,250,0.6)); }
-                                            50% { filter: drop-shadow(0 0 40px rgba(167,139,250,0.8)); }
+                                            0%, 100% { filter: drop-shadow(0 0 20px rgba(160,160,160,0.6)); }
+                                            50% { filter: drop-shadow(0 0 40px rgba(192,192,192,0.8)); }
                                         }
                                         .about-subtitle {
                                             font-size: 1.125rem;
@@ -1769,13 +1769,14 @@ const App: React.FC = () => {
 
                                         /* 3D Profile Card */
                                         .profile-card-3d {
-                                            background: linear-gradient(145deg, rgba(30,41,59,0.8), rgba(15,23,42,0.9));
+                                            background: linear-gradient(145deg, rgba(50,50,50,0.8), rgba(25,25,25,0.9));
                                             border-radius: 24px;
                                             padding: 2rem;
                                             box-shadow: 
-                                                0 20px 60px rgba(0,0,0,0.5),
-                                                inset 0 2px 4px rgba(255,255,255,0.05);
-                                            border: 1px solid rgba(99,102,241,0.2);
+                                                0 20px 60px rgba(0,0,0,0.7),
+                                                0 0 40px rgba(128,128,128,0.2),
+                                                inset 0 2px 4px rgba(200,200,200,0.1);
+                                            border: 1px solid rgba(160,160,160,0.3);
                                             transform-style: preserve-3d;
                                             transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
                                             position: relative;
@@ -1784,9 +1785,9 @@ const App: React.FC = () => {
                                         .profile-card-3d:hover {
                                             transform: translateY(-10px) rotateX(2deg);
                                             box-shadow: 
-                                                0 30px 80px rgba(99,102,241,0.3),
-                                                0 0 60px rgba(167,139,250,0.2),
-                                                inset 0 2px 4px rgba(255,255,255,0.08);
+                                                0 30px 80px rgba(128,128,128,0.4),
+                                                0 0 60px rgba(160,160,160,0.3),
+                                                inset 0 2px 4px rgba(220,220,220,0.15);
                                         }
                                         .profile-card-inner {
                                             text-align: center;
@@ -1802,9 +1803,9 @@ const App: React.FC = () => {
                                             position: absolute;
                                             inset: -15px;
                                             border-radius: 50%;
-                                            background: conic-gradient(from 0deg, #60a5fa, #a78bfa, #f472b6, #60a5fa);
+                                            background: conic-gradient(from 0deg, #d0d0d0, #a0a0a0, #707070, #d0d0d0);
                                             animation: ring-spin 4s linear infinite;
-                                            opacity: 0.4;
+                                            opacity: 0.5;
                                             filter: blur(20px);
                                         }
                                         @keyframes ring-spin {
@@ -1817,21 +1818,26 @@ const App: React.FC = () => {
                                             height: 200px;
                                             border-radius: 50%;
                                             object-fit: cover;
-                                            border: 4px solid rgba(99,102,241,0.5);
+                                            border: 4px solid rgba(160,160,160,0.6);
                                             box-shadow: 
-                                                0 10px 40px rgba(0,0,0,0.6),
-                                                inset 0 4px 8px rgba(255,255,255,0.1);
+                                                0 10px 40px rgba(0,0,0,0.7),
+                                                0 0 30px rgba(128,128,128,0.3),
+                                                inset 0 4px 8px rgba(200,200,200,0.15);
                                             transition: transform 0.4s ease;
                                             z-index: 1;
                                         }
                                         .profile-card-3d:hover .profile-img-3d {
                                             transform: scale(1.05);
+                                            box-shadow: 
+                                                0 15px 50px rgba(0,0,0,0.8),
+                                                0 0 40px rgba(160,160,160,0.5),
+                                                inset 0 4px 8px rgba(220,220,220,0.2);
                                         }
                                         .profile-shimmer {
                                             position: absolute;
                                             inset: 0;
                                             border-radius: 50%;
-                                            background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.2) 50%, transparent 70%);
+                                            background: linear-gradient(135deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
                                             opacity: 0;
                                             animation: shimmer-sweep 3s ease-in-out infinite;
                                             pointer-events: none;
@@ -1844,15 +1850,16 @@ const App: React.FC = () => {
                                         .profile-name-3d {
                                             font-size: 1.875rem;
                                             font-weight: 800;
-                                            background: linear-gradient(135deg, #f8fafc, #cbd5e1);
+                                            background: linear-gradient(135deg, #f0f0f0, #c0c0c0, #909090);
                                             -webkit-background-clip: text;
                                             background-clip: text;
                                             color: transparent;
                                             margin-bottom: 0.5rem;
+                                            text-shadow: 0 0 20px rgba(192,192,192,0.4);
                                         }
                                         .profile-title-3d {
                                             font-size: 1rem;
-                                            color: #9ca3af;
+                                            color: #a0a0a0;
                                             margin-bottom: 1.5rem;
                                         }
 
@@ -1866,47 +1873,48 @@ const App: React.FC = () => {
                                             align-items: center;
                                             gap: 0.75rem;
                                             padding: 0.75rem;
-                                            background: rgba(15,23,42,0.5);
+                                            background: rgba(40,40,40,0.6);
                                             border-radius: 12px;
-                                            border: 1px solid rgba(99,102,241,0.2);
+                                            border: 1px solid rgba(140,140,140,0.3);
                                             transition: all 0.3s ease;
                                             margin-bottom: 0.75rem;
                                         }
                                         .contact-item-glow:hover {
-                                            background: rgba(30,41,59,0.7);
-                                            border-color: rgba(167,139,250,0.5);
+                                            background: rgba(60,60,60,0.8);
+                                            border-color: rgba(180,180,180,0.6);
                                             transform: translateX(8px);
                                             box-shadow: 
-                                                0 4px 20px rgba(99,102,241,0.3),
-                                                inset 0 1px 2px rgba(255,255,255,0.05);
+                                                0 4px 20px rgba(128,128,128,0.4),
+                                                0 0 30px rgba(160,160,160,0.2),
+                                                inset 0 1px 2px rgba(200,200,200,0.1);
                                         }
                                         .contact-icon-wrapper {
                                             width: 36px;
                                             height: 36px;
                                             border-radius: 8px;
-                                            background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(167,139,250,0.3));
+                                            background: linear-gradient(135deg, rgba(140,140,140,0.4), rgba(100,100,100,0.4));
                                             display: flex;
                                             align-items: center;
                                             justify-content: center;
-                                            box-shadow: 0 2px 8px rgba(99,102,241,0.3);
+                                            box-shadow: 0 2px 8px rgba(128,128,128,0.4);
                                         }
                                         .contact-icon {
                                             width: 18px;
                                             height: 18px;
-                                            color: #a78bfa;
+                                            color: #b8b8b8;
                                         }
                                         .contact-link {
-                                            color: #60a5fa;
+                                            color: #c0c0c0;
                                             text-decoration: none;
                                             transition: color 0.3s ease;
                                             font-size: 0.875rem;
                                         }
                                         .contact-link:hover {
-                                            color: #a78bfa;
-                                            text-shadow: 0 0 10px rgba(167,139,250,0.5);
+                                            color: #e0e0e0;
+                                            text-shadow: 0 0 10px rgba(192,192,192,0.6);
                                         }
                                         .contact-text {
-                                            color: #cbd5e1;
+                                            color: #d0d0d0;
                                             font-size: 0.875rem;
                                         }
 
@@ -1915,33 +1923,35 @@ const App: React.FC = () => {
                                             display: inline-block;
                                             position: relative;
                                             padding: 0.875rem 2rem;
-                                            background: linear-gradient(135deg, #6366f1, #a855f7);
+                                            background: linear-gradient(135deg, #808080, #606060, #404040);
                                             border-radius: 12px;
                                             text-decoration: none;
                                             overflow: hidden;
                                             box-shadow: 
-                                                0 8px 24px rgba(99,102,241,0.4),
-                                                inset 0 2px 4px rgba(255,255,255,0.2);
+                                                0 8px 24px rgba(80,80,80,0.5),
+                                                0 0 20px rgba(128,128,128,0.3),
+                                                inset 0 2px 4px rgba(200,200,200,0.2);
                                             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
                                         }
                                         .cta-button-3d:hover {
                                             transform: translateY(-4px) scale(1.05);
                                             box-shadow: 
-                                                0 16px 48px rgba(99,102,241,0.6),
-                                                0 0 40px rgba(167,139,250,0.4),
-                                                inset 0 2px 4px rgba(255,255,255,0.3);
+                                                0 16px 48px rgba(120,120,120,0.7),
+                                                0 0 40px rgba(160,160,160,0.5),
+                                                inset 0 2px 4px rgba(220,220,220,0.3);
                                         }
                                         .cta-text {
                                             position: relative;
                                             z-index: 1;
-                                            color: white;
+                                            color: #f0f0f0;
                                             font-weight: 700;
                                             font-size: 1rem;
+                                            text-shadow: 0 0 10px rgba(255,255,255,0.3);
                                         }
                                         .cta-glow {
                                             position: absolute;
                                             inset: 0;
-                                            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+                                            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.4), transparent);
                                             transform: translateX(-100%);
                                             transition: transform 0.6s;
                                         }
@@ -1951,13 +1961,14 @@ const App: React.FC = () => {
 
                                         /* Content Cards */
                                         .content-card-3d {
-                                            background: linear-gradient(145deg, rgba(30,41,59,0.6), rgba(15,23,42,0.8));
+                                            background: linear-gradient(145deg, rgba(50,50,50,0.7), rgba(30,30,30,0.9));
                                             border-radius: 20px;
                                             padding: 2rem;
                                             box-shadow: 
-                                                0 10px 40px rgba(0,0,0,0.4),
-                                                inset 0 2px 4px rgba(255,255,255,0.03);
-                                            border: 1px solid rgba(99,102,241,0.15);
+                                                0 10px 40px rgba(0,0,0,0.6),
+                                                0 0 20px rgba(100,100,100,0.2),
+                                                inset 0 2px 4px rgba(180,180,180,0.08);
+                                            border: 1px solid rgba(140,140,140,0.25);
                                             transition: all 0.4s ease;
                                             position: relative;
                                             z-index: 1;
@@ -1965,9 +1976,10 @@ const App: React.FC = () => {
                                         .content-card-3d:hover {
                                             transform: translateY(-6px);
                                             box-shadow: 
-                                                0 20px 60px rgba(99,102,241,0.25),
-                                                inset 0 2px 4px rgba(255,255,255,0.05);
-                                            border-color: rgba(167,139,250,0.3);
+                                                0 20px 60px rgba(128,128,128,0.4),
+                                                0 0 40px rgba(160,160,160,0.3),
+                                                inset 0 2px 4px rgba(200,200,200,0.12);
+                                            border-color: rgba(180,180,180,0.4);
                                         }
                                         .content-card-header {
                                             margin-bottom: 1.5rem;
@@ -1975,22 +1987,22 @@ const App: React.FC = () => {
                                         .content-title-glow {
                                             font-size: 1.5rem;
                                             font-weight: 700;
-                                            background: linear-gradient(135deg, #a78bfa, #f472b6);
+                                            background: linear-gradient(135deg, #d0d0d0, #a0a0a0, #707070);
                                             -webkit-background-clip: text;
                                             background-clip: text;
                                             color: transparent;
-                                            filter: drop-shadow(0 2px 8px rgba(167,139,250,0.3));
+                                            filter: drop-shadow(0 2px 8px rgba(160,160,160,0.4));
                                         }
                                         .title-underline-glow {
                                             width: 60px;
                                             height: 3px;
-                                            background: linear-gradient(90deg, #a78bfa, transparent);
+                                            background: linear-gradient(90deg, #a0a0a0, transparent);
                                             margin-top: 0.5rem;
                                             border-radius: 2px;
-                                            box-shadow: 0 2px 8px rgba(167,139,250,0.4);
+                                            box-shadow: 0 2px 8px rgba(128,128,128,0.5);
                                         }
                                         .content-text-3d {
-                                            color: #cbd5e1;
+                                            color: #c8c8c8;
                                             line-height: 1.7;
                                             font-size: 1rem;
                                         }
@@ -2007,17 +2019,19 @@ const App: React.FC = () => {
                                             gap: 1rem;
                                             padding: 1rem;
                                             margin-bottom: 0.75rem;
-                                            background: rgba(15,23,42,0.4);
+                                            background: rgba(40,40,40,0.5);
                                             border-radius: 12px;
-                                            border: 1px solid rgba(99,102,241,0.1);
+                                            border: 1px solid rgba(120,120,120,0.2);
                                             transition: all 0.3s ease;
-                                            color: #cbd5e1;
+                                            color: #d0d0d0;
                                         }
                                         .goal-item-glow:hover {
-                                            background: rgba(30,41,59,0.6);
-                                            border-color: rgba(167,139,250,0.3);
+                                            background: rgba(60,60,60,0.7);
+                                            border-color: rgba(160,160,160,0.4);
                                             transform: translateX(6px);
-                                            box-shadow: 0 4px 16px rgba(99,102,241,0.2);
+                                            box-shadow: 
+                                                0 4px 16px rgba(128,128,128,0.3),
+                                                0 0 20px rgba(160,160,160,0.2);
                                         }
                                         .goal-bullet {
                                             display: block;
@@ -2025,15 +2039,15 @@ const App: React.FC = () => {
                                             height: 8px;
                                             min-width: 8px;
                                             border-radius: 50%;
-                                            background: linear-gradient(135deg, #a78bfa, #f472b6);
-                                            box-shadow: 0 0 10px rgba(167,139,250,0.6);
+                                            background: linear-gradient(135deg, #b0b0b0, #808080);
+                                            box-shadow: 0 0 10px rgba(144,144,144,0.7);
                                             margin-top: 0.5rem;
                                         }
 
                                         /* Availability Highlight */
                                         .availability-card-highlight {
-                                            border: 2px solid rgba(167,139,250,0.4);
-                                            background: linear-gradient(145deg, rgba(99,102,241,0.1), rgba(30,41,59,0.8));
+                                            border: 2px solid rgba(160,160,160,0.5);
+                                            background: linear-gradient(145deg, rgba(100,100,100,0.15), rgba(50,50,50,0.9));
                                         }
                                         .availability-badge-3d {
                                             margin-top: 1.5rem;
@@ -2041,17 +2055,19 @@ const App: React.FC = () => {
                                             align-items: center;
                                             gap: 0.75rem;
                                             padding: 0.75rem 1.5rem;
-                                            background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(16,185,129,0.2));
-                                            border: 1px solid rgba(34,197,94,0.4);
+                                            background: linear-gradient(135deg, rgba(140,140,140,0.3), rgba(100,100,100,0.3));
+                                            border: 1px solid rgba(160,160,160,0.5);
                                             border-radius: 24px;
-                                            box-shadow: 0 4px 16px rgba(34,197,94,0.2);
+                                            box-shadow: 
+                                                0 4px 16px rgba(128,128,128,0.3),
+                                                0 0 20px rgba(160,160,160,0.2);
                                         }
                                         .badge-pulse {
                                             width: 10px;
                                             height: 10px;
                                             border-radius: 50%;
-                                            background: #22c55e;
-                                            box-shadow: 0 0 10px #22c55e;
+                                            background: #b0b0b0;
+                                            box-shadow: 0 0 10px #c0c0c0;
                                             animation: pulse-grow 2s ease-in-out infinite;
                                         }
                                         @keyframes pulse-grow {
@@ -2059,7 +2075,7 @@ const App: React.FC = () => {
                                             50% { transform: scale(1.3); opacity: 0.7; }
                                         }
                                         .badge-text {
-                                            color: #6ee7b7;
+                                            color: #d8d8d8;
                                             font-weight: 600;
                                             font-size: 0.875rem;
                                         }
