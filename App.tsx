@@ -486,11 +486,12 @@ const SkillDisc: React.FC<{ skill: SkillDetail; size?: number; onSelect: (name: 
     const pct = proficiencyStyles[skill.proficiency] ? parseInt(proficiencyStyles[skill.proficiency].width) : 50;
     const offset = circumference * (1 - pct / 100);
     // nicer color gradients per proficiency
+    // Steampunk palette: warm bronze and patina accents
     const gradientMap: Record<string, { start: string; end: string; shadow: string }> = {
-        Expert: { start: '#10b981', end: '#06b6d4', shadow: 'rgba(16,185,129,0.28)' }, // emerald -> teal
-        Advanced: { start: '#38bdf8', end: '#7c3aed', shadow: 'rgba(59,130,246,0.28)' }, // sky -> indigo
-        Intermediate: { start: '#f59e0b', end: '#fb923c', shadow: 'rgba(245,158,11,0.28)' }, // amber -> orange
-        Beginner: { start: '#fb7185', end: '#f43f5e', shadow: 'rgba(251,113,133,0.28)' }, // rose -> pink
+        Expert: { start: '#b87333', end: '#d4a373', shadow: 'rgba(184,115,51,0.28)' }, // bright bronze -> warm gold
+        Advanced: { start: '#8b5e3c', end: '#c09a62', shadow: 'rgba(140,94,60,0.26)' }, // deep bronze -> brass
+        Intermediate: { start: '#c9a66b', end: '#7b5a36', shadow: 'rgba(201,166,107,0.22)' }, // antique brass -> dark patina
+        Beginner: { start: '#7b4b2a', end: '#b66a3a', shadow: 'rgba(123,75,42,0.22)' }, // dark brown -> copper
     };
     const map = gradientMap[skill.proficiency] ?? gradientMap['Intermediate'];
     const color = map.start;
@@ -1077,36 +1078,43 @@ const App: React.FC = () => {
                                         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
                                         .animate-fadeIn { animation: fadeIn 0.6s ease-in-out forwards; }
 
-                                        /* Skills Deep Dive: dark theme variant with white glowing outlines/text */
+                                        /* Skills Deep Dive: steampunk theme with leather/bronze textures and warm brass glow */
                                         .skills-deep-container {
                                             position: relative;
                                             padding: 3rem 2rem;
                                             border-radius: 18px;
                                             overflow: visible;
-                                            background: linear-gradient(180deg, #060812 0%, #0b1220 60%);
-                                            color: #e6eef8; /* default text color for this section */
+                                            /* layered leather -> dark wood -> brass vignette */
+                                            background-color: #17120d;
+                                            background-image: 
+                                              linear-gradient(180deg, rgba(255,238,210,0.02), rgba(0,0,0,0.18)),
+                                              repeating-linear-gradient(45deg, rgba(255,255,255,0.006) 0 2px, rgba(0,0,0,0.004) 2px 6px),
+                                              radial-gradient(600px 220px at 20% 10%, rgba(187,142,80,0.06), transparent 18%),
+                                              radial-gradient(600px 220px at 80% 85%, rgba(80,58,36,0.04), transparent 18%);
+                                            color: #efd8b3; /* warm parchment text color */
+                                            border: 1px solid rgba(200,160,100,0.06);
+                                            box-shadow: inset 0 1px 0 rgba(255,255,255,0.02), 0 18px 60px rgba(2,2,2,0.6);
                                         }
 
-                                        /* subtle centered glow behind the grid (cool white/purple) */
+                                        /* subtle warm brass glow behind the grid */
                                         .skills-deep-container::before {
                                             content: '';
                                             position: absolute;
                                             left: 50%;
-                                            top: 20%;
+                                            top: 18%;
                                             transform: translateX(-50%);
-                                            width: 1000px;
-                                            height: 420px;
+                                            width: 900px;
+                                            height: 380px;
                                             border-radius: 50%;
-                                            background: radial-gradient(closest-side, rgba(99,102,241,0.14), rgba(99,102,241,0.06) 30%, transparent 60%);
-                                            filter: blur(44px);
+                                            background: radial-gradient(closest-side, rgba(180,120,60,0.12), rgba(120,80,40,0.04) 30%, transparent 60%);
+                                            filter: blur(34px) saturate(110%);
                                             z-index: 0;
                                             pointer-events: none;
-                                            mix-blend-mode: screen;
                                         }
 
                                         @media (prefers-color-scheme: dark) {
                                             .skills-deep-container::before {
-                                                background: radial-gradient(closest-side, rgba(99,102,241,0.16), rgba(99,102,241,0.06) 30%, transparent 60%);
+                                                background: radial-gradient(closest-side, rgba(160,110,60,0.12), rgba(120,80,40,0.04) 30%, transparent 60%);
                                             }
                                         }
 
@@ -1115,16 +1123,17 @@ const App: React.FC = () => {
 
                                                         .skill-card {
                                                             position: relative;
-                                                            border-radius: 18px;
-                                                            padding: 1rem; /* informal, roomier */
+                                                            border-radius: 14px;
+                                                            padding: 1rem; /* roomier */
                                                             overflow: visible;
                                                             transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;
                                                             transform-style: preserve-3d;
-                                                            /* informal look: softer, playful surface */
-                                                            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-                                                            box-shadow: 0 10px 36px rgba(2,6,23,0.6);
-                                                            border: 2px dashed rgba(255,255,255,0.05);
-                                                            color: #fff;
+                                                            /* steampunk card surface: dark brushed metal with subtle patina */
+                                                            background: linear-gradient(180deg, rgba(40,30,24,0.56), rgba(18,12,8,0.6));
+                                                            box-shadow: inset 0 1px 0 rgba(255,230,190,0.03), 0 18px 48px rgba(8,4,2,0.6);
+                                                            border: 1px solid rgba(200,160,90,0.08);
+                                                            color: #efd8b3;
+                                                            backdrop-filter: blur(2px);
                                                         }
 
                                         .skill-card.dark {
@@ -1141,9 +1150,9 @@ const App: React.FC = () => {
                                                                             inset: -8px;
                                                                             z-index: -2;
                                                                             border-radius: 14px;
-                                                                            /* cool white/purple halo */
-                                                                            background: radial-gradient(closest-side, rgba(99,102,241,0.12), rgba(99,102,241,0.04) 28%, transparent 56%);
-                                                                            filter: blur(28px);
+                                                                            /* warm brass halo */
+                                                                            background: radial-gradient(closest-side, rgba(180,120,60,0.12), rgba(120,80,40,0.04) 28%, transparent 56%);
+                                                                            filter: blur(24px) saturate(110%);
                                                                             opacity: 0.95;
                                                                             transition: opacity .28s, transform .28s;
                                                                             transform: translateZ(-16px) scale(0.99);
@@ -1162,19 +1171,20 @@ const App: React.FC = () => {
                                                             transition: opacity .35s, transform .35s;
                                                         }
 
+
                                         .skill-card:hover { transform: translateY(-8px) rotateX(3deg); }
                                         .skill-card:hover::after { opacity: 1; filter: blur(18px); transform: translateY(-2px) scale(1.02); }
                                         .skill-card:hover::before { transform: translateZ(-18px) scale(1.02); opacity: 1; }
 
-                                        /* informal rotation for a casual, scattered feel */
-                                        .informal-grid .skill-card:nth-child(3n+1) { transform: rotate(-1.5deg); }
-                                        .informal-grid .skill-card:nth-child(3n+2) { transform: rotate(0.8deg); }
-                                        .informal-grid .skill-card:nth-child(3n+3) { transform: rotate(-0.6deg); }
+                                        /* informal rotation for a casual, scattered feel (kept subtle for steampunk) */
+                                        .informal-grid .skill-card:nth-child(3n+1) { transform: rotate(-0.6deg); }
+                                        .informal-grid .skill-card:nth-child(3n+2) { transform: rotate(0.6deg); }
+                                        .informal-grid .skill-card:nth-child(3n+3) { transform: rotate(-0.35deg); }
                                         .informal-grid .skill-card:hover { transform: rotate(0deg) translateY(-10px) scale(1.02); }
 
-                                        /* sort control styles */
-                                        .sort-controls .sort-button { background: transparent; color: #e6eef8; border: 1px solid rgba(255,255,255,0.06); padding: 0.35rem 0.6rem; }
-                                        .sort-controls .sort-button:hover { filter: brightness(1.08); }
+                                        /* sort control styles (brass buttons) */
+                                        .sort-controls .sort-button { background: linear-gradient(180deg,#3b2b20,#22160f); color: #f1e3c4; border: 1px solid rgba(200,150,80,0.12); padding: 0.35rem 0.6rem; box-shadow: 0 6px 20px rgba(0,0,0,0.45) inset; }
+                                        .sort-controls .sort-button:hover { filter: brightness(1.06); transform: translateY(-1px); }
 
                                           .skill-title { font-weight: 700; font-size: 1rem; color: #0f172a; display:flex; align-items:center; gap:0.5rem }
                                           .skill-meta { font-size: 0.78rem; color: #6b7280; }
@@ -1275,9 +1285,9 @@ const App: React.FC = () => {
 
                                         /* Accessibility and contrast tweaks */
                                         /* make disc captions higher contrast and avoid low-contrast grays */
-                                        .disc-caption { margin-top: 0.6rem; text-align: center; font-weight:700; color: #0b1220; font-size:0.95rem; }
+                                        .disc-caption { margin-top: 0.6rem; text-align: center; font-weight:700; color: #efd8b3; font-size:0.95rem; font-family: Georgia, 'Times New Roman', serif; letter-spacing:0.2px }
                                         @media (prefers-color-scheme: dark) {
-                                            .disc-caption { color: #e6eef8; }
+                                            .disc-caption { color: #efd8b3; }
                                         }
 
                                         /* Clear focus-visible outline for keyboard users */
