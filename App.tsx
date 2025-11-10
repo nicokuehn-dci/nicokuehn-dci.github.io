@@ -204,7 +204,7 @@ const resumeData: ResumeData = {
     summary: "20 years of experience in Musicproduction in the Box + Outgear Musicproduction",
     // use GitHub avatar URL so the image loads without requiring a local file
     profilePictureUrl: "https://avatars.githubusercontent.com/nicokuehn-dci",
-    contact: { email: "nico.code.evo@gmail.com", phone: "+4915237250142", location: "Aue-Bad Schlema, DE", github: "github.com/nicokuehn-dci", githubLink: "https://github.com/nicokuehn-dci?tab=repositories" },
+    contact: { email: "nico.code.evo@gmail.com", phone: "as requested", location: "Aue-Bad Schlema, DE", github: "github.com/nicokuehn-dci", githubLink: "https://github.com/nicokuehn-dci?tab=repositories" },
     education: [{ degree: "Python Backend Programmer", institution: "DCI - Digital Career Institute", date: "03/2025 - 03/2026", location: "Berlin", courses: ["Python Backend Programming"], description: "Accomplishing a one-year-full-time training including Python Basics, Databases, Django Framework, APIs & Cloud Services" }],
     workExperience: [
         { role: "Security Guard", company: "Pond Security", date: "04/2016 - 04/2017", location: "Kassel (Calden)", description: "Expert in highly sensitive security areas", subRole: "Site Manager Old Kassel Airport (Migrationcenter)", responsibilities: ["Create daily work plans for security personnel", "Monitor the premises Solve and fix problems", "Supervise and enforce house rules", "daily contact and talk with government", "teaching new staff members", "applying established organizational framework to different locations (Migration-Centers)", "providing hands-on training at those locations."] },
@@ -907,7 +907,7 @@ const App: React.FC = () => {
     const handleDownloadPdf = () => {
         const element = document.getElementById('page-content');
         if (element) {
-            const opt = { margin: 0.2, filename: 'Nico_Kuehn_Resume.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
+            const opt = { margin: 0.2, filename: 'nico_kuehn_resume.pdf', image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true }, jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' } };
             html2pdf().from(element).set(opt).save();
         }
     };
