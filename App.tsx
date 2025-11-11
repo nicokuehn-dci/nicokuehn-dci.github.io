@@ -530,7 +530,10 @@ const MyCreativeWorkPage: React.FC = () => (
     </div>
 );
 
-const AboutContactPage: React.FC<{ data: ResumeData, onOpenContactForm: () => void }> = ({ data, onOpenContactForm }) => (
+const AboutContactPage: React.FC<{ data: ResumeData, onOpenContactForm: () => void }> = ({ data, onOpenContactForm }) => {
+    const [showLocationPopup, setShowLocationPopup] = useState(false);
+
+    return (
     <div className="about-contact-page p-4 md:p-6 min-h-[70vh] transition-colors duration-500">
         <div className="max-w-6xl mx-auto">
             {/* Glowing header */}
@@ -579,7 +582,15 @@ const AboutContactPage: React.FC<{ data: ResumeData, onOpenContactForm: () => vo
                                 <div className="contact-icon-wrapper">
                                     <LocationIcon className="contact-icon" />
                                 </div>
-                                <span className="contact-text">{data.contact.location}</span>
+                                                                                                                                                          <button 
+                                    onClick={() => setShowLocationPopup(true)}
+                                    className="contact-link" 
+                                    type="button"
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                                    aria-label="View location information"
+                                >
+                                    {data.contact.location}
+                                </button>
                             </div>
                             <div className="contact-item-glow">
                                 <div className="contact-icon-wrapper">
@@ -653,8 +664,87 @@ const AboutContactPage: React.FC<{ data: ResumeData, onOpenContactForm: () => vo
                 </div>
             </div>
         </div>
+
+        {/* Location Info Popup */}
+        {showLocationPopup && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setShowLocationPopup(false)}>
+                <div 
+                    className="relative max-w-2xl w-full bg-white dark:bg-gray-800 rounded-2xl p-8 animate-fadeIn" 
+                    onClick={(e) => e.stopPropagation()}
+                    style={{
+                        border: '2px solid rgba(255,255,255,0.4)',
+                        boxShadow: '0 0 40px rgba(255,255,255,0.6), 0 0 80px rgba(255,255,255,0.4), 0 20px 60px rgba(0,0,0,0.5)'
+                    }}
+                >
+                    <button 
+                        onClick={() => setShowLocationPopup(false)}
+                        className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-2xl font-bold transition-all duration-300"
+                        style={{
+                            width: '40px',
+                            height: '40px',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            border: '1px solid rgba(255,255,255,0.2)',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        ×
+                    </button>
+                    
+                    <h2 
+                        className="text-3xl font-bold text-gray-800 dark:text-gray-200 mb-6"
+                        style={{
+                            textShadow: '0 0 10px rgba(255,255,255,0.3)'
+                        }}
+                    >
+                        📍 Aue-Bad Schlema, Germany
+                    </h2>
+                    
+                    <div className="space-y-4 text-gray-700 dark:text-gray-300">
+                        <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 className="font-bold text-lg mb-2">🏔️ Location</h3>
+                            <p>Aue-Bad Schlema is a town in the Erzgebirgskreis district, in Saxony, Germany. It's located in the picturesque Ore Mountains (Erzgebirge) region.</p>
+                        </div>
+                        
+                        <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 className="font-bold text-lg mb-2">ℹ️ About</h3>
+                            <p>The town was formed in 2019 through the merger of Aue and Bad Schlema. It's known for its rich mining history and beautiful mountain landscapes.</p>
+                        </div>
+                        
+                        <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">
+                            <h3 className="font-bold text-lg mb-2">🌍 Region</h3>
+                            <p><strong>State:</strong> Saxony (Sachsen)<br/>
+                            <strong>District:</strong> Erzgebirgskreis<br/>
+                            <strong>Area:</strong> Ore Mountains Region</p>
+                        </div>
+                        
+                        <div className="flex gap-3 mt-6">
+                            <a 
+                                href="https://www.google.com/maps/place/Aue-Bad+Schlema,+Germany"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 text-center"
+                            >
+                                🗺️ View on Maps
+                            </a>
+                            <a 
+                                href="https://www.google.com/search?q=aue+bad+schlema"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 text-center"
+                            >
+                                🔍 Learn More
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
     </div>
-);
+    );
+};
 
 const proficiencyStyles: { [key in SkillDetail['proficiency']]: { width: string; color: string } } = {
     Beginner: { width: '25%', color: 'bg-orange-500' },
