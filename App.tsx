@@ -3250,7 +3250,7 @@ const App: React.FC = () => {
                                                 0 0 60px rgba(255,255,255,0.15);
                                             border: 2px solid rgba(255,255,255,0.4);
                                             transform-style: preserve-3d;
-                                            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+                                            transition: all 0.3s ease-out;
                                             position: relative;
                                             z-index: 1;
                                         }
@@ -3267,7 +3267,7 @@ const App: React.FC = () => {
                                                 rgba(255, 255, 255, 0) 100%
                                             );
                                             opacity: 0;
-                                            transition: opacity 0.5s ease;
+                                            transition: opacity 0.3s ease-out;
                                             z-index: -1;
                                         }
                                         
@@ -3509,11 +3509,10 @@ const App: React.FC = () => {
                                                 inset 0 2px 4px rgba(180,180,180,0.08),
                                                 inset 0 -2px 8px rgba(255,255,255,0.05);
                                             border: 2px solid rgba(255,255,255,0.4);
-                                            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                                            transition: all 0.3s ease-out;
                                             position: relative;
                                             z-index: 1;
                                             overflow: hidden;
-
                                             cursor: pointer;
                                         }
                                         /* Highlighted zone overlay */
@@ -3527,7 +3526,7 @@ const App: React.FC = () => {
                                             background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, transparent 100%);
                                             pointer-events: none;
                                             z-index: 0;
-                                            transition: all 0.4s ease;
+                                            transition: all 0.3s ease-out;
                                         }
                                         /* Glowing accent corner */
                                         .content-card-3d::after {
@@ -3536,6 +3535,13 @@ const App: React.FC = () => {
                                             top: -50px;
                                             right: -50px;
                                             width: 150px;
+                                            height: 150px;
+                                            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+                                            border-radius: 50%;
+                                            pointer-events: none;
+                                            z-index: 0;
+                                            transition: all 0.3s ease-out;
+                                        }
                                             height: 150px;
                                             background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
                                             border-radius: 50%;
@@ -3992,7 +3998,7 @@ const App: React.FC = () => {
                                                 0 8px 32px rgba(0, 0, 0, 0.6),
                                                 0 0 40px rgba(255, 255, 255, 0.12),
                                                 0 0 80px rgba(255, 255, 255, 0.06);
-                                            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+                                            transition: all 0.3s ease-out;
                                             overflow: hidden;
                                             cursor: pointer;
                                         }
@@ -4015,7 +4021,7 @@ const App: React.FC = () => {
                                             opacity: 0;
                                             pointer-events: none;
                                             z-index: 0;
-                                            transition: opacity 0.5s ease, transform 0.5s ease;
+                                            transition: all 0.3s ease-out;
                                             transform: scale(0.8);
                                         }
 
@@ -4035,7 +4041,7 @@ const App: React.FC = () => {
                                             pointer-events: none;
                                             z-index: 0;
                                             border-radius: 24px 24px 0 0;
-                                            transition: all 0.5s ease;
+                                            transition: all 0.3s ease-out;
                                         }
 
                                         .lounge-card:hover {
