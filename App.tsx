@@ -3671,19 +3671,37 @@ const App: React.FC = () => {
                                             margin-top: 0.5rem;
                                         }
 
-                                        /* Global White Glowing Titles */
+                                        /* Global White Glowing Titles - Enhanced Visibility */
                                         .content-title-3d {
                                             font-size: 1.5rem;
-                                            font-weight: 700;
-                                            background: linear-gradient(135deg, #ffffff, #e0e0e0, #c0c0c0);
+                                            font-weight: 800;
+                                            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #e0e0e0 100%);
                                             -webkit-background-clip: text;
                                             background-clip: text;
                                             color: transparent;
-                                            filter: drop-shadow(0 0 10px rgba(255,255,255,0.9)) drop-shadow(0 0 20px rgba(255,255,255,0.6));
+                                            filter: 
+                                                drop-shadow(0 0 15px rgba(255,255,255,1))
+                                                drop-shadow(0 0 25px rgba(255,255,255,0.8))
+                                                drop-shadow(0 0 35px rgba(255,255,255,0.6));
                                             text-shadow: 
-                                                0 0 15px rgba(255,255,255,0.8),
-                                                0 0 25px rgba(255,255,255,0.5),
-                                                0 0 35px rgba(200,200,200,0.3);
+                                                0 0 20px rgba(255,255,255,1),
+                                                0 0 30px rgba(255,255,255,0.9),
+                                                0 0 40px rgba(255,255,255,0.7),
+                                                0 0 50px rgba(200,200,200,0.5);
+                                            letter-spacing: 0.02em;
+                                            transition: all 0.3s ease;
+                                        }
+
+                                        .content-title-3d:hover {
+                                            filter: 
+                                                drop-shadow(0 0 20px rgba(255,255,255,1))
+                                                drop-shadow(0 0 35px rgba(255,255,255,0.9))
+                                                drop-shadow(0 0 50px rgba(255,255,255,0.7));
+                                            text-shadow: 
+                                                0 0 25px rgba(255,255,255,1),
+                                                0 0 40px rgba(255,255,255,1),
+                                                0 0 55px rgba(255,255,255,0.8),
+                                                0 0 70px rgba(200,200,200,0.6);
                                         }
 
                                         /* Availability Highlight */
@@ -3926,28 +3944,31 @@ const App: React.FC = () => {
                                                 0 0 100px rgba(255, 255, 255, 0.08),
                                                 inset 0 1px 0 rgba(255, 255, 255, 0.1),
                                                 inset 0 -1px 0 rgba(0, 0, 0, 0.5);
-                                            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                                            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
                                             overflow: hidden;
+                                            cursor: pointer;
                                         }
 
-                                        /* White glow backlight effect */
+                                        /* Intense white glow backlight effect */
                                         .lounge-card::before {
                                             content: '';
                                             position: absolute;
-                                            top: -50%;
-                                            left: -50%;
-                                            width: 200%;
-                                            height: 200%;
+                                            top: -100%;
+                                            left: -100%;
+                                            width: 300%;
+                                            height: 300%;
                                             background: radial-gradient(
                                                 circle at center,
-                                                rgba(255, 255, 255, 0.15) 0%,
-                                                rgba(255, 255, 255, 0.08) 25%,
-                                                transparent 50%
+                                                rgba(255, 255, 255, 0.4) 0%,
+                                                rgba(255, 255, 255, 0.2) 20%,
+                                                rgba(255, 255, 255, 0.1) 40%,
+                                                transparent 60%
                                             );
-                                            opacity: 0.6;
+                                            opacity: 0;
                                             pointer-events: none;
                                             z-index: 0;
-                                            transition: opacity 0.4s ease;
+                                            transition: opacity 0.5s ease, transform 0.5s ease;
+                                            transform: scale(0.8);
                                         }
 
                                         /* Subtle top highlight */
@@ -3966,22 +3987,33 @@ const App: React.FC = () => {
                                             pointer-events: none;
                                             z-index: 0;
                                             border-radius: 24px 24px 0 0;
+                                            transition: all 0.5s ease;
                                         }
 
                                         .lounge-card:hover {
-                                            transform: translateY(-6px);
-                                            border-color: rgba(255, 255, 255, 0.5);
+                                            transform: translateY(-8px) scale(1.02);
+                                            border-color: rgba(255, 255, 255, 0.7);
                                             box-shadow: 
-                                                0 12px 48px rgba(0, 0, 0, 0.7),
-                                                0 0 80px rgba(255, 255, 255, 0.25),
-                                                0 0 120px rgba(255, 255, 255, 0.15),
-                                                0 0 160px rgba(255, 255, 255, 0.08),
-                                                inset 0 2px 0 rgba(255, 255, 255, 0.15),
-                                                inset 0 -2px 0 rgba(0, 0, 0, 0.6);
+                                                0 20px 60px rgba(0, 0, 0, 0.8),
+                                                0 0 100px rgba(255, 255, 255, 0.5),
+                                                0 0 150px rgba(255, 255, 255, 0.35),
+                                                0 0 200px rgba(255, 255, 255, 0.2),
+                                                0 0 250px rgba(255, 255, 255, 0.1),
+                                                inset 0 2px 0 rgba(255, 255, 255, 0.2),
+                                                inset 0 -2px 0 rgba(0, 0, 0, 0.7);
                                         }
 
                                         .lounge-card:hover::before {
-                                            opacity: 0.9;
+                                            opacity: 1;
+                                            transform: scale(1);
+                                        }
+
+                                        .lounge-card:hover::after {
+                                            background: linear-gradient(
+                                                180deg,
+                                                rgba(255, 255, 255, 0.2) 0%,
+                                                transparent 100%
+                                            );
                                         }
 
                                         /* Content inside cards needs higher z-index */
