@@ -569,14 +569,22 @@ const AboutContactPage: React.FC<{ data: ResumeData, onOpenContactForm: () => vo
                                     style={{ background: 'none', border: 'none', cursor: 'pointer' }}
                                     aria-label="Open contact form"
                                 >
-                                    {data.contact.email}
+                                    get in contact
                                 </button>
                             </div>
                             <div className="contact-item-glow">
                                 <div className="contact-icon-wrapper">
                                     <PhoneIcon className="contact-icon" />
                                 </div>
-                                <span className="contact-text">{data.contact.phone}</span>
+                                <button 
+                                    onClick={onOpenContactForm} 
+                                    className="contact-link" 
+                                    type="button"
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+                                    aria-label="Open contact form"
+                                >
+                                    get in contact first
+                                </button>
                             </div>
                             <div className="contact-item-glow">
                                 <div className="contact-icon-wrapper">
