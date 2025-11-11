@@ -261,7 +261,7 @@ const skillTaglines: Record<string, string> = {
 // --- UI HELPER COMPONENTS ---
 const SkillTag: React.FC<{ skill: string }> = ({ skill }) => (
     <span 
-        className="inline-block bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full transform hover:-translate-y-1 hover:scale-105 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 cursor-default"
+        className="shimmer-zone pulse-highlight inline-block bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full transform hover:-translate-y-1 hover:scale-105 hover:bg-gray-300 dark:hover:bg-gray-600 transition-all duration-300 cursor-default"
         style={{
             border: '1px solid rgba(255,255,255,0.3)',
             boxShadow: '0 0 8px rgba(255,255,255,0.2), 0 0 16px rgba(255,255,255,0.1)'
@@ -279,7 +279,7 @@ const SkillTag: React.FC<{ skill: string }> = ({ skill }) => (
 
 const InterestTag: React.FC<{ interest: string }> = ({ interest }) => (
     <span 
-        className="inline-block bg-transparent border border-gray-300 text-gray-600 dark:bg-transparent dark:border-gray-600 dark:text-gray-400 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full transform hover:-translate-y-1 transition-transform duration-200 cursor-default"
+        className="shimmer-zone pulse-highlight inline-block bg-transparent border border-gray-300 text-gray-600 dark:bg-transparent dark:border-gray-600 dark:text-gray-400 text-sm font-medium mr-2 mb-2 px-3 py-1 rounded-full transform hover:-translate-y-1 transition-transform duration-200 cursor-default"
         style={{
             boxShadow: '0 0 8px rgba(255,255,255,0.15), 0 0 16px rgba(255,255,255,0.08)'
         }}
@@ -331,7 +331,7 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                         <div className="lounge-card">
                             <h2 className="content-title-3d mb-6">Education</h2>
                             {data.education.map((edu, index) => (
-                                <div key={index} className="mb-6">
+                                <div key={index} className="spotlight-zone border-glow-zone mb-6 p-4 rounded-lg">
                                     <div className="flex justify-between items-baseline">
                                         <h3 className="content-title-3d text-xl">{edu.degree}</h3>
                                         <p className="text-sm font-light text-gray-400">{edu.location}</p>
@@ -340,8 +340,8 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                                     <p className="text-sm text-gray-400 mb-3">{edu.date}</p>
                                     <p className="text-gray-300 mb-2 italic font-semibold">Courses</p>
                                     <ul className="list-disc list-inside text-gray-400 space-y-1">
-                                        <li>{edu.courses.join(', ')}</li>
-                                        <li>{edu.description}</li>
+                                        <li className="text-highlight-zone">{edu.courses.join(', ')}</li>
+                                        <li className="text-highlight-zone">{edu.description}</li>
                                     </ul>
                                 </div>
                             ))}
@@ -351,7 +351,7 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                         <div className="lounge-card">
                             <h2 className="content-title-3d mb-6">Work Experience</h2>
                             {data.workExperience.map((job, index) => (
-                                <div key={index} className="mb-6 p-4 bg-neutral-800/40 rounded-lg border border-gray-600/30 shadow-sm">
+                                <div key={index} className="spotlight-zone border-glow-zone mb-6 p-4 bg-neutral-800/40 rounded-lg border border-gray-600/30 shadow-sm">
                                     <div className="flex justify-between items-start mb-1">
                                         <div>
                                             <h3 className="content-title-3d text-xl">{job.role}</h3>
@@ -378,25 +378,25 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                             {/* Contact Card */}
                             <div className="lounge-card">
                                 <h3 className="content-title-3d mb-4 text-xl">Contact</h3>
-                                <button onClick={onOpenContactForm} className="flex items-center mb-3 text-gray-300 hover:text-white transition-colors w-full text-left">
+                                <button onClick={onOpenContactForm} className="interactive-zone shimmer-zone flex items-center mb-3 text-gray-300 hover:text-white transition-colors w-full text-left rounded-lg p-2">
                                     <MailIcon className="w-5 h-5 mr-3 text-gray-500" />
-                                    <span>{data.contact.email}</span>
+                                    <span className="text-highlight-zone">{data.contact.email}</span>
                                 </button>
-                                <div className="flex items-center mb-3 text-gray-300">
+                                <div className="interactive-zone flex items-center mb-3 text-gray-300 rounded-lg p-2">
                                     <PhoneIcon className="w-5 h-5 mr-3 text-gray-500" />
-                                    <span>{data.contact.phone}</span>
+                                    <span className="text-highlight-zone">{data.contact.phone}</span>
                                 </div>
-                                <div className="flex items-center mb-3 text-gray-300">
+                                <div className="interactive-zone flex items-center mb-3 text-gray-300 rounded-lg p-2">
                                     <LocationIcon className="w-5 h-5 mr-3 text-gray-500" />
-                                    <span>{data.contact.location}</span>
+                                    <span className="text-highlight-zone">{data.contact.location}</span>
                                 </div>
-                                <a href={data.contact.githubLink} target="_blank" rel="noopener noreferrer" className="flex items-center text-gray-300 hover:text-white transition-colors">
+                                <a href={data.contact.githubLink} target="_blank" rel="noopener noreferrer" className="interactive-zone shimmer-zone flex items-center text-gray-300 hover:text-white transition-colors rounded-lg p-2">
                                     <GithubIcon className="w-5 h-5 mr-3 text-gray-500" />
-                                    <span>{data.contact.github}</span>
+                                    <span className="text-highlight-zone">{data.contact.github}</span>
                                 </a>
-                                <button onClick={onDownloadPdf} className="flex items-center mt-4 w-full text-left text-gray-300 hover:text-white transition-colors">
+                                <button onClick={onDownloadPdf} className="interactive-zone shimmer-zone border-glow-zone flex items-center mt-4 w-full text-left text-gray-300 hover:text-white transition-colors rounded-lg p-2">
                                     <DownloadIcon className="w-5 h-5 mr-3 text-gray-500" />
-                                    <span>Download as PDF</span>
+                                    <span className="text-highlight-zone">Download as PDF</span>
                                 </button>
                             </div>
 
@@ -410,8 +410,8 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                             <div className="lounge-card">
                                 <h3 className="content-title-3d mb-4 text-xl">Personal Projects</h3>
                                 {data.personalProjects.map((project, index) => (
-                                    <div key={index} className="mb-4">
-                                        <h4 className="font-semibold text-gray-300">
+                                    <div key={index} className="interactive-zone border-glow-zone mb-4 p-3 rounded-lg">
+                                        <h4 className="font-semibold text-gray-300 text-highlight-zone">
                                             {project.name} <span className="text-sm font-light text-gray-500">({project.date})</span>
                                         </h4>
                                         <p className="text-gray-400 text-sm">{project.description}</p>
@@ -423,8 +423,8 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                             <div className="lounge-card">
                                 <h3 className="content-title-3d mb-4 text-xl">Languages</h3>
                                 {data.languages.map((lang, index) => (
-                                    <div key={index} className="mb-2">
-                                        <p className="font-semibold text-gray-300">{lang.name}</p>
+                                    <div key={index} className="interactive-zone spotlight-zone mb-2 p-3 rounded-lg">
+                                        <p className="font-semibold text-gray-300 text-highlight-zone">{lang.name}</p>
                                         <p className="text-sm text-gray-400">{lang.proficiency}</p>
                                     </div>
                                 ))}
@@ -509,17 +509,17 @@ const MyCreativeWorkPage: React.FC = () => (
                 <div className="mt-8 p-6 rounded-xl bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 border border-gray-300 dark:border-gray-600">
                     <h3 className="content-title-3d text-2xl mb-4">Featured Projects</h3>
                     <ul className="space-y-3">
-                        <li className="flex items-start gap-3">
+                        <li className="interactive-zone spotlight-zone border-glow-zone flex items-start gap-3 p-4 rounded-lg">
                             <span className="text-2xl">🎹</span>
                             <div>
-                                <strong className="text-gray-900 dark:text-white">Finegrind & Benson</strong>
+                                <strong className="text-gray-900 dark:text-white text-highlight-zone">Finegrind & Benson</strong>
                                 <p className="text-gray-600 dark:text-gray-400">House music project – Production, releases and live sets</p>
                             </div>
                         </li>
-                        <li className="flex items-start gap-3">
+                        <li className="interactive-zone spotlight-zone border-glow-zone flex items-start gap-3 p-4 rounded-lg">
                             <span className="text-2xl">⚡</span>
                             <div>
-                                <strong className="text-gray-900 dark:text-white">Nick de Nitro</strong>
+                                <strong className="text-gray-900 dark:text-white text-highlight-zone">Nick de Nitro</strong>
                                 <p className="text-gray-600 dark:text-gray-400">Techno music project – Releases and collaborations</p>
                             </div>
                         </li>
@@ -2080,17 +2080,17 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
                                                     </div>
 
                                                     {/* Description */}
-                                                    <p className="text-gray-700 dark:text-gray-300 text-base mb-6 flex-grow line-clamp-4">
+                                                    <p className="text-gray-700 dark:text-gray-300 text-base mb-6 flex-grow line-clamp-4 text-highlight-zone">
                                                         {repo.description || 'No description provided'}
                                                     </p>
 
                                                     {/* Stats */}
                                                     <div className="flex items-center gap-6 mb-6">
-                                                        <div className="flex items-center gap-2">
+                                                        <div className="interactive-zone flex items-center gap-2 p-2 rounded-lg">
                                                             <span className="text-2xl">⭐</span>
                                                             <strong className="text-lg text-gray-800 dark:text-gray-200">{repo.stargazers_count}</strong>
                                                         </div>
-                                                        <div className="flex items-center gap-2">
+                                                        <div className="interactive-zone flex items-center gap-2 p-2 rounded-lg">
                                                             <span className="text-2xl">🍴</span>
                                                             <strong className="text-lg text-gray-800 dark:text-gray-200">{repo.forks_count}</strong>
                                                         </div>
@@ -3572,17 +3572,28 @@ const App: React.FC = () => {
                                             z-index: 1;
                                         }
                                         .content-title-glow {
+                                            position: relative;
+                                            z-index: 100;
                                             font-size: 1.5rem;
                                             font-weight: 700;
                                             background: linear-gradient(135deg, #ffffff, #f0f0f0, #d0d0d0);
                                             -webkit-background-clip: text;
                                             background-clip: text;
                                             color: transparent;
-                                            filter: drop-shadow(0 0 8px rgba(255,255,255,0.8)) drop-shadow(0 0 16px rgba(255,255,255,0.6));
+                                            filter: drop-shadow(0 0 10px rgba(255,255,255,0.9)) drop-shadow(0 0 20px rgba(255,255,255,0.7));
                                             text-shadow: 
-                                                0 0 10px rgba(255,255,255,0.6),
-                                                0 0 20px rgba(255,255,255,0.4),
-                                                0 0 30px rgba(255,255,255,0.3);
+                                                0 0 15px rgba(255,255,255,0.8),
+                                                0 0 25px rgba(255,255,255,0.6),
+                                                0 0 35px rgba(255,255,255,0.4);
+                                            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                                        }
+                                        .content-title-glow:hover {
+                                            transform: translateY(-2px);
+                                            filter: drop-shadow(0 0 20px rgba(255,255,255,1)) drop-shadow(0 0 30px rgba(255,255,255,0.8));
+                                            text-shadow: 
+                                                0 0 25px rgba(255,255,255,1),
+                                                0 0 40px rgba(255,255,255,0.8),
+                                                0 0 55px rgba(255,255,255,0.6);
                                         }
                                         .title-underline-glow {
                                             width: 60px;
@@ -3666,8 +3677,10 @@ const App: React.FC = () => {
                                             margin-top: 0.5rem;
                                         }
 
-                                        /* Global White Glowing Titles - Enhanced Visibility */
+                                        /* Global White Glowing Titles - Front Layer with Enhanced Visibility */
                                         .content-title-3d {
+                                            position: relative;
+                                            z-index: 100;
                                             font-size: 1.5rem;
                                             font-weight: 800;
                                             background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 50%, #e0e0e0 100%);
@@ -3684,19 +3697,20 @@ const App: React.FC = () => {
                                                 0 0 40px rgba(255,255,255,0.7),
                                                 0 0 50px rgba(200,200,200,0.5);
                                             letter-spacing: 0.02em;
-                                            transition: all 0.3s ease;
+                                            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                                         }
 
                                         .content-title-3d:hover {
+                                            transform: translateY(-2px);
                                             filter: 
-                                                drop-shadow(0 0 20px rgba(255,255,255,1))
-                                                drop-shadow(0 0 35px rgba(255,255,255,0.9))
-                                                drop-shadow(0 0 50px rgba(255,255,255,0.7));
+                                                drop-shadow(0 0 25px rgba(255,255,255,1))
+                                                drop-shadow(0 0 40px rgba(255,255,255,0.9))
+                                                drop-shadow(0 0 60px rgba(255,255,255,0.7));
                                             text-shadow: 
-                                                0 0 25px rgba(255,255,255,1),
-                                                0 0 40px rgba(255,255,255,1),
-                                                0 0 55px rgba(255,255,255,0.8),
-                                                0 0 70px rgba(200,200,200,0.6);
+                                                0 0 30px rgba(255,255,255,1),
+                                                0 0 50px rgba(255,255,255,1),
+                                                0 0 70px rgba(255,255,255,0.8),
+                                                0 0 90px rgba(200,200,200,0.6);
                                         }
 
                                         /* Availability Highlight */
@@ -4015,6 +4029,156 @@ const App: React.FC = () => {
                                         .lounge-card > * {
                                             position: relative;
                                             z-index: 1;
+                                        }
+
+                                        /* Interactive Highlight Zones - Reactive Throughout Showcase */
+                                        .interactive-zone {
+                                            position: relative;
+                                            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                                            cursor: pointer;
+                                        }
+
+                                        .interactive-zone::before {
+                                            content: '';
+                                            position: absolute;
+                                            inset: -4px;
+                                            border-radius: inherit;
+                                            background: linear-gradient(
+                                                135deg,
+                                                rgba(255, 255, 255, 0) 0%,
+                                                rgba(255, 255, 255, 0.15) 50%,
+                                                rgba(255, 255, 255, 0) 100%
+                                            );
+                                            opacity: 0;
+                                            z-index: -1;
+                                            transition: opacity 0.4s ease;
+                                        }
+
+                                        .interactive-zone:hover::before {
+                                            opacity: 1;
+                                        }
+
+                                        .interactive-zone:hover {
+                                            transform: translateY(-3px);
+                                            box-shadow: 
+                                                0 0 30px rgba(255, 255, 255, 0.3),
+                                                0 0 60px rgba(255, 255, 255, 0.15),
+                                                0 10px 30px rgba(0, 0, 0, 0.3);
+                                        }
+
+                                        /* Text highlight zones */
+                                        .text-highlight-zone {
+                                            position: relative;
+                                            display: inline-block;
+                                            padding: 0.25rem 0.5rem;
+                                            border-radius: 8px;
+                                            transition: all 0.3s ease;
+                                        }
+
+                                        .text-highlight-zone:hover {
+                                            background: linear-gradient(
+                                                135deg,
+                                                rgba(255, 255, 255, 0.1) 0%,
+                                                rgba(255, 255, 255, 0.05) 100%
+                                            );
+                                            box-shadow: 
+                                                0 0 20px rgba(255, 255, 255, 0.2),
+                                                inset 0 0 15px rgba(255, 255, 255, 0.05);
+                                            transform: scale(1.02);
+                                        }
+
+                                        /* Pulsing highlight animation for key areas */
+                                        @keyframes pulse-highlight {
+                                            0%, 100% {
+                                                box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+                                            }
+                                            50% {
+                                                box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+                                            }
+                                        }
+
+                                        .pulse-highlight {
+                                            animation: pulse-highlight 3s ease-in-out infinite;
+                                        }
+
+                                        /* Shimmer effect for interactive elements */
+                                        @keyframes shimmer-sweep {
+                                            0% {
+                                                transform: translateX(-100%) rotate(45deg);
+                                            }
+                                            100% {
+                                                transform: translateX(200%) rotate(45deg);
+                                            }
+                                        }
+
+                                        .shimmer-zone {
+                                            position: relative;
+                                            overflow: hidden;
+                                        }
+
+                                        .shimmer-zone::after {
+                                            content: '';
+                                            position: absolute;
+                                            top: -50%;
+                                            left: -50%;
+                                            width: 50%;
+                                            height: 200%;
+                                            background: linear-gradient(
+                                                90deg,
+                                                transparent 0%,
+                                                rgba(255, 255, 255, 0.3) 50%,
+                                                transparent 100%
+                                            );
+                                            transform: translateX(-100%) rotate(45deg);
+                                            transition: transform 0.6s ease;
+                                        }
+
+                                        .shimmer-zone:hover::after {
+                                            animation: shimmer-sweep 0.8s ease;
+                                        }
+
+                                        /* Reactive border glow */
+                                        .border-glow-zone {
+                                            position: relative;
+                                            border: 2px solid rgba(255, 255, 255, 0.2);
+                                            transition: all 0.4s ease;
+                                        }
+
+                                        .border-glow-zone:hover {
+                                            border-color: rgba(255, 255, 255, 0.6);
+                                            box-shadow: 
+                                                0 0 30px rgba(255, 255, 255, 0.3),
+                                                inset 0 0 20px rgba(255, 255, 255, 0.1);
+                                        }
+
+                                        /* Spotlight effect on hover */
+                                        .spotlight-zone {
+                                            position: relative;
+                                            transition: all 0.4s ease;
+                                        }
+
+                                        .spotlight-zone::before {
+                                            content: '';
+                                            position: absolute;
+                                            top: 50%;
+                                            left: 50%;
+                                            width: 0%;
+                                            height: 0%;
+                                            background: radial-gradient(
+                                                circle,
+                                                rgba(255, 255, 255, 0.2) 0%,
+                                                transparent 70%
+                                            );
+                                            transform: translate(-50%, -50%);
+                                            transition: all 0.5s ease;
+                                            pointer-events: none;
+                                            z-index: -1;
+                                            border-radius: 50%;
+                                        }
+
+                                        .spotlight-zone:hover::before {
+                                            width: 200%;
+                                            height: 200%;
                                         }
                                     `}</style>
             <div className="bg-gray-100 dark:bg-gray-900 min-h-screen p-4 sm:p-8 md:p-12 transition-colors duration-500 font-sans">
