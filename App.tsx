@@ -3334,12 +3334,12 @@ const App: React.FC = () => {
                                             color: #ffffff !important;
                                             margin-bottom: 0.5rem;
                                             text-shadow: 
-                                                0 0 10px rgba(255,255,255,1),
-                                                0 0 20px rgba(255,255,255,0.8),
-                                                0 0 30px rgba(255,255,255,0.5);
+                                                0 0 5px rgba(255,255,255,0.9),
+                                                0 0 10px rgba(255,255,255,0.6),
+                                                0 0 15px rgba(255,255,255,0.4);
                                             filter: 
-                                                drop-shadow(0 0 10px rgba(255,255,255,0.8)) 
-                                                drop-shadow(0 0 20px rgba(255,255,255,0.5));
+                                                drop-shadow(0 0 8px rgba(255,255,255,0.7)) 
+                                                drop-shadow(0 0 15px rgba(255,255,255,0.4));
                                         }
                                         .profile-title-3d {
                                             font-size: 1rem;
@@ -3581,25 +3581,23 @@ const App: React.FC = () => {
                                             font-weight: 700;
                                             color: #ffffff !important;
                                             text-shadow: 
-                                                0 0 10px rgba(255,255,255,1),
-                                                0 0 20px rgba(255,255,255,0.8),
-                                                0 0 30px rgba(255,255,255,0.6),
-                                                0 0 40px rgba(255,255,255,0.4);
+                                                0 0 5px rgba(255,255,255,0.9),
+                                                0 0 10px rgba(255,255,255,0.6),
+                                                0 0 15px rgba(255,255,255,0.4);
                                             filter: 
-                                                drop-shadow(0 0 10px rgba(255,255,255,0.9)) 
-                                                drop-shadow(0 0 20px rgba(255,255,255,0.7));
+                                                drop-shadow(0 0 8px rgba(255,255,255,0.8)) 
+                                                drop-shadow(0 0 15px rgba(255,255,255,0.5));
                                             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                                         }
                                         .content-title-glow:hover {
                                             transform: translateY(-2px) scale(1.02);
                                             text-shadow: 
-                                                0 0 15px rgba(255,255,255,1),
-                                                0 0 25px rgba(255,255,255,1),
-                                                0 0 40px rgba(255,255,255,0.8),
-                                                0 0 55px rgba(255,255,255,0.6);
+                                                0 0 8px rgba(255,255,255,1),
+                                                0 0 15px rgba(255,255,255,0.8),
+                                                0 0 25px rgba(255,255,255,0.6);
                                             filter: 
-                                                drop-shadow(0 0 20px rgba(255,255,255,1)) 
-                                                drop-shadow(0 0 30px rgba(255,255,255,0.8));
+                                                drop-shadow(0 0 12px rgba(255,255,255,1)) 
+                                                drop-shadow(0 0 20px rgba(255,255,255,0.7));
                                         }
                                         .title-underline-glow {
                                             width: 60px;
@@ -3691,16 +3689,13 @@ const App: React.FC = () => {
                                             font-weight: 800;
                                             color: #ffffff !important;
                                             text-shadow: 
-                                                0 0 10px rgba(255,255,255,1),
-                                                0 0 20px rgba(255,255,255,0.9),
-                                                0 0 30px rgba(255,255,255,0.8),
-                                                0 0 40px rgba(255,255,255,0.6),
-                                                0 0 50px rgba(255,255,255,0.4),
-                                                0 0 60px rgba(255,255,255,0.2);
+                                                0 0 5px rgba(255,255,255,0.9),
+                                                0 0 10px rgba(255,255,255,0.7),
+                                                0 0 15px rgba(255,255,255,0.5),
+                                                0 0 20px rgba(255,255,255,0.3);
                                             filter: 
-                                                drop-shadow(0 0 15px rgba(255,255,255,0.9))
-                                                drop-shadow(0 0 25px rgba(255,255,255,0.7))
-                                                drop-shadow(0 0 35px rgba(255,255,255,0.5));
+                                                drop-shadow(0 0 10px rgba(255,255,255,0.8))
+                                                drop-shadow(0 0 20px rgba(255,255,255,0.5));
                                             letter-spacing: 0.02em;
                                             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                                         }
@@ -3708,16 +3703,13 @@ const App: React.FC = () => {
                                         .content-title-3d:hover {
                                             transform: translateY(-2px) scale(1.02);
                                             text-shadow: 
-                                                0 0 15px rgba(255,255,255,1),
-                                                0 0 25px rgba(255,255,255,1),
-                                                0 0 35px rgba(255,255,255,0.9),
-                                                0 0 50px rgba(255,255,255,0.8),
-                                                0 0 70px rgba(255,255,255,0.6),
-                                                0 0 90px rgba(255,255,255,0.4);
+                                                0 0 8px rgba(255,255,255,1),
+                                                0 0 15px rgba(255,255,255,0.9),
+                                                0 0 25px rgba(255,255,255,0.7),
+                                                0 0 35px rgba(255,255,255,0.5);
                                             filter: 
-                                                drop-shadow(0 0 25px rgba(255,255,255,1))
-                                                drop-shadow(0 0 40px rgba(255,255,255,0.9))
-                                                drop-shadow(0 0 60px rgba(255,255,255,0.7));
+                                                drop-shadow(0 0 15px rgba(255,255,255,1))
+                                                drop-shadow(0 0 25px rgba(255,255,255,0.8));
                                         }
 
                                         /* Availability Highlight */
