@@ -1955,18 +1955,18 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
         <div className="project-showcase-page p-4 md:p-6 min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="text-center mb-6">
+                <div className="text-center mb-4">
                     <h1 className="content-title-3d text-6xl md:text-7xl mb-2" style={{
                         letterSpacing: '0.05em'
                     }}>
                         - github_projects -
                     </h1>
-                    <p className="text-gray-600 dark:text-gray-400 text-lg mb-6">
+                    <p className="text-gray-600 dark:text-gray-400 text-lg mb-4">
                         Showcasing repositories from <span className="font-bold text-gray-900 dark:text-white">nico.kuehn</span>
                     </p>
                     
                     {/* Username Input */}
-                    <div className="max-w-2xl mx-auto mb-8 flex gap-3">
+                    <div className="max-w-2xl mx-auto mb-4 flex gap-3">
                         <input 
                             value={username} 
                             onChange={(e) => setUsername(e.target.value)} 
@@ -1982,12 +1982,12 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
                     </div>
                 </div>
 
-                {loading && <div className="text-center text-gray-500 mb-8 text-lg">Loading repositories…</div>}
-                {error && <div className="text-center text-red-500 mb-8 text-lg">{error}</div>}
+                {loading && <div className="text-center text-gray-500 mb-4 text-lg">Loading repositories…</div>}
+                {error && <div className="text-center text-red-500 mb-4 text-lg">{error}</div>}
 
                 {/* Showcase Stats Card - Always visible with Glitch Effect */}
-                <div className="max-w-4xl mx-auto mb-12">
-                    <div className="relative p-8 rounded-3xl bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-800 dark:via-gray-750 dark:to-gray-900 shadow-2xl border-2 border-white/60 dark:border-gray-600/60 overflow-hidden glitch-container">
+                <div className="max-w-4xl mx-auto mb-6">
+                    <div className="relative p-6 rounded-3xl bg-gradient-to-br from-white via-gray-50 to-gray-100 dark:from-gray-800 dark:via-gray-750 dark:to-gray-900 shadow-2xl border-2 border-white/60 dark:border-gray-600/60 overflow-hidden glitch-container">
                         {/* Glitch Overlay Effects */}
                         <div className="glitch-overlay glitch-overlay-1"></div>
                         <div className="glitch-overlay glitch-overlay-2"></div>
@@ -2005,7 +2005,7 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
                     <>
                         {/* User Stats Card */}
                         {userStats && (
-                            <div className="flex items-center justify-center gap-6 mb-12 p-8 rounded-3xl bg-gradient-to-r from-white via-gray-50 to-white dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 shadow-2xl border border-white/50 dark:border-gray-600/50">
+                            <div className="flex items-center justify-center gap-6 mb-6 p-6 rounded-3xl bg-gradient-to-r from-white via-gray-50 to-white dark:from-gray-800 dark:via-gray-700 dark:to-gray-800 shadow-2xl border border-white/50 dark:border-gray-600/50">
                                 <img src={userStats.avatar_url} alt={userStats.login} className="w-24 h-24 rounded-full border-4 border-white dark:border-gray-600 shadow-xl" />
                                 <div>
                                     <div className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 dark:from-white dark:to-gray-300">{userStats.name ?? userStats.login}</div>
@@ -2018,7 +2018,7 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
                         )}
 
                         {/* 3D Carousel - Increased distance */}
-                        <div className="relative mb-32 mt-8" style={{ perspective: '2000px', height: '500px' }}>
+                        <div className="relative mb-16 mt-4" style={{ perspective: '2000px', height: '500px' }}>
                             <div className="absolute inset-0 flex items-center justify-center">
                                 {repos.map((repo, index) => {
                                     const offset = (index - currentSlide + repos.length) % repos.length;
