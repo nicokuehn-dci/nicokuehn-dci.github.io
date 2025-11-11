@@ -314,11 +314,10 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                             <img src={data.profilePictureUrl} alt={data.name} className="profile-pic w-44 h-44 rounded-full rounded-3d object-cover border-4 border-gray-200 dark:border-gray-700 shadow-lg transform hover:scale-105 transition-transform duration-300" />
                         </div>
                         <div className="flex-grow text-center md:text-left">
-                            <h1 className="text-6xl md:text-7xl font-black text-white mb-4" style={{
-                                textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.3), 0 0 70px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
+                            <h1 className="content-title-3d text-6xl md:text-7xl mb-4" style={{
                                 letterSpacing: '0.05em'
                             }}>- nico_kuehn -</h1>
-                            <h2 className="about-subtitle mb-4">{data.title}</h2>
+                            <h2 className="content-title-3d text-2xl mb-4">{data.title}</h2>
                             <p className="text-gray-300 text-lg leading-relaxed">{data.summary}</p>
                         </div>
                     </div>
@@ -457,8 +456,7 @@ const MyCreativeWorkPage: React.FC = () => (
         <div className="max-w-6xl mx-auto">
             {/* Header */}
             <div className="text-center mb-12">
-                <h1 className="text-6xl md:text-7xl font-black text-white mb-4" style={{
-                    textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.3), 0 0 70px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
+                <h1 className="content-title-3d text-6xl md:text-7xl mb-4" style={{
                     letterSpacing: '0.05em'
                 }}>
                     - my_creative_work -
@@ -537,11 +535,10 @@ const AboutContactPage: React.FC<{ data: ResumeData, onOpenContactForm: () => vo
         <div className="max-w-6xl mx-auto">
             {/* Glowing header */}
             <div className="about-header-glow mb-12 text-center">
-                <h1 className="text-6xl md:text-7xl font-black text-white mb-4" style={{
-                    textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.3), 0 0 70px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
+                <h1 className="content-title-3d text-6xl md:text-7xl mb-4" style={{
                     letterSpacing: '0.05em'
                 }}>- about_me -</h1>
-                <div className="about-subtitle">Get to know me better</div>
+                <div className="content-title-3d text-2xl">Get to know me better</div>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
@@ -937,11 +934,10 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
             <div className="max-w-6xl mx-auto">
                 {/* Glowing header - About Me style */}
                 <div className="about-header-glow mb-12 text-center">
-                    <h1 className="text-6xl md:text-7xl font-black text-white mb-4" style={{
-                        textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.3), 0 0 70px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
+                    <h1 className="content-title-3d text-6xl md:text-7xl mb-4" style={{
                         letterSpacing: '0.05em'
                     }}>- skills_deep_dive -</h1>
-                    <div className="about-subtitle">Explore my technical expertise</div>
+                    <div className="content-title-3d text-2xl">Explore my technical expertise</div>
                 </div>
 
                 {/* Dynamic Commercial Stats Banner - Grid Layout with Sliding Ticker & UV Clock */}
@@ -1898,8 +1894,7 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
                 <div className="text-center mb-12">
-                    <h1 className="text-6xl md:text-7xl font-black text-white mb-4" style={{
-                        textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4), 0 0 40px rgba(255,255,255,0.3), 0 0 70px rgba(255,255,255,0.2), 0 0 80px rgba(255,255,255,0.1)',
+                    <h1 className="content-title-3d text-6xl md:text-7xl mb-4" style={{
                         letterSpacing: '0.05em'
                     }}>
                         - github_projects -
