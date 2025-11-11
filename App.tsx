@@ -380,12 +380,8 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                                 <h3 className="content-title-3d mb-4 text-xl">Contact</h3>
                                 <button onClick={onOpenContactForm} className="interactive-zone shimmer-zone flex items-center mb-3 text-gray-300 hover:text-white transition-colors w-full text-left rounded-lg p-2">
                                     <MailIcon className="w-5 h-5 mr-3 text-gray-500" />
-                                    <span className="text-highlight-zone">{data.contact.email}</span>
+                                    <span className="text-highlight-zone">open email form in popup</span>
                                 </button>
-                                <div className="interactive-zone flex items-center mb-3 text-gray-300 rounded-lg p-2">
-                                    <PhoneIcon className="w-5 h-5 mr-3 text-gray-500" />
-                                    <span className="text-highlight-zone">{data.contact.phone}</span>
-                                </div>
                                 <div className="interactive-zone flex items-center mb-3 text-gray-300 rounded-lg p-2">
                                     <LocationIcon className="w-5 h-5 mr-3 text-gray-500" />
                                     <span className="text-highlight-zone">{data.contact.location}</span>
@@ -396,7 +392,11 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                                 </a>
                                 <button onClick={onDownloadPdf} className="interactive-zone shimmer-zone border-glow-zone flex items-center mt-4 w-full text-left text-gray-300 hover:text-white transition-colors rounded-lg p-2">
                                     <DownloadIcon className="w-5 h-5 mr-3 text-gray-500" />
-                                    <span className="text-highlight-zone">Download as PDF</span>
+                                    <span className="text-highlight-zone" style={{
+                                        color: 'white',
+                                        textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.6), 0 0 30px rgba(255,255,255,0.4)',
+                                        fontWeight: '500'
+                                    }}>Download as PDF</span>
                                 </button>
                             </div>
 
@@ -570,20 +570,6 @@ const AboutContactPage: React.FC<{ data: ResumeData, onOpenContactForm: () => vo
                                     aria-label="Open contact form"
                                 >
                                     get in contact
-                                </button>
-                            </div>
-                            <div className="contact-item-glow">
-                                <div className="contact-icon-wrapper">
-                                    <PhoneIcon className="contact-icon" />
-                                </div>
-                                <button 
-                                    onClick={onOpenContactForm} 
-                                    className="contact-link" 
-                                    type="button"
-                                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-                                    aria-label="Open contact form"
-                                >
-                                    get in contact first
                                 </button>
                             </div>
                             <div className="contact-item-glow">
