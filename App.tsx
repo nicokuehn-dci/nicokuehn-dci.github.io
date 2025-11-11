@@ -1254,13 +1254,23 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                             }}
                         >
                             <div style={{
-                                fontSize: '1.5rem',
+                                fontSize: '1.2rem',
                                 fontWeight: 900,
                                 color: '#ffffff',
                                 textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.5)',
                                 marginBottom: '0.25rem',
-                                transition: 'all 0.3s ease'
-                            }}>⚡ 3</div>
+                                transition: 'all 0.3s ease',
+                                display: 'flex',
+                                gap: '0.5rem',
+                                justifyContent: 'center',
+                                flexWrap: 'wrap'
+                            }}>
+                                <span>Py</span>
+                                <span style={{ color: '#888' }}>•</span>
+                                <span>JS</span>
+                                <span style={{ color: '#888' }}>•</span>
+                                <span>TS</span>
+                            </div>
                             <div style={{
                                 fontSize: '0.65rem',
                                 color: '#d0d0d0',
