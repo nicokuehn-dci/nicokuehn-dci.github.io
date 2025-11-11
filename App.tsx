@@ -4321,7 +4321,7 @@ const App: React.FC = () => {
                         borderRadius: '16px',
                         border: '2px solid rgba(138,43,226,0.4)',
                         backdropFilter: 'blur(15px)',
-                        boxShadow: '0 8px 32px rgba(138,43,226,0.3), inset 0 2px 4px rgba(138,43,226,0.2), 0 0 40px rgba(138,43,226,0.2)',
+                        boxShadow: '0 8px 32px rgba(138,43,226,0.3), inset 0 2px 4px rgba(138,43,226,0.2), 0 0 40px rgba(138,43,226,0.2), 0 0 60px rgba(245,245,245,0.15)',
                         padding: '0.75rem 1.25rem',
                         display: 'flex',
                         flexDirection: 'column',
@@ -4341,11 +4341,11 @@ const App: React.FC = () => {
                     }}
                     onMouseEnter={(e) => {
                         e.currentTarget.style.transform = 'scale(1.08)';
-                        e.currentTarget.style.boxShadow = '0 15px 50px rgba(138,43,226,0.6), 0 0 80px rgba(138,43,226,0.5), inset 0 3px 6px rgba(138,43,226,0.3)';
+                        e.currentTarget.style.boxShadow = '0 15px 50px rgba(138,43,226,0.6), 0 0 80px rgba(138,43,226,0.5), inset 0 3px 6px rgba(138,43,226,0.3), 0 0 70px rgba(245,245,245,0.2)';
                     }}
                     onMouseLeave={(e) => {
                         e.currentTarget.style.transform = 'scale(1)';
-                        e.currentTarget.style.boxShadow = '0 8px 32px rgba(138,43,226,0.3), inset 0 2px 4px rgba(138,43,226,0.2), 0 0 40px rgba(138,43,226,0.2)';
+                        e.currentTarget.style.boxShadow = '0 8px 32px rgba(138,43,226,0.3), inset 0 2px 4px rgba(138,43,226,0.2), 0 0 40px rgba(138,43,226,0.2), 0 0 60px rgba(245,245,245,0.15)';
                     }}
                 >
                     {/* UV Background Orb */}
