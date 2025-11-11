@@ -2314,7 +2314,16 @@ const App: React.FC = () => {
     ]);
     const [showContactForm, setShowContactForm] = useState(false);
     const [contactFormData, setContactFormData] = useState({ name: '', email: '', subject: '', message: '' });
+    const [currentTime, setCurrentTime] = useState(new Date());
 
+
+    // Update clock every second
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 1000);
+        return () => clearInterval(timer);
+    }, []);
 
     useEffect(() => {
         const storedTheme = localStorage.getItem('theme');
