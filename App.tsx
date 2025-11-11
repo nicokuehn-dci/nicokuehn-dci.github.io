@@ -2315,25 +2315,18 @@ const App: React.FC = () => {
         const element = document.getElementById('page-content');
         if (element) {
             const opt = { 
-                margin: [0.3, 0.3, 0.3, 0.3],
+                margin: 0.5,
                 filename: 'nico_kuehn_resume.pdf', 
-                image: { type: 'jpeg', quality: 0.95 }, 
+                image: { type: 'jpeg', quality: 0.98 }, 
                 html2canvas: { 
-                    scale: 1.5, 
-                    useCORS: true,
-                    letterRendering: true,
-                    scrollY: 0,
-                    scrollX: 0,
-                    windowWidth: element.scrollWidth,
-                    windowHeight: element.scrollHeight
+                    scale: 2, 
+                    useCORS: true
                 }, 
                 jsPDF: { 
                     unit: 'in', 
                     format: 'a4', 
-                    orientation: 'portrait',
-                    compress: true
-                },
-                pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+                    orientation: 'portrait'
+                }
             };
             html2pdf().from(element).set(opt).save();
         }
