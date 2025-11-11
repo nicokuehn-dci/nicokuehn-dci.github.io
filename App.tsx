@@ -940,14 +940,14 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                     <div className="content-title-3d text-2xl">Explore my technical expertise</div>
                 </div>
 
-                {/* Dynamic Commercial Stats Banner - Grid Layout with Sliding Ticker & UV Clock */}
+                {/* Dynamic Commercial Stats Banner - Grid Layout with Sliding Ticker */}
                 <div 
                     className="content-card-3d mb-4 overflow-hidden commercial-banner" 
                     style={{ 
                         position: 'relative', 
                         minHeight: '160px',
                         display: 'grid',
-                        gridTemplateColumns: '1fr 280px 180px',
+                        gridTemplateColumns: '1fr 280px',
                         gap: '1rem',
                         padding: '1rem',
                         cursor: 'pointer'
@@ -1532,136 +1532,6 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                                     }}
                                 />
                             ))}
-                        </div>
-                    </div>
-
-                    {/* Ultraviolet 3D Clock */}
-                    <div 
-                        className="uv-clock-container"
-                        style={{
-                            position: 'relative',
-                            background: 'linear-gradient(135deg, rgba(138,43,226,0.15), rgba(75,0,130,0.15))',
-                            borderRadius: '20px',
-                            border: '2px solid rgba(138,43,226,0.4)',
-                            backdropFilter: 'blur(15px)',
-                            boxShadow: '0 8px 32px rgba(138,43,226,0.3), inset 0 2px 4px rgba(138,43,226,0.2), 0 0 40px rgba(138,43,226,0.2)',
-                            padding: '1.5rem',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            cursor: 'pointer',
-                            transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
-                            zIndex: 1,
-                            animation: 'uv-glow 4s ease-in-out infinite',
-                            overflow: 'hidden'
-                        }}
-                        onClick={(e) => {
-                            e.currentTarget.style.animation = 'uv-pulse 0.6s ease';
-                            setTimeout(() => {
-                                e.currentTarget.style.animation = 'uv-glow 4s ease-in-out infinite';
-                            }, 600);
-                        }}
-                        onMouseEnter={(e) => {
-                            e.currentTarget.style.transform = 'scale(1.08) rotateY(5deg)';
-                            e.currentTarget.style.boxShadow = '0 15px 50px rgba(138,43,226,0.6), 0 0 80px rgba(138,43,226,0.5), inset 0 3px 6px rgba(138,43,226,0.3)';
-                        }}
-                        onMouseLeave={(e) => {
-                            e.currentTarget.style.transform = 'scale(1) rotateY(0deg)';
-                            e.currentTarget.style.boxShadow = '0 8px 32px rgba(138,43,226,0.3), inset 0 2px 4px rgba(138,43,226,0.2), 0 0 40px rgba(138,43,226,0.2)';
-                        }}
-                    >
-                        {/* UV Background Orb */}
-                        <div style={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            width: '150%',
-                            height: '150%',
-                            background: 'radial-gradient(circle, rgba(138,43,226,0.3), rgba(75,0,130,0.1) 60%, transparent)',
-                            animation: 'uv-orb-pulse 3s ease-in-out infinite',
-                            pointerEvents: 'none',
-                            filter: 'blur(30px)'
-                        }} />
-
-                        {/* Time Display */}
-                        <div style={{
-                            position: 'relative',
-                            zIndex: 2,
-                            textAlign: 'center'
-                        }}>
-                            <div style={{
-                                fontSize: '2.5rem',
-                                fontWeight: 900,
-                                color: '#ffffff',
-                                textShadow: '0 0 20px rgba(138,43,226,0.9), 0 0 40px rgba(138,43,226,0.7), 0 0 60px rgba(138,43,226,0.5), 0 0 80px rgba(138,43,226,0.3)',
-                                letterSpacing: '0.05em',
-                                fontFamily: '"Fira Code", monospace',
-                                marginBottom: '0.25rem',
-                                transform: 'perspective(1000px) rotateX(5deg)',
-                                transformStyle: 'preserve-3d',
-                                WebkitTextStroke: '1px rgba(255,255,255,0.3)'
-                            }}>
-                                {currentTime.toLocaleTimeString('en-US', { 
-                                    hour: '2-digit', 
-                                    minute: '2-digit',
-                                    hour12: true 
-                                }).replace(' ', '')}
-                            </div>
-                            <div style={{
-                                fontSize: '0.7rem',
-                                fontWeight: 700,
-                                color: '#e0c3ff',
-                                textShadow: '0 0 10px rgba(138,43,226,0.6), 0 0 20px rgba(138,43,226,0.4)',
-                                textTransform: 'uppercase',
-                                letterSpacing: '0.2em',
-                                marginBottom: '0.5rem'
-                            }}>
-                                {currentTime.toLocaleDateString('en-US', { weekday: 'short' })}
-                            </div>
-                            <div style={{
-                                fontSize: '0.65rem',
-                                color: '#d8b3ff',
-                                textShadow: '0 0 8px rgba(138,43,226,0.4)',
-                                fontWeight: 600,
-                                opacity: 0.9
-                            }}>
-                                {Intl.DateTimeFormat().resolvedOptions().timeZone.split('/').pop()?.replace(/_/g, ' ')}
-                            </div>
-                        </div>
-
-                        {/* Rotating UV Rings */}
-                        <div style={{
-                            position: 'absolute',
-                            width: '100%',
-                            height: '100%',
-                            top: 0,
-                            left: 0,
-                            pointerEvents: 'none'
-                        }}>
-                            <div style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                width: '90%',
-                                height: '90%',
-                                border: '2px solid rgba(138,43,226,0.3)',
-                                borderRadius: '50%',
-                                animation: 'uv-ring-rotate 20s linear infinite'
-                            }} />
-                            <div style={{
-                                position: 'absolute',
-                                top: '50%',
-                                left: '50%',
-                                transform: 'translate(-50%, -50%)',
-                                width: '70%',
-                                height: '70%',
-                                border: '2px solid rgba(138,43,226,0.2)',
-                                borderRadius: '50%',
-                                animation: 'uv-ring-rotate-reverse 15s linear infinite'
-                            }} />
                         </div>
                     </div>
                 </div>
