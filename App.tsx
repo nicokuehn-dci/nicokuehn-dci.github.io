@@ -3246,24 +3246,46 @@ const App: React.FC = () => {
                                             padding: 2rem;
                                             box-shadow: 
                                                 0 20px 60px rgba(0,0,0,0.7),
-                                                0 0 30px rgba(255,255,255,0.4),
-                                                0 0 60px rgba(255,255,255,0.2),
-                                                inset 0 2px 4px rgba(200,200,200,0.1);
+                                                0 0 30px rgba(255,255,255,0.3),
+                                                0 0 60px rgba(255,255,255,0.15);
                                             border: 2px solid rgba(255,255,255,0.4);
                                             transform-style: preserve-3d;
-                                            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+                                            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
                                             position: relative;
                                             z-index: 1;
                                         }
+                                        
+                                        .profile-card-3d::before {
+                                            content: '';
+                                            position: absolute;
+                                            inset: -2px;
+                                            border-radius: 24px;
+                                            background: linear-gradient(
+                                                135deg,
+                                                rgba(255, 255, 255, 0) 0%,
+                                                rgba(255, 255, 255, 0.3) 50%,
+                                                rgba(255, 255, 255, 0) 100%
+                                            );
+                                            opacity: 0;
+                                            transition: opacity 0.5s ease;
+                                            z-index: -1;
+                                        }
+                                        
                                         .profile-card-3d:hover {
                                             transform: translateY(-10px) rotateX(2deg);
+                                            background: linear-gradient(145deg, rgba(60,60,60,0.9), rgba(35,35,35,0.95));
                                             box-shadow: 
-                                                0 30px 80px rgba(128,128,128,0.4),
-                                                0 0 40px rgba(255,255,255,0.7),
-                                                0 0 80px rgba(255,255,255,0.5),
-                                                0 0 120px rgba(255,255,255,0.3),
-                                                inset 0 2px 4px rgba(220,220,220,0.15);
-                                            border-color: rgba(255,255,255,0.6);
+                                                0 30px 80px rgba(0,0,0,0.8),
+                                                0 0 60px rgba(255,255,255,0.8),
+                                                0 0 100px rgba(255,255,255,0.6),
+                                                0 0 150px rgba(255,255,255,0.4),
+                                                0 0 200px rgba(255,255,255,0.2),
+                                                inset 0 0 30px rgba(255,255,255,0.1);
+                                            border-color: rgba(255,255,255,0.9);
+                                        }
+                                        
+                                        .profile-card-3d:hover::before {
+                                            opacity: 1;
                                         }
                                         .profile-card-inner {
                                             text-align: center;
@@ -3515,25 +3537,26 @@ const App: React.FC = () => {
                                             transition: all 0.4s ease;
                                         }
                                         .content-card-3d:hover {
-                                            transform: translateY(-8px) scale(1.02);
+                                            transform: translateY(-10px) scale(1.03);
+                                            background: linear-gradient(145deg, rgba(60,60,60,0.8), rgba(40,40,40,0.95));
                                             box-shadow: 
-                                                0 20px 60px rgba(128,128,128,0.5),
-                                                0 0 40px rgba(255,255,255,0.7),
-                                                0 0 80px rgba(255,255,255,0.5),
-                                                0 0 120px rgba(255,255,255,0.3),
-                                                inset 0 2px 8px rgba(200,200,200,0.15),
-                                                inset 0 -2px 12px rgba(255,255,255,0.1);
-                                            border-color: rgba(255,255,255,0.7);
+                                                0 25px 70px rgba(0,0,0,0.8),
+                                                0 0 60px rgba(255,255,255,0.8),
+                                                0 0 100px rgba(255,255,255,0.6),
+                                                0 0 150px rgba(255,255,255,0.4),
+                                                0 0 200px rgba(255,255,255,0.2),
+                                                inset 0 0 30px rgba(255,255,255,0.15);
+                                            border-color: rgba(255,255,255,0.9);
                                         }
                                         .content-card-3d:hover::before {
-                                            background: linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%);
+                                            background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 100%);
                                         }
                                         .content-card-3d:hover::after {
-                                            width: 200px;
-                                            height: 200px;
-                                            top: -60px;
-                                            right: -60px;
-                                            background: radial-gradient(circle, rgba(255,255,255,0.4) 0%, transparent 70%);
+                                            width: 250px;
+                                            height: 250px;
+                                            top: -70px;
+                                            right: -70px;
+                                            background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
                                         }
                                             top: 0;
                                             left: 0;
@@ -3948,10 +3971,8 @@ const App: React.FC = () => {
                                             border: 2px solid rgba(255, 255, 255, 0.3);
                                             box-shadow: 
                                                 0 8px 32px rgba(0, 0, 0, 0.6),
-                                                0 0 60px rgba(255, 255, 255, 0.15),
-                                                0 0 100px rgba(255, 255, 255, 0.08),
-                                                inset 0 1px 0 rgba(255, 255, 255, 0.1),
-                                                inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+                                                0 0 40px rgba(255, 255, 255, 0.12),
+                                                0 0 80px rgba(255, 255, 255, 0.06);
                                             transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
                                             overflow: hidden;
                                             cursor: pointer;
@@ -3967,9 +3988,9 @@ const App: React.FC = () => {
                                             height: 300%;
                                             background: radial-gradient(
                                                 circle at center,
-                                                rgba(255, 255, 255, 0.4) 0%,
-                                                rgba(255, 255, 255, 0.2) 20%,
-                                                rgba(255, 255, 255, 0.1) 40%,
+                                                rgba(255, 255, 255, 0.5) 0%,
+                                                rgba(255, 255, 255, 0.3) 20%,
+                                                rgba(255, 255, 255, 0.15) 40%,
                                                 transparent 60%
                                             );
                                             opacity: 0;
@@ -3989,7 +4010,7 @@ const App: React.FC = () => {
                                             height: 40%;
                                             background: linear-gradient(
                                                 180deg,
-                                                rgba(255, 255, 255, 0.12) 0%,
+                                                rgba(255, 255, 255, 0.08) 0%,
                                                 transparent 100%
                                             );
                                             pointer-events: none;
@@ -3999,16 +4020,19 @@ const App: React.FC = () => {
                                         }
 
                                         .lounge-card:hover {
-                                            transform: translateY(-8px) scale(1.02);
-                                            border-color: rgba(255, 255, 255, 0.7);
+                                            transform: translateY(-12px) scale(1.03);
+                                            background: linear-gradient(145deg, 
+                                                rgba(55, 55, 55, 0.9), 
+                                                rgba(35, 35, 35, 0.98));
+                                            border-color: rgba(255, 255, 255, 0.9);
                                             box-shadow: 
-                                                0 20px 60px rgba(0, 0, 0, 0.8),
-                                                0 0 100px rgba(255, 255, 255, 0.5),
-                                                0 0 150px rgba(255, 255, 255, 0.35),
+                                                0 25px 70px rgba(0, 0, 0, 0.9),
+                                                0 0 80px rgba(255, 255, 255, 0.7),
+                                                0 0 120px rgba(255, 255, 255, 0.5),
+                                                0 0 160px rgba(255, 255, 255, 0.35),
                                                 0 0 200px rgba(255, 255, 255, 0.2),
                                                 0 0 250px rgba(255, 255, 255, 0.1),
-                                                inset 0 2px 0 rgba(255, 255, 255, 0.2),
-                                                inset 0 -2px 0 rgba(0, 0, 0, 0.7);
+                                                inset 0 0 40px rgba(255, 255, 255, 0.15);
                                         }
 
                                         .lounge-card:hover::before {
@@ -4019,8 +4043,8 @@ const App: React.FC = () => {
                                         .lounge-card:hover::after {
                                             background: linear-gradient(
                                                 180deg,
-                                                rgba(255, 255, 255, 0.2) 0%,
-                                                transparent 100%
+                                                rgba(255, 255, 255, 0.25) 0%,
+                                                rgba(255, 255, 255, 0.05) 100%
                                             );
                                         }
 
