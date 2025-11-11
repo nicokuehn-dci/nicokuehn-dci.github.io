@@ -1957,97 +1957,6 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
                         
                         {/* Glow Effect */}
                         <div className="absolute inset-0 bg-gradient-to-tr from-white/40 via-transparent to-white/40 pointer-events-none"></div>
-                        <div className="absolute inset-0 shadow-[0_0_60px_rgba(255,255,255,0.5),inset_0_0_60px_rgba(255,255,255,0.2)] dark:shadow-[0_0_50px_rgba(150,150,150,0.3),inset_0_0_50px_rgba(255,255,255,0.1)] rounded-3xl pointer-events-none"></div>
-                        
-                        <div className="relative z-10">
-                            <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-gray-200 mb-8 glitch-text" data-text="Coding_journey">
-                                Coding_journey
-                            </h2>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
-                                {/* Experience Card */}
-                                <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/30 dark:to-indigo-900/30 border border-blue-200/50 dark:border-blue-700/50 shadow-lg">
-                                    <div className="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-3 tracking-wider uppercase">
-                                        Professional Experience
-                                    </div>
-                                    <div className="text-8xl font-black mb-3 text-white dark:text-white" 
-                                         style={{ 
-                                             textShadow: '0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.8), 0 0 60px rgba(59,130,246,0.6), 0 0 80px rgba(99,102,241,0.4)',
-                                             filter: 'drop-shadow(0 0 15px rgba(255,255,255,1)) drop-shadow(0 0 30px rgba(59,130,246,0.8))',
-                                             WebkitTextStroke: '2px rgba(59,130,246,0.3)'
-                                         }}>
-                                        0.5
-                                    </div>
-                                    <div className="text-base text-gray-700 dark:text-gray-300 font-semibold mb-2">
-                                        Years in Web Development
-                                    </div>
-                                    <div className="text-xs text-gray-500 dark:text-gray-500 italic mb-3">
-                                        Intensive hands-on coding & real-world projects
-                                    </div>
-                                    <div className="flex justify-center gap-4 text-xs">
-                                        <div className="text-blue-600 dark:text-blue-400 font-bold">25+ Projects</div>
-                                        <div className="text-blue-600 dark:text-blue-400 font-bold">500+ Commits</div>
-                                    </div>
-                                </div>
-
-                                {/* Mastery Score Card */}
-                                <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/30 border border-purple-200/50 dark:border-purple-700/50 shadow-lg">
-                                    <div className="text-sm font-semibold text-purple-600 dark:text-purple-400 mb-3 tracking-wider uppercase">
-                                        Skill Mastery Level
-                                    </div>
-                                    <div className="text-8xl font-black mb-3 text-white dark:text-white"
-                                         style={{ 
-                                             textShadow: '0 0 20px rgba(255,255,255,1), 0 0 40px rgba(255,255,255,0.8), 0 0 60px rgba(168,85,247,0.6), 0 0 80px rgba(236,72,153,0.4)',
-                                             filter: 'drop-shadow(0 0 15px rgba(255,255,255,1)) drop-shadow(0 0 30px rgba(168,85,247,0.8))',
-                                             WebkitTextStroke: '2px rgba(168,85,247,0.3)'
-                                         }}>
-                                        37
-                                    </div>
-                                    <div className="text-base text-gray-700 dark:text-gray-300 font-semibold mb-2">
-                                        Overall Proficiency Score
-                                    </div>
-                                    <div className="text-xs text-gray-500 dark:text-gray-500 italic mb-3">
-                                        Averaged across all technical skills & frameworks
-                                    </div>
-                                    <div className="flex justify-center gap-4 text-xs">
-                                        <div className="text-purple-600 dark:text-purple-400 font-bold">15 Technologies</div>
-                                        <div className="text-purple-600 dark:text-purple-400 font-bold">8 Frameworks</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Additional Stats Row */}
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                                <div className="p-4 rounded-xl bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200/50 dark:border-green-700/50">
-                                    <div className="text-3xl font-black text-white" style={{ 
-                                        textShadow: '0 0 15px rgba(255,255,255,0.9), 0 0 30px rgba(34,197,94,0.6)',
-                                        filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.8))'
-                                    }}>1200+</div>
-                                    <div className="text-xs text-green-700 dark:text-green-400 font-semibold mt-1">Lines of Code</div>
-                                </div>
-                                <div className="p-4 rounded-xl bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-900/20 dark:to-amber-900/20 border border-orange-200/50 dark:border-orange-700/50">
-                                    <div className="text-3xl font-black text-white" style={{ 
-                                        textShadow: '0 0 15px rgba(255,255,255,0.9), 0 0 30px rgba(249,115,22,0.6)',
-                                        filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.8))'
-                                    }}>12</div>
-                                    <div className="text-xs text-orange-700 dark:text-orange-400 font-semibold mt-1">Active Repos</div>
-                                </div>
-                                <div className="p-4 rounded-xl bg-gradient-to-br from-cyan-50 to-sky-50 dark:from-cyan-900/20 dark:to-sky-900/20 border border-cyan-200/50 dark:border-cyan-700/50">
-                                    <div className="text-3xl font-black text-white" style={{ 
-                                        textShadow: '0 0 15px rgba(255,255,255,0.9), 0 0 30px rgba(6,182,212,0.6)',
-                                        filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.8))'
-                                    }}>6</div>
-                                    <div className="text-xs text-cyan-700 dark:text-cyan-400 font-semibold mt-1">Deployed Apps</div>
-                                </div>
-                                <div className="p-4 rounded-xl bg-gradient-to-br from-rose-50 to-pink-50 dark:from-rose-900/20 dark:to-pink-900/20 border border-rose-200/50 dark:border-rose-700/50">
-                                    <div className="text-3xl font-black text-white" style={{ 
-                                        textShadow: '0 0 15px rgba(255,255,255,0.9), 0 0 30px rgba(244,63,94,0.6)',
-                                        filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.8))'
-                                    }}>180+</div>
-                                    <div className="text-xs text-rose-700 dark:text-rose-400 font-semibold mt-1">Hours Coded</div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -3777,6 +3686,21 @@ const App: React.FC = () => {
                                             background: linear-gradient(135deg, #b0b0b0, #808080);
                                             box-shadow: 0 0 10px rgba(144,144,144,0.7);
                                             margin-top: 0.5rem;
+                                        }
+
+                                        /* Global White Glowing Titles */
+                                        .content-title-3d {
+                                            font-size: 1.5rem;
+                                            font-weight: 700;
+                                            background: linear-gradient(135deg, #ffffff, #e0e0e0, #c0c0c0);
+                                            -webkit-background-clip: text;
+                                            background-clip: text;
+                                            color: transparent;
+                                            filter: drop-shadow(0 0 10px rgba(255,255,255,0.9)) drop-shadow(0 0 20px rgba(255,255,255,0.6));
+                                            text-shadow: 
+                                                0 0 15px rgba(255,255,255,0.8),
+                                                0 0 25px rgba(255,255,255,0.5),
+                                                0 0 35px rgba(200,200,200,0.3);
                                         }
 
                                         /* Availability Highlight */
