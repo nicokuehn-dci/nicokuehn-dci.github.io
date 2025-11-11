@@ -1597,16 +1597,17 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                                 color: '#ffffff',
                                 textShadow: '0 0 20px rgba(138,43,226,0.9), 0 0 40px rgba(138,43,226,0.7), 0 0 60px rgba(138,43,226,0.5), 0 0 80px rgba(138,43,226,0.3)',
                                 letterSpacing: '0.05em',
-                                fontFamily: 'monospace',
+                                fontFamily: '"Fira Code", monospace',
                                 marginBottom: '0.25rem',
                                 transform: 'perspective(1000px) rotateX(5deg)',
-                                transformStyle: 'preserve-3d'
+                                transformStyle: 'preserve-3d',
+                                WebkitTextStroke: '1px rgba(255,255,255,0.3)'
                             }}>
                                 {currentTime.toLocaleTimeString('en-US', { 
                                     hour: '2-digit', 
                                     minute: '2-digit',
-                                    hour12: false 
-                                })}
+                                    hour12: true 
+                                }).replace(' ', '')}
                             </div>
                             <div style={{
                                 fontSize: '0.7rem',
@@ -4334,6 +4335,86 @@ const App: React.FC = () => {
                                     `}</style>
             <div className="bg-gray-100 dark:bg-gray-900 min-h-screen p-4 sm:p-8 md:p-12 transition-colors duration-500 font-sans">
                 <ThemeToggle />
+                
+                {/* UV Clock - Fixed in Upper Right Corner */}
+                <div 
+                    className="uv-clock-container"
+                    style={{
+                        position: 'fixed',
+                        top: '1rem',
+                        right: '1rem',
+                        zIndex: 50,
+                        background: 'linear-gradient(135deg, rgba(138,43,226,0.15), rgba(75,0,130,0.15))',
+                        borderRadius: '16px',
+                        border: '2px solid rgba(138,43,226,0.4)',
+                        backdropFilter: 'blur(15px)',
+                        boxShadow: '0 8px 32px rgba(138,43,226,0.3), inset 0 2px 4px rgba(138,43,226,0.2), 0 0 40px rgba(138,43,226,0.2)',
+                        padding: '0.75rem 1.25rem',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        cursor: 'pointer',
+                        transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                        animation: 'uv-glow 4s ease-in-out infinite',
+                        overflow: 'hidden',
+                        minWidth: '140px'
+                    }}
+                    onClick={(e) => {
+                        e.currentTarget.style.animation = 'uv-pulse 0.6s ease';
+                        setTimeout(() => {
+                            e.currentTarget.style.animation = 'uv-glow 4s ease-in-out infinite';
+                        }, 600);
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.transform = 'scale(1.08)';
+                        e.currentTarget.style.boxShadow = '0 15px 50px rgba(138,43,226,0.6), 0 0 80px rgba(138,43,226,0.5), inset 0 3px 6px rgba(138,43,226,0.3)';
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = '0 8px 32px rgba(138,43,226,0.3), inset 0 2px 4px rgba(138,43,226,0.2), 0 0 40px rgba(138,43,226,0.2)';
+                    }}
+                >
+                    {/* UV Background Orb */}
+                    <div style={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: '150%',
+                        height: '150%',
+                        background: 'radial-gradient(circle, rgba(138,43,226,0.3), rgba(75,0,130,0.1) 60%, transparent)',
+                        animation: 'uv-orb-pulse 3s ease-in-out infinite',
+                        pointerEvents: 'none',
+                        filter: 'blur(30px)'
+                    }} />
+
+                    {/* Time Display */}
+                    <div style={{
+                        position: 'relative',
+                        zIndex: 2,
+                        textAlign: 'center'
+                    }}>
+                        <div style={{
+                            fontSize: '1.75rem',
+                            fontWeight: 900,
+                            color: '#ffffff',
+                            textShadow: '0 0 20px rgba(138,43,226,0.9), 0 0 40px rgba(138,43,226,0.7), 0 0 60px rgba(138,43,226,0.5)',
+                            letterSpacing: '0.05em',
+                            fontFamily: '"Fira Code", monospace',
+                            transform: 'perspective(1000px) rotateX(5deg)',
+                            transformStyle: 'preserve-3d',
+                            WebkitTextStroke: '1.5px rgba(255,255,255,0.4)',
+                            lineHeight: 1
+                        }}>
+                            {currentTime.toLocaleTimeString('en-US', { 
+                                hour: '2-digit', 
+                                minute: '2-digit',
+                                hour12: true 
+                            })}
+                        </div>
+                    </div>
+                </div>
                 
                 <button 
                     onClick={goToPrevPage} 
