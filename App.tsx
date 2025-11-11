@@ -3280,8 +3280,11 @@ const App: React.FC = () => {
                                                 0 0 100px rgba(255,255,255,0.6),
                                                 0 0 150px rgba(255,255,255,0.4),
                                                 0 0 200px rgba(255,255,255,0.2),
-                                                inset 0 0 30px rgba(255,255,255,0.1);
-                                            border-color: rgba(255,255,255,0.9);
+                                                inset 0 0 30px rgba(255,255,255,0.1),
+                                                inset 0 0 60px rgba(255,255,255,0.05);
+                                            border: 3px solid rgba(255,255,255,1);
+                                            outline: 2px solid rgba(255,255,255,0.6);
+                                            outline-offset: 4px;
                                         }
                                         
                                         .profile-card-3d:hover::before {
@@ -3549,8 +3552,11 @@ const App: React.FC = () => {
                                                 0 0 100px rgba(255,255,255,0.6),
                                                 0 0 150px rgba(255,255,255,0.4),
                                                 0 0 200px rgba(255,255,255,0.2),
-                                                inset 0 0 30px rgba(255,255,255,0.15);
-                                            border-color: rgba(255,255,255,0.9);
+                                                inset 0 0 30px rgba(255,255,255,0.15),
+                                                inset 0 0 60px rgba(255,255,255,0.08);
+                                            border: 3px solid rgba(255,255,255,1);
+                                            outline: 2px solid rgba(255,255,255,0.6);
+                                            outline-offset: 4px;
                                         }
                                         .content-card-3d:hover::before {
                                             background: linear-gradient(180deg, rgba(255,255,255,0.25) 0%, transparent 100%);
@@ -4037,7 +4043,6 @@ const App: React.FC = () => {
                                             background: linear-gradient(145deg, 
                                                 rgba(55, 55, 55, 0.9), 
                                                 rgba(35, 35, 35, 0.98));
-                                            border-color: rgba(255, 255, 255, 0.9);
                                             box-shadow: 
                                                 0 25px 70px rgba(0, 0, 0, 0.9),
                                                 0 0 80px rgba(255, 255, 255, 0.7),
@@ -4045,7 +4050,11 @@ const App: React.FC = () => {
                                                 0 0 160px rgba(255, 255, 255, 0.35),
                                                 0 0 200px rgba(255, 255, 255, 0.2),
                                                 0 0 250px rgba(255, 255, 255, 0.1),
-                                                inset 0 0 40px rgba(255, 255, 255, 0.15);
+                                                inset 0 0 40px rgba(255, 255, 255, 0.15),
+                                                inset 0 0 80px rgba(255, 255, 255, 0.08);
+                                            border: 3px solid rgba(255, 255, 255, 1);
+                                            outline: 2px solid rgba(255, 255, 255, 0.6);
+                                            outline-offset: 4px;
                                         }
 
                                         .lounge-card:hover::before {
