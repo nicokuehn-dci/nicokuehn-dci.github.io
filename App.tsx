@@ -3352,7 +3352,8 @@ const App: React.FC = () => {
 
                                         .profile-name-3d {
                                             font-size: 1.875rem;
-                                            font-weight: 800;
+                                            font-weight: 700;
+                                            font-family: 'Caveat', cursive;
                                             color: #ffffff !important;
                                             margin-bottom: 0.5rem;
                                             text-shadow: 
@@ -3362,6 +3363,7 @@ const App: React.FC = () => {
                                             filter: 
                                                 drop-shadow(0 0 8px rgba(255,255,255,0.7)) 
                                                 drop-shadow(0 0 15px rgba(255,255,255,0.4));
+                                            letter-spacing: 0.03em;
                                         }
                                         .profile-title-3d {
                                             font-size: 1rem;
@@ -3601,7 +3603,8 @@ const App: React.FC = () => {
                                             position: relative;
                                             z-index: 100;
                                             font-size: 1.5rem;
-                                            font-weight: 700;
+                                            font-weight: 600;
+                                            font-family: 'Caveat', cursive;
                                             color: #ffffff !important;
                                             text-shadow: 
                                                 0 0 5px rgba(255,255,255,0.9),
@@ -3610,10 +3613,12 @@ const App: React.FC = () => {
                                             filter: 
                                                 drop-shadow(0 0 8px rgba(255,255,255,0.8)) 
                                                 drop-shadow(0 0 15px rgba(255,255,255,0.5));
+                                            letter-spacing: 0.05em;
+                                            transform: rotate(-0.3deg);
                                             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                                         }
                                         .content-title-glow:hover {
-                                            transform: translateY(-2px) scale(1.02);
+                                            transform: translateY(-2px) scale(1.02) rotate(0deg);
                                             text-shadow: 
                                                 0 0 8px rgba(255,255,255,1),
                                                 0 0 15px rgba(255,255,255,0.8),
@@ -3709,7 +3714,8 @@ const App: React.FC = () => {
                                             position: relative;
                                             z-index: 100;
                                             font-size: 1.5rem;
-                                            font-weight: 800;
+                                            font-weight: 700;
+                                            font-family: 'Caveat', cursive;
                                             color: #ffffff !important;
                                             text-shadow: 
                                                 0 0 5px rgba(255,255,255,0.9),
@@ -3719,12 +3725,13 @@ const App: React.FC = () => {
                                             filter: 
                                                 drop-shadow(0 0 10px rgba(255,255,255,0.8))
                                                 drop-shadow(0 0 20px rgba(255,255,255,0.5));
-                                            letter-spacing: 0.02em;
+                                            letter-spacing: 0.05em;
+                                            transform: rotate(-0.5deg);
                                             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
                                         }
 
                                         .content-title-3d:hover {
-                                            transform: translateY(-2px) scale(1.02);
+                                            transform: translateY(-2px) scale(1.02) rotate(0deg);
                                             text-shadow: 
                                                 0 0 8px rgba(255,255,255,1),
                                                 0 0 15px rgba(255,255,255,0.9),
