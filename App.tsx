@@ -949,15 +949,52 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                         display: 'grid',
                         gridTemplateColumns: '1fr 280px 180px',
                         gap: '1.5rem',
-                        padding: '1.5rem'
+                        padding: '1.5rem',
+                        cursor: 'pointer'
                     }}
-                    onMouseEnter={() => {
+                    onMouseEnter={(e) => {
                         const banner = document.querySelector('.commercial-banner');
                         if (banner) banner.classList.add('banner-hovered');
+                        const glow = document.querySelector('.banner-glow-bg') as HTMLElement;
+                        if (glow) {
+                            glow.style.background = 'radial-gradient(ellipse at center, rgba(100,200,255,0.35), rgba(255,255,255,0.15) 40%, transparent 70%)';
+                            glow.style.filter = 'blur(50px)';
+                        }
+                        e.currentTarget.style.transform = 'scale(1.01)';
+                        e.currentTarget.style.boxShadow = '0 0 60px rgba(255,255,255,0.4), 0 0 100px rgba(255,255,255,0.2)';
                     }}
-                    onMouseLeave={() => {
+                    onMouseLeave={(e) => {
                         const banner = document.querySelector('.commercial-banner');
                         if (banner) banner.classList.remove('banner-hovered');
+                        const glow = document.querySelector('.banner-glow-bg') as HTMLElement;
+                        if (glow) {
+                            glow.style.background = 'radial-gradient(ellipse at center, rgba(100,200,255,0.2), rgba(255,255,255,0.1) 40%, transparent 70%)';
+                            glow.style.filter = 'blur(40px)';
+                        }
+                        e.currentTarget.style.transform = 'scale(1)';
+                        e.currentTarget.style.boxShadow = '';
+                    }}
+                    onClick={(e) => {
+                        // Create ripple effect
+                        const ripple = document.createElement('div');
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        ripple.style.position = 'absolute';
+                        ripple.style.left = x + 'px';
+                        ripple.style.top = y + 'px';
+                        ripple.style.width = '10px';
+                        ripple.style.height = '10px';
+                        ripple.style.borderRadius = '50%';
+                        ripple.style.background = 'rgba(255,255,255,0.6)';
+                        ripple.style.transform = 'scale(0)';
+                        ripple.style.animation = 'ripple-expand 0.8s ease-out';
+                        ripple.style.pointerEvents = 'none';
+                        ripple.style.zIndex = '999';
+                        
+                        e.currentTarget.appendChild(ripple);
+                        setTimeout(() => ripple.remove(), 800);
                     }}
                 >
                     {/* Pulsating Background Light */}
@@ -968,12 +1005,31 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                         transform: 'translate(-50%, -50%)',
                         width: '120%',
                         height: '140%',
-                        background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.15), rgba(255,255,255,0.08) 40%, transparent 70%)',
-                        animation: 'pulse-bg-glow 4s ease-in-out infinite',
+                        background: 'radial-gradient(ellipse at center, rgba(100,200,255,0.2), rgba(255,255,255,0.1) 40%, transparent 70%)',
+                        animation: 'pulse-bg-glow 3s ease-in-out infinite',
                         pointerEvents: 'none',
                         zIndex: 0,
-                        filter: 'blur(40px)'
+                        filter: 'blur(40px)',
+                        transition: 'all 0.5s ease'
                     }} />
+
+                    {/* Animated Particles */}
+                    {[...Array(8)].map((_, i) => (
+                        <div key={i} style={{
+                            position: 'absolute',
+                            width: '4px',
+                            height: '4px',
+                            borderRadius: '50%',
+                            background: 'rgba(255,255,255,0.6)',
+                            boxShadow: '0 0 10px rgba(255,255,255,0.8)',
+                            left: `${Math.random() * 100}%`,
+                            top: `${Math.random() * 100}%`,
+                            animation: `float-particle-${(i % 3) + 1} ${3 + Math.random() * 2}s ease-in-out infinite`,
+                            animationDelay: `${Math.random() * 2}s`,
+                            pointerEvents: 'none',
+                            zIndex: 1
+                        }} />
+                    ))}
 
                     {/* Animated Corner Glows */}
                     <div style={{
@@ -1028,19 +1084,25 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                             }}
                             onClick={(e) => {
                                 e.currentTarget.style.animation = 'bounce-playful 0.6s ease';
+                                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(100,200,255,0.3), rgba(50,150,255,0.2))';
+                                e.currentTarget.style.border = '2px solid rgba(100,200,255,0.6)';
                                 setTimeout(() => {
                                     e.currentTarget.style.animation = 'float-subtle-1 6s ease-in-out infinite';
+                                    e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08))';
+                                    e.currentTarget.style.border = '2px solid rgba(255,255,255,0.3)';
                                 }, 600);
                             }}
                             onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(8deg) rotateX(-3deg) translateZ(25px) scale(1.05)';
-                                e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), 0 0 40px rgba(255,255,255,0.5), inset 0 1px 0 rgba(255,255,255,0.6)';
+                                e.currentTarget.style.transform = 'perspective(1000px) rotateY(8deg) rotateX(-3deg) translateZ(25px) scale(1.1)';
+                                e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), 0 0 50px rgba(100,200,255,0.6), inset 0 1px 0 rgba(255,255,255,0.6)';
                                 e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.15))';
+                                e.currentTarget.style.border = '2px solid rgba(100,200,255,0.5)';
                             }}
                             onMouseLeave={(e) => {
                                 e.currentTarget.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) translateZ(0px) scale(1)';
                                 e.currentTarget.style.boxShadow = '0 8px 16px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.3)';
                                 e.currentTarget.style.background = 'linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08))';
+                                e.currentTarget.style.border = '2px solid rgba(255,255,255,0.3)';
                             }}
                         >
                             <div style={{
@@ -2437,6 +2499,44 @@ const App: React.FC = () => {
                                                 opacity: 1;
                                                 transform: translate(-50%, -50%) scale(1.1);
                                             }
+                                        }
+
+                                        /* Ripple effect animation */
+                                        @keyframes ripple-expand {
+                                            0% {
+                                                transform: scale(0);
+                                                opacity: 1;
+                                            }
+                                            100% {
+                                                transform: scale(50);
+                                                opacity: 0;
+                                            }
+                                        }
+
+                                        /* Banner hover effect */
+                                        .banner-hovered {
+                                            border-color: rgba(100,200,255,0.6) !important;
+                                            box-shadow: 0 0 80px rgba(100,200,255,0.4), 0 0 120px rgba(100,200,255,0.2) !important;
+                                        }
+
+                                        /* Floating particle animations */
+                                        @keyframes float-particle-1 {
+                                            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+                                            25% { transform: translate(10px, -15px) scale(1.2); opacity: 0.8; }
+                                            50% { transform: translate(-5px, -25px) scale(0.9); opacity: 0.5; }
+                                            75% { transform: translate(-15px, -10px) scale(1.1); opacity: 0.7; }
+                                        }
+                                        
+                                        @keyframes float-particle-2 {
+                                            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+                                            33% { transform: translate(-12px, -20px) scale(1.1); opacity: 0.9; }
+                                            66% { transform: translate(8px, -30px) scale(0.8); opacity: 0.6; }
+                                        }
+                                        
+                                        @keyframes float-particle-3 {
+                                            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+                                            40% { transform: translate(15px, -10px) scale(1.3); opacity: 0.7; }
+                                            80% { transform: translate(-10px, -20px) scale(0.9); opacity: 0.5; }
                                         }
 
                                         /* Corner glows */
