@@ -334,7 +334,7 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                             {data.education.map((edu, index) => (
                                 <div key={index} className="mb-6">
                                     <div className="flex justify-between items-baseline">
-                                        <h3 className="text-xl font-semibold text-gray-200">{edu.degree}</h3>
+                                        <h3 className="content-title-3d text-xl">{edu.degree}</h3>
                                         <p className="text-sm font-light text-gray-400">{edu.location}</p>
                                     </div>
                                     <p className="font-medium text-gray-300">{edu.institution}</p>
@@ -355,7 +355,7 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                                 <div key={index} className="mb-6 p-4 bg-neutral-800/40 rounded-lg border border-gray-600/30 shadow-sm">
                                     <div className="flex justify-between items-start mb-1">
                                         <div>
-                                            <h3 className="text-xl font-bold text-gray-100">{job.role}</h3>
+                                            <h3 className="content-title-3d text-xl">{job.role}</h3>
                                             <p className="font-semibold text-gray-300">{job.company}</p>
                                         </div>
                                         <div className="text-right flex-shrink-0 pl-4">
@@ -498,18 +498,18 @@ const MyCreativeWorkPage: React.FC = () => (
                 {/* Additional Info */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
                     <div className="p-6 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border border-purple-200/50 dark:border-purple-700/50">
-                        <h3 className="text-xl font-bold text-purple-900 dark:text-purple-300 mb-3">🎧 Genres</h3>
+                        <h3 className="content-title-3d text-xl mb-3">🎧 Genres</h3>
                         <p className="text-gray-700 dark:text-gray-300">House, Techno, Deep House, Tech House</p>
                     </div>
                     <div className="p-6 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border border-blue-200/50 dark:border-blue-700/50">
-                        <h3 className="text-xl font-bold text-blue-900 dark:text-blue-300 mb-3">📅 Active Since</h3>
+                        <h3 className="content-title-3d text-xl mb-3">📅 Active Since</h3>
                         <p className="text-gray-700 dark:text-gray-300">2010 – Present (15+ years)</p>
                     </div>
                 </div>
 
                 {/* Projects */}
                 <div className="mt-8 p-6 rounded-xl bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 border border-gray-300 dark:border-gray-600">
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Featured Projects</h3>
+                    <h3 className="content-title-3d text-2xl mb-4">Featured Projects</h3>
                     <ul className="space-y-3">
                         <li className="flex items-start gap-3">
                             <span className="text-2xl">🎹</span>
@@ -1631,15 +1631,7 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
 
                 {/* Interactive discs row in content card */}
                 <div className="lounge-card">
-                    <h2 className="mb-6" style={{
-                        fontSize: '1.875rem',
-                        fontWeight: 800,
-                        color: '#ffffff',
-                        textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 0 45px rgba(255,255,255,0.4), 0 0 60px rgba(255,255,255,0.2)',
-                        letterSpacing: '0.05em',
-                        position: 'relative',
-                        zIndex: 10
-                    }}>Technical Skills</h2>
+                    <h2 className="content-title-3d text-3xl mb-6">Technical Skills</h2>
                     <div className="skill-disc-row" role="list">
                         {sortedTech.slice(0,6).map((skill, i) => (
                             <SkillDisc key={'t-'+i} skill={skill} onSelect={(n) => setSelected(n)} selected={selected === skill.name} />
@@ -1696,16 +1688,7 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                         <div className="relative z-10">
                             <div className="flex items-start justify-between mb-6">
                                 <div className="flex-1">
-                                    <h3 style={{
-                                        fontSize: '2.25rem',
-                                        fontWeight: 900,
-                                        color: '#ffffff',
-                                        textShadow: '0 0 15px rgba(255,255,255,0.8), 0 0 30px rgba(255,255,255,0.6), 0 0 45px rgba(255,255,255,0.4), 0 0 60px rgba(255,255,255,0.2)',
-                                        marginBottom: '0.75rem',
-                                        letterSpacing: '-0.025em',
-                                        position: 'relative',
-                                        zIndex: 10
-                                    }}>
+                                    <h3 className="content-title-3d text-4xl mb-3">
                                         {skill.name}
                                     </h3>
                                     <p className="text-gray-300 italic text-base leading-relaxed">
@@ -2075,7 +2058,7 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
                                                 <div className="relative z-10 p-8 h-full flex flex-col">
                                                     {/* Header with Language */}
                                                     <div className="flex items-start justify-between mb-4">
-                                                        <h3 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 flex-1 pr-4 leading-tight">
+                                                        <h3 className="content-title-3d text-3xl flex-1 pr-4 leading-tight">
                                                             {repo.name}
                                                         </h3>
                                                         {repo.language && (
