@@ -329,7 +329,7 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                     {/* Left Column - Education & Experience */}
                     <div className="md:col-span-2 space-y-8">
                         {/* Education Card */}
-                        <div className="content-card-3d">
+                        <div className="lounge-card">
                             <h2 className="content-title-3d mb-6">Education</h2>
                             {data.education.map((edu, index) => (
                                 <div key={index} className="mb-6">
@@ -349,7 +349,7 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                         </div>
 
                         {/* Work Experience Card */}
-                        <div className="content-card-3d">
+                        <div className="lounge-card">
                             <h2 className="content-title-3d mb-6">Work Experience</h2>
                             {data.workExperience.map((job, index) => (
                                 <div key={index} className="mb-6 p-4 bg-neutral-800/40 rounded-lg border border-gray-600/30 shadow-sm">
@@ -377,7 +377,7 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                     <div className="md:col-span-1 space-y-6">
                         <div className="sticky top-8 space-y-6">
                             {/* Contact Card */}
-                            <div className="content-card-3d">
+                            <div className="lounge-card">
                                 <h3 className="content-title-3d mb-4 text-xl">Contact</h3>
                                 <button onClick={onOpenContactForm} className="flex items-center mb-3 text-gray-300 hover:text-white transition-colors w-full text-left">
                                     <MailIcon className="w-5 h-5 mr-3 text-gray-500" />
@@ -402,13 +402,13 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                             </div>
 
                             {/* Skills Card */}
-                            <div className="content-card-3d">
+                            <div className="lounge-card">
                                 <h3 className="content-title-3d mb-4 text-xl">Skills</h3>
                                 <div className="flex flex-wrap">{data.skills.map((skill, index) => <SkillTag key={index} skill={skill} />)}</div>
                             </div>
 
                             {/* Personal Projects Card */}
-                            <div className="content-card-3d">
+                            <div className="lounge-card">
                                 <h3 className="content-title-3d mb-4 text-xl">Personal Projects</h3>
                                 {data.personalProjects.map((project, index) => (
                                     <div key={index} className="mb-4">
@@ -421,7 +421,7 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                             </div>
 
                             {/* Languages Card */}
-                            <div className="content-card-3d">
+                            <div className="lounge-card">
                                 <h3 className="content-title-3d mb-4 text-xl">Languages</h3>
                                 {data.languages.map((lang, index) => (
                                     <div key={index} className="mb-2">
@@ -432,7 +432,7 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                             </div>
 
                             {/* Interests Card */}
-                            <div className="content-card-3d">
+                            <div className="lounge-card">
                                 <h3 className="content-title-3d mb-4 text-xl">Interests</h3>
                                 <div className="flex flex-wrap">{data.interests.map((interest, index) => <InterestTag key={index} interest={interest} />)}</div>
                             </div>
@@ -611,7 +611,7 @@ const AboutContactPage: React.FC<{ data: ResumeData, onOpenContactForm: () => vo
                 {/* Content Cards - 3D Panels */}
                 <div className="lg:col-span-2 space-y-6">
                     {/* About Section */}
-                    <div className="content-card-3d">
+                    <div className="lounge-card">
                         <div className="content-card-header">
                             <h3 className="content-title-glow">About me</h3>
                             <div className="title-underline-glow"></div>
@@ -620,7 +620,7 @@ const AboutContactPage: React.FC<{ data: ResumeData, onOpenContactForm: () => vo
                     </div>
 
                     {/* Career Goals */}
-                    <div className="content-card-3d">
+                    <div className="lounge-card">
                         <div className="content-card-header">
                             <h4 className="content-title-glow">Career goals</h4>
                             <div className="title-underline-glow"></div>
@@ -642,7 +642,7 @@ const AboutContactPage: React.FC<{ data: ResumeData, onOpenContactForm: () => vo
                     </div>
 
                     {/* Availability */}
-                    <div className="content-card-3d availability-card-highlight">
+                    <div className="lounge-card availability-card-highlight">
                         <div className="content-card-header">
                             <h4 className="content-title-glow">Availability</h4>
                             <div className="title-underline-glow"></div>
@@ -1630,7 +1630,7 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                 </div>
 
                 {/* Interactive discs row in content card */}
-                <div className="content-card-3d">
+                <div className="lounge-card">
                     <h2 className="mb-6" style={{
                         fontSize: '1.875rem',
                         fontWeight: 800,
@@ -4002,6 +4002,85 @@ const App: React.FC = () => {
                                                 inset 0 2px 4px rgba(0, 0, 0, 0.3),
                                                 inset 0 -1px 0 rgba(255, 255, 255, 0.3);
                                             transform: translateY(2px) scale(1.05);
+                                        }
+
+                                        /* Unified Lounge Card Design - White Glow Backlighting */
+                                        .lounge-card {
+                                            background: linear-gradient(145deg, 
+                                                rgba(45, 45, 45, 0.85), 
+                                                rgba(25, 25, 25, 0.95));
+                                            border-radius: 24px;
+                                            padding: 2rem;
+                                            position: relative;
+                                            border: 2px solid rgba(255, 255, 255, 0.3);
+                                            box-shadow: 
+                                                0 8px 32px rgba(0, 0, 0, 0.6),
+                                                0 0 60px rgba(255, 255, 255, 0.15),
+                                                0 0 100px rgba(255, 255, 255, 0.08),
+                                                inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                                                inset 0 -1px 0 rgba(0, 0, 0, 0.5);
+                                            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                                            overflow: hidden;
+                                        }
+
+                                        /* White glow backlight effect */
+                                        .lounge-card::before {
+                                            content: '';
+                                            position: absolute;
+                                            top: -50%;
+                                            left: -50%;
+                                            width: 200%;
+                                            height: 200%;
+                                            background: radial-gradient(
+                                                circle at center,
+                                                rgba(255, 255, 255, 0.15) 0%,
+                                                rgba(255, 255, 255, 0.08) 25%,
+                                                transparent 50%
+                                            );
+                                            opacity: 0.6;
+                                            pointer-events: none;
+                                            z-index: 0;
+                                            transition: opacity 0.4s ease;
+                                        }
+
+                                        /* Subtle top highlight */
+                                        .lounge-card::after {
+                                            content: '';
+                                            position: absolute;
+                                            top: 0;
+                                            left: 0;
+                                            right: 0;
+                                            height: 40%;
+                                            background: linear-gradient(
+                                                180deg,
+                                                rgba(255, 255, 255, 0.12) 0%,
+                                                transparent 100%
+                                            );
+                                            pointer-events: none;
+                                            z-index: 0;
+                                            border-radius: 24px 24px 0 0;
+                                        }
+
+                                        .lounge-card:hover {
+                                            transform: translateY(-6px);
+                                            border-color: rgba(255, 255, 255, 0.5);
+                                            box-shadow: 
+                                                0 12px 48px rgba(0, 0, 0, 0.7),
+                                                0 0 80px rgba(255, 255, 255, 0.25),
+                                                0 0 120px rgba(255, 255, 255, 0.15),
+                                                0 0 160px rgba(255, 255, 255, 0.08),
+                                                inset 0 2px 0 rgba(255, 255, 255, 0.15),
+                                                inset 0 -2px 0 rgba(0, 0, 0, 0.6);
+                                        }
+
+                                        .lounge-card:hover::before {
+                                            opacity: 0.9;
+                                        }
+
+                                        /* Content inside cards needs higher z-index */
+                                        .lounge-card > * {
+                                            position: relative;
+                                            z-index: 1;
                                         }
                                     `}</style>
             <div className="bg-gray-100 dark:bg-gray-900 min-h-screen p-4 sm:p-8 md:p-12 transition-colors duration-500 font-sans">
