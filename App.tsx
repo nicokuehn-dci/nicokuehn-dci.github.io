@@ -305,40 +305,40 @@ const SidebarSection: React.FC<{ title: string; children: React.ReactNode }> = (
 
 const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpenContactForm: () => void }> = ({ data, onDownloadPdf, onOpenContactForm }) => (
     <>
-        <div className="about-contact-page p-8 md:p-12 min-h-[50vh]">
+        <div className="about-contact-page p-4 md:p-6 min-h-[50vh]">
             <div className="max-w-6xl mx-auto">
                 {/* Header with profile */}
-                <div className="about-header-glow mb-8">
-                    <div className="flex flex-col md:flex-row items-center gap-8">
+                <div className="about-header-glow mb-4">
+                    <div className="flex flex-col md:flex-row items-center gap-4">
                         <div className="flex-shrink-0">
                             <img src={data.profilePictureUrl} alt={data.name} className="profile-pic w-44 h-44 rounded-full rounded-3d object-cover border-4 border-gray-200 dark:border-gray-700 shadow-lg transform hover:scale-105 transition-transform duration-300" />
                         </div>
                         <div className="flex-grow text-center md:text-left">
-                            <h1 className="content-title-3d text-6xl md:text-7xl mb-4" style={{
+                            <h1 className="content-title-3d text-6xl md:text-7xl mb-2" style={{
                                 letterSpacing: '0.05em'
                             }}>- nico_kuehn -</h1>
-                            <h2 className="content-title-3d text-2xl mb-4">{data.title}</h2>
+                            <h2 className="content-title-3d text-2xl mb-2">{data.title}</h2>
                             <p className="text-gray-300 text-lg leading-relaxed">{data.summary}</p>
                         </div>
                     </div>
                 </div>
 
                 {/* Main Content Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {/* Left Column - Education & Experience */}
-                    <div className="md:col-span-2 space-y-8">
+                    <div className="md:col-span-2 space-y-4">
                         {/* Education Card */}
                         <div className="lounge-card">
-                            <h2 className="content-title-3d mb-6">Education</h2>
+                            <h2 className="content-title-3d mb-3">Education</h2>
                             {data.education.map((edu, index) => (
-                                <div key={index} className="spotlight-zone border-glow-zone mb-6 p-4 rounded-lg">
+                                <div key={index} className="spotlight-zone border-glow-zone mb-4 p-4 rounded-lg">
                                     <div className="flex justify-between items-baseline">
                                         <h3 className="content-title-3d text-xl">{edu.degree}</h3>
                                         <p className="text-sm font-light text-gray-400">{edu.location}</p>
                                     </div>
                                     <p className="font-medium text-gray-300">{edu.institution}</p>
-                                    <p className="text-sm text-gray-400 mb-3">{edu.date}</p>
-                                    <p className="text-gray-300 mb-2 italic font-semibold">Courses</p>
+                                    <p className="text-sm text-gray-400 mb-2">{edu.date}</p>
+                                    <p className="text-gray-300 mb-1 italic font-semibold">Courses</p>
                                     <ul className="list-disc list-inside text-gray-400 space-y-1">
                                         <li className="text-highlight-zone">{edu.courses.join(', ')}</li>
                                         <li className="text-highlight-zone">{edu.description}</li>
@@ -349,9 +349,9 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
 
                         {/* Work Experience Card */}
                         <div className="lounge-card">
-                            <h2 className="content-title-3d mb-6">Work Experience</h2>
+                            <h2 className="content-title-3d mb-3">Work Experience</h2>
                             {data.workExperience.map((job, index) => (
-                                <div key={index} className="spotlight-zone border-glow-zone mb-6 p-4 bg-neutral-800/40 rounded-lg border border-gray-600/30 shadow-sm">
+                                <div key={index} className="spotlight-zone border-glow-zone mb-4 p-4 bg-neutral-800/40 rounded-lg border border-gray-600/30 shadow-sm">
                                     <div className="flex justify-between items-start mb-1">
                                         <div>
                                             <h3 className="content-title-3d text-xl">{job.role}</h3>
@@ -373,8 +373,8 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                     </div>
 
                     {/* Right Column - Sidebar */}
-                    <div className="md:col-span-1 space-y-6">
-                        <div className="sticky top-8 space-y-6">
+                    <div className="md:col-span-1 space-y-4">
+                        <div className="sticky top-8 space-y-4">
                             {/* Contact Card */}
                             <div className="lounge-card">
                                 <h3 className="content-title-3d mb-4 text-xl">Contact</h3>
@@ -452,11 +452,11 @@ const PlaceholderPage: React.FC<{ title: string; children: React.ReactNode }> = 
 
 // My Creative Work Page
 const MyCreativeWorkPage: React.FC = () => (
-    <div className="creative-work-page p-8 md:p-12 min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
+    <div className="creative-work-page p-4 md:p-6 min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
         <div className="max-w-6xl mx-auto">
             {/* Header */}
-            <div className="text-center mb-12">
-                <h1 className="content-title-3d text-6xl md:text-7xl mb-4" style={{
+            <div className="text-center mb-6">
+                <h1 className="content-title-3d text-6xl md:text-7xl mb-2" style={{
                     letterSpacing: '0.05em'
                 }}>
                     - my_creative_work -
@@ -494,7 +494,7 @@ const MyCreativeWorkPage: React.FC = () => (
                 </div>
 
                 {/* Additional Info */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                     <div className="p-6 rounded-xl bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 border border-purple-200/50 dark:border-purple-700/50">
                         <h3 className="content-title-3d text-xl mb-3">🎧 Genres</h3>
                         <p className="text-gray-700 dark:text-gray-300">House, Techno, Deep House, Tech House</p>
@@ -506,7 +506,7 @@ const MyCreativeWorkPage: React.FC = () => (
                 </div>
 
                 {/* Projects */}
-                <div className="mt-8 p-6 rounded-xl bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 border border-gray-300 dark:border-gray-600">
+                <div className="mt-4 p-6 rounded-xl bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 border border-gray-300 dark:border-gray-600">
                     <h3 className="content-title-3d text-2xl mb-4">Featured Projects</h3>
                     <ul className="space-y-3">
                         <li className="interactive-zone spotlight-zone border-glow-zone flex items-start gap-3 p-4 rounded-lg">
@@ -531,17 +531,17 @@ const MyCreativeWorkPage: React.FC = () => (
 );
 
 const AboutContactPage: React.FC<{ data: ResumeData, onOpenContactForm: () => void }> = ({ data, onOpenContactForm }) => (
-    <div className="about-contact-page p-8 md:p-12 min-h-[70vh] transition-colors duration-500">
+    <div className="about-contact-page p-4 md:p-6 min-h-[70vh] transition-colors duration-500">
         <div className="max-w-6xl mx-auto">
             {/* Glowing header */}
-            <div className="about-header-glow mb-12 text-center">
+            <div className="about-header-glow mb-6 text-center">
                 <h1 className="content-title-3d text-6xl md:text-7xl mb-4" style={{
                     letterSpacing: '0.05em'
                 }}>- about_me -</h1>
                 <div className="content-title-3d text-2xl">Get to know me better</div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-start">
                 {/* Profile Card - 3D Floating */}
                 <div className="profile-card-3d">
                     <div className="profile-card-inner">
@@ -606,7 +606,7 @@ const AboutContactPage: React.FC<{ data: ResumeData, onOpenContactForm: () => vo
                 </div>
 
                 {/* Content Cards - 3D Panels */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="lg:col-span-2 space-y-4">
                     {/* About Section */}
                     <div className="lounge-card">
                         <div className="content-card-header">
@@ -930,11 +930,11 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
     }, [data.technical, sortMode]);
 
     return (
-        <div className="about-contact-page p-8 md:p-12 min-h-[70vh] transition-colors duration-500">
+        <div className="about-contact-page p-4 md:p-6 min-h-[70vh] transition-colors duration-500">
             <div className="max-w-6xl mx-auto">
                 {/* Glowing header - About Me style */}
-                <div className="about-header-glow mb-12 text-center">
-                    <h1 className="content-title-3d text-6xl md:text-7xl mb-4" style={{
+                <div className="about-header-glow mb-6 text-center">
+                    <h1 className="content-title-3d text-6xl md:text-7xl mb-2" style={{
                         letterSpacing: '0.05em'
                     }}>- skills_deep_dive -</h1>
                     <div className="content-title-3d text-2xl">Explore my technical expertise</div>
@@ -942,14 +942,14 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
 
                 {/* Dynamic Commercial Stats Banner - Grid Layout with Sliding Ticker & UV Clock */}
                 <div 
-                    className="content-card-3d mb-8 overflow-hidden commercial-banner" 
+                    className="content-card-3d mb-4 overflow-hidden commercial-banner" 
                     style={{ 
                         position: 'relative', 
                         minHeight: '160px',
                         display: 'grid',
                         gridTemplateColumns: '1fr 280px 180px',
-                        gap: '1.5rem',
-                        padding: '1.5rem',
+                        gap: '1rem',
+                        padding: '1rem',
                         cursor: 'pointer'
                     }}
                     onMouseEnter={(e) => {
@@ -1666,7 +1666,7 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                 </div>
 
                 {/* Sorting controls in content card style */}
-                <div className="content-card-3d mb-8">
+                <div className="content-card-3d mb-4">
                     <div className="flex flex-wrap items-center justify-between gap-4">
                         <div className="flex items-center gap-3">
                             <div className="text-sm font-semibold" style={{
@@ -1762,7 +1762,7 @@ const SkillsDeepDivePage: React.FC<{ data: SkillsData }> = ({ data }) => {
                                 </button>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                 {/* Proficiency Card */}
                                 <div className={`group p-6 rounded-2xl bg-gradient-to-br from-neutral-800/60 via-zinc-800/60 to-stone-900/60 border-2 ${cardBorderColor} shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm`}>
                                     <div className="uppercase tracking-widest mb-3 font-bold" style={{
@@ -1952,11 +1952,11 @@ const ProjectShowcasePage: React.FC<ProjectShowcasePageProps> = ({ projects, onP
     };
 
     return (
-        <div className="project-showcase-page p-8 md:p-12 min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+        <div className="project-showcase-page p-4 md:p-6 min-h-screen bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
             <div className="max-w-7xl mx-auto">
                 {/* Header */}
-                <div className="text-center mb-12">
-                    <h1 className="content-title-3d text-6xl md:text-7xl mb-4" style={{
+                <div className="text-center mb-6">
+                    <h1 className="content-title-3d text-6xl md:text-7xl mb-2" style={{
                         letterSpacing: '0.05em'
                     }}>
                         - github_projects -
