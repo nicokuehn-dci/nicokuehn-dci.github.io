@@ -314,7 +314,7 @@ const ResumePage: React.FC<{ data: ResumeData, onDownloadPdf: () => void, onOpen
                             <img src={data.profilePictureUrl} alt={data.name} className="profile-pic w-44 h-44 rounded-full rounded-3d object-cover border-4 border-gray-200 dark:border-gray-700 shadow-lg transform hover:scale-105 transition-transform duration-300" />
                         </div>
                         <div className="flex-grow text-center md:text-left">
-                            <h1 className="content-title-3d text-6xl md:text-7xl mb-2" style={{
+                            <h1 className="content-title-3d site-name-backlight text-6xl md:text-7xl mb-2" style={{
                                 letterSpacing: '0.05em'
                             }}>- nico_kuehn -</h1>
                             <h2 className="content-title-3d text-2xl mb-2">{data.title}</h2>
@@ -3297,28 +3297,29 @@ const App: React.FC = () => {
                                             to { transform: rotate(360deg); }
                                         }
 
-                                        /* Glowing Header (subtle) */
+                                        /* About header — remove backlight for a cleaner, 'flat' look */
                                         .about-header-glow {
                                             position: relative;
                                             z-index: 1;
                                         }
-                                        .about-title {
+                                        /* About titles should be plain (no glowing/backlight)
+                                           We intentionally avoid background-clip + transparent color here so
+                                           the heading renders as normal text without backlight artifacts. */
+                                        .about-header-glow .content-title-3d,
+                                        .about-header-glow .about-title {
                                             font-size: 3.5rem;
                                             font-weight: 900;
-                                            background: linear-gradient(135deg, #e5e5e5, #b8b8b8, #8c8c8c, #606060);
-                                            -webkit-background-clip: text;
-                                            background-clip: text;
-                                            color: transparent;
-                                            /* reduced backlight */
-                                            text-shadow: 0 0 18px rgba(192,192,192,0.25);
-                                            animation: title-glow 3s ease-in-out infinite;
+                                            background: none !important;
+                                            -webkit-background-clip: unset !important;
+                                            background-clip: unset !important;
+                                            color: #ffffff !important;
+                                            text-shadow: none !important;
+                                            filter: none !important;
+                                            animation: none !important;
                                             font-family: Georgia, serif;
-                                            letter-spacing: -1px;
+                                            letter-spacing: -0.5px;
                                         }
-                                        @keyframes title-glow {
-                                            0%, 100% { filter: drop-shadow(0 0 10px rgba(160,160,160,0.35)); }
-                                            50% { filter: drop-shadow(0 0 20px rgba(192,192,192,0.45)); }
-                                        }
+                                        .about-header-glow .content-title-3d { font-size: 2.25rem; }
                                         .about-subtitle {
                                             font-size: 1.125rem;
                                             color: #9ca3af;
@@ -3814,7 +3815,7 @@ const App: React.FC = () => {
                                             margin-top: 0.5rem;
                                         }
 
-                                        /* Global White Glowing Titles - Front Layer with Enhanced Visibility */
+                                        /* Global Titles — reduced/neutral (no heavy backlight) */
                                         .content-title-3d {
                                             position: relative;
                                             z-index: 100;
@@ -3822,30 +3823,27 @@ const App: React.FC = () => {
                                             font-weight: 700;
                                             font-family: 'Fira Code', 'Monaco', 'Courier New', monospace;
                                             color: #ffffff !important;
-                                            text-shadow: 
-                                                0 0 10px rgba(255,255,255,1),
-                                                0 0 20px rgba(255,255,255,0.8),
-                                                0 0 30px rgba(255,255,255,0.6),
-                                                0 0 40px rgba(255,255,255,0.4);
-                                            filter: 
-                                                blur(0.3px)
-                                                drop-shadow(0 0 15px rgba(255,255,255,0.9))
-                                                drop-shadow(0 0 25px rgba(255,255,255,0.7));
-                                            letter-spacing: 0.1em;
-                                            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                                            /* remove the intense white backlight for most titles */
+                                            text-shadow: none;
+                                            filter: none;
+                                            letter-spacing: 0.05em;
+                                            transition: all 0.25s ease;
                                         }
 
+                                        /* Hover subtle lift only */
                                         .content-title-3d:hover {
-                                            transform: translateY(-2px) scale(1.02);
+                                            transform: translateY(-1px) scale(1.01);
+                                            text-shadow: 0 0 6px rgba(255,255,255,0.12);
+                                        }
+
+                                        /* Explicit class to keep the original backlight for the site name only */
+                                        .site-name-backlight {
                                             text-shadow: 
-                                                0 0 15px rgba(255,255,255,1),
-                                                0 0 25px rgba(255,255,255,1),
-                                                0 0 35px rgba(255,255,255,0.8),
-                                                0 0 45px rgba(255,255,255,0.6);
-                                            filter: 
-                                                blur(0.3px)
-                                                drop-shadow(0 0 20px rgba(255,255,255,1))
-                                                drop-shadow(0 0 30px rgba(255,255,255,0.9));
+                                                0 0 18px rgba(255,255,255,0.95),
+                                                0 0 36px rgba(255,255,255,0.75),
+                                                0 0 60px rgba(255,255,255,0.5);
+                                            filter: drop-shadow(0 0 24px rgba(255,255,255,0.9)) drop-shadow(0 0 36px rgba(255,255,255,0.7));
+                                            letter-spacing: 0.12em;
                                         }
 
                                         /* Availability Highlight */
@@ -4399,6 +4397,33 @@ const App: React.FC = () => {
                                 minute: '2-digit',
                                 hour12: true 
                             })}
+                        </div>
+                    
+                        {/* Translation picker placed nearby the clock (opens Google Translate for current page) */}
+                        <div style={{ position: 'relative', zIndex: 2, marginTop: '6px' }}>
+                            <label htmlFor="translate-select" style={{ display: 'none' }}>Translate</label>
+                            <select id="translate-select" onChange={(e) => {
+                                const tl = e.target.value;
+                                if (!tl) return;
+                                const url = `https://translate.google.com/translate?sl=auto&tl=${encodeURIComponent(tl)}&u=${encodeURIComponent(window.location.href)}`;
+                                window.open(url, '_blank', 'noopener');
+                                // reset selection back to placeholder
+                                (e.target as HTMLSelectElement).value = '';
+                            }}
+                            style={{
+                                background: 'rgba(255,255,255,0.06)',
+                                color: '#fff',
+                                border: '1px solid rgba(255,255,255,0.12)',
+                                padding: '6px 8px',
+                                borderRadius: '8px',
+                                fontSize: '0.85rem',
+                                cursor: 'pointer'
+                            }}>
+                                <option value="">Translate</option>
+                                <option value="en">English</option>
+                                <option value="de">Deutsch</option>
+                                <option value="fr">Français</option>
+                            </select>
                         </div>
                     </div>
                 </div>

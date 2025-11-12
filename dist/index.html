@@ -35,28 +35,11 @@
   }
 }
 </script>
+  <script type="module" crossorigin src="/assets/index-fQFb0jKZ.js"></script>
 </head>
   <body class="antialiased">
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"><div style="padding:1.25rem;color:#cfcfd0;text-align:center">Loading…</div></div>
+    <div id="root"></div>
     <!-- Vite entry: load the app's module during dev/build -->
-
-    <script>
-      // Show a friendly message if the app throws on initial load
-      window.addEventListener('error', function(e){
-        try{
-          const root = document.getElementById('root');
-          if(root) root.innerHTML = '<div style="padding:2rem;color:#ffffff;background:#111;text-align:center">Application failed to load. Check the browser console for details.</div>';
-        }catch(_){/* ignore */}
-      });
-      window.addEventListener('unhandledrejection', function(e){
-        try{
-          const root = document.getElementById('root');
-          if(root) root.innerHTML = '<div style="padding:2rem;color:#ffffff;background:#111;text-align:center">Application failed to load (promise rejection). Check console.</div>';
-        }catch(_){/* ignore */}
-      });
-    </script>
-
-    <script type="module" crossorigin src="/assets/index-d6MmB3OW.js"></script>
   </body>
 </html>
