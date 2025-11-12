@@ -3297,7 +3297,7 @@ const App: React.FC = () => {
                                             to { transform: rotate(360deg); }
                                         }
 
-                                        /* Glowing Header */
+                                        /* Glowing Header (subtle) */
                                         .about-header-glow {
                                             position: relative;
                                             z-index: 1;
@@ -3309,14 +3309,15 @@ const App: React.FC = () => {
                                             -webkit-background-clip: text;
                                             background-clip: text;
                                             color: transparent;
-                                            text-shadow: 0 0 40px rgba(192,192,192,0.5);
+                                            /* reduced backlight */
+                                            text-shadow: 0 0 18px rgba(192,192,192,0.25);
                                             animation: title-glow 3s ease-in-out infinite;
                                             font-family: Georgia, serif;
                                             letter-spacing: -1px;
                                         }
                                         @keyframes title-glow {
-                                            0%, 100% { filter: drop-shadow(0 0 20px rgba(160,160,160,0.6)); }
-                                            50% { filter: drop-shadow(0 0 40px rgba(192,192,192,0.8)); }
+                                            0%, 100% { filter: drop-shadow(0 0 10px rgba(160,160,160,0.35)); }
+                                            50% { filter: drop-shadow(0 0 20px rgba(192,192,192,0.45)); }
                                         }
                                         .about-subtitle {
                                             font-size: 1.125rem;
